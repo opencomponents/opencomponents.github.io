@@ -11,6 +11,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "sign-bunny": "^1.0.0"
+    "oc": "^0.39.8"
   }
 }

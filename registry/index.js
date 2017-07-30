@@ -4,10 +4,11 @@ const oc = require('oc');
 const configuration = {
   verbosity: 0,
   baseUrl: process.env.BASEURL,
-  port: process.env.PORT || 3000,
+  port: process.env.PORT,
   tempDir: './temp/',
   refreshInterval: 600,
   pollingInterval: 5,
+  discovery: true,
   s3: {
     key: process.env.S3KEY,
     secret: process.env.S3SECRET,

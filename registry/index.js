@@ -1,8 +1,9 @@
+require('dotenv').config()
 const oc = require('oc');
 
 const configuration = {
   verbosity: 0,
-  baseUrl: 'https://opencomponents-site-registry.herokuapp.com/',
+  baseUrl: process.env.BASEURL,
   port: process.env.PORT || 3000,
   tempDir: './temp/',
   refreshInterval: 600,

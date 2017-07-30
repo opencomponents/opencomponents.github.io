@@ -13,7 +13,7 @@ const configuration = {
     secret: process.env.S3SECRET,
     bucket: process.env.S3BUCKET,
     region: process.env.S3REGION,
-    path: `//s3.amazonaws.com/${process.env.S3BUCKET}/`,
+    path: `//s3.${process.env.S3REGION}.amazonaws.com/${process.env.S3BUCKET}/`,
     componentsDir: 'components'
   },
   env: { name: 'production' }

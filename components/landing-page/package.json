@@ -1,12 +1,13 @@
 {
   "name": "landing-page",
   "description": "",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "oc": {
     "files": {
       "data": "server.js",
       "static": [
-        "img"
+        "img",
+        "css"
       ],
       "template": {
         "src": "template.hbs",

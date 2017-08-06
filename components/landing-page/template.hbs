@@ -1,22 +1,114 @@
 <link rel="stylesheet" href="{{staticPath}}css/styles.css">
 
-<div id="wrapper">
-  <div id="hero">
-    <div class="header">
-      <h1>OpenComponents</h1>
-      <h2>Painless micro frontends delivery</h2>
-      <nav>
-        <a class="button" href="https://github.com/opentable/oc">GitHub</a>
-        <a class="button" href="https://github.com/opentable/oc/wiki">Documentation</a>
-        <a class="button" href="https://gitter.im/opentable/oc">Ask the team</a>
-      </nav>
+<div id="hero">
+  <header>
+    <h1>OpenComponents</h1>
+    <h2>Painless micro frontends delivery</h2>
+    <nav>
+      <a class="button" href="https://github.com/opentable/oc">GitHub</a>
+      <a class="button" href="https://github.com/opentable/oc/wiki">Documentation</a>
+      <a class="button" href="https://gitter.im/opentable/oc">Ask the team</a>
+    </nav>
+  </header>
+  <img class="logo" src="{{staticPath}}img/opencomponents-logo.png" />
+</div>
+
+<section id="content">
+  <article>
+    <header>
+      <h1>Building web applications together, faster.</h1>
+    </header>
+    <p>While microservice architectures allowed teams to scale delivery of independently deployable services, most frontend layers are still run as monoluthic applications. Similar to server-side applications, frontend layers often grows into large monoliths that are difficult to mantain and evolve</p>
+    <p>The idea behind <a href="https://www.thoughtworks.com/radar/techniques/micro-frontends" target="_blank">micro frontends</a> is to enable multiple teams to seamless work together by fostering end-to-end onwership of indipendently developed, tested and deployed features.</p>
+    <p>Think about UI as the composition of features which are maintained by independent teams. These teams could be cross functional allowing them to develop such features end-to-end, from database to user interface and indipendently deploy them.</p>
+  </article>
+
+  <div class="hr">
+    <img src="{{staticPath}}img/cube-small.png" />
+  </div>
+
+  <article>
+    <header>
+      <h1>The OpenComponents framework</h1>
+    </header>
+    <p>OpenComponents is an opensource, "batteries included" micro frontends framework. Born at OpenTable in 2014, it matured over the years into a battle tested solution currently used to deliver micro frontends at scale by fast growing companies around the world.</p>
+    <div class="block">
+      <img src="{{staticPath}}img/components.png" />
+      <div>
+        <h2>Components</h2>
+        <p>Small, immutable, units of universal code mainly consisting of html, javascript and css. They can optionally contain some logic, allowing a server-side node.js application to compose a model that is used to render the view. After rendering they are pieces of pure html to be injected in any html page. <a href="https://github.com/opentable/oc/wiki#components-management" target="_blank">Learn more</a></p>
+      </div>
     </div>
-    <img class="logo" src="{{staticPath}}img/opencomponents-logo.png" />
+    <div class="block img-right">
+      <img src="{{staticPath}}img/template-system.png" />
+      <div>
+        <h2>Template system</h2>
+        <p>OC is unopionated about components and their underlying client-side JavaScript stack. The template system allows for support of any client-side technology, hiding away all the configuration complexity while avoiding specific UI framework lock-in. <a href="https://github.com/opentable/oc/wiki/The-template-system" target="_blank">Learn more</a></p>
+      </div>
+    </div>
+    <div class="block">
+      <img src="{{staticPath}}img/registry.png" />
+      <div>
+        <h2>Registry</h2>
+        <p>The registry provide a rest API to consume, retrieve, and publish components to a library. When components depend on static resources (such as images, css files, etc.) these are stored, during packaging and publishing, in a publicly-exposed part of the library that serves as cdn. <a href="https://github.com/opentable/oc/wiki/Registry" target="_blank">Learn more</a></p>
+      </div>
+    </div>
+    <div class="block img-right">
+      <img src="{{staticPath}}img/cli.png" />
+      <div>
+        <h2>CLI</h2>
+        <p>The CLI tool allows developers to create, develop, and test components locally. It also allow to publish components to live  registry. <a href="https://github.com/opentable/oc/wiki/Cli" target="_blank">Learn more</a></p>
+      </div>
+    </div>
+     <div class="block">
+      <img src="{{staticPath}}img/clients.png" />
+      <div>
+        <h2>Client libraries</h2>
+        <p>Multiple libraries are available, allowing to consume components on different environment and platforms. Depending on the library, client are normally able to consume both unrendered components and rendered components. <a href="https://github.com/opencomponents/oc-client-node#oc-client" target="_blank">Learn more</a></p>
+      </div>
+    </div>
+  </article>
+
+  <div class="hr">
+    <img src="{{staticPath}}img/cube-small.png" />
   </div>
-  <div id="content">
-    Content here
-  </div>
-  <div id="footer">
-    Footer here
-  </div>
+
+  <article>
+    <header>
+      <h1>Get started with OpenComponents</h1>
+    </header>
+    <p>Before starting make sure you have:<br />
+      <ul>
+        <li>An account on <a href="https://signup.heroku.com/" target="_blank">Heroku</a></li>
+        <li>An <a href="https://aws.amazon.com/s3" target="_blank">S3</a> bucket on AWS</li>
+      </ul>
+    </p>
+    <h3>#1 - Deploy the registry to Heroku</h3>
+    <p>
+       <a class="button secondary" href="https://heroku.com/deploy?template=https://github.com/opencomponents/starter-kit" target="_blank">Click to deploy to Heroku</a> - deploy your OpenComponents registry
+    </p>
+    <h3>#2 - Build your first component</h3>
+    <p>Install the OpenComponents CLI</p>
+    <pre>$ npm install -g oc</pre>
+    <p>Create your first component</p>
+    <pre>$ oc init my-first-component</pre>
+    <p>Develop/test locally by starting a local dev registry</p>
+    <pre>$ oc dev . 3030</pre>
+    <p>Your component will be available at:</p>
+      <ul>
+        <li>endpoint: <a href="http://localhost:3030/my-first-component" target="_blank">http://localhost:3030/my-first-component</a></li>
+        <li>info: <a href="http://localhost:3030/my-first-component/~info" target="_blank">http://localhost:3030/my-first-component/~info</a></li>
+        <li>fullPreview: <a href="http://localhost:3030/my-first-component/~preview" target="_blank">http://localhost:3030/my-first-component/~preview</a></li>
+      </ul>
+    <h3>#3 Publish the component to the registry</h3>
+    <p>Add the registry using the CLI</p>
+    <pre>$ oc registry add http://my-registry.on.herokuapp.com/</pre>
+    <p>Publish your component</p>
+    <pre>$ oc publish my-first-component --username=YOURVALUEHERE --password=YOURVALUEHERE</pre>
+    <p>Your component is now published: <a href="http://my-registry.on.herokuapp.com/my-first-component" target="_blank">http://my-registry.on.herokuapp.com/my-first-component</a></p>
+  </article>
+</section>
+
+<div class="hr footer">
+  <img src="{{staticPath}}img/cube-small.png" />
 </div>

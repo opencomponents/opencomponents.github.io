@@ -18,9 +18,9 @@
     <header>
       <h1>Building web applications together, faster.</h1>
     </header>
-    <p>While microservice architectures allowed teams to scale delivery of independently deployable services, most frontend layers are still run as monoluthic applications. Similar to server-side applications, frontend layers often grows into large monoliths that are difficult to mantain and evolve</p>
-    <p>The idea behind <a href="https://www.thoughtworks.com/radar/techniques/micro-frontends" target="_blank">micro frontends</a> is to enable multiple teams to seamless work together by fostering end-to-end onwership of indipendently developed, tested and deployed features.</p>
-    <p>Think about UI as the composition of features which are maintained by independent teams. These teams could be cross functional allowing them to develop such features end-to-end, from database to user interface and indipendently deploy them.</p>
+    <p>While microservice architectures allowed teams to scale delivery of independently deployable services, most frontend layers are still run as monolithic applications. Similar to server-side applications, frontend layers often grow into large monoliths that are difficult to maintain and evolve.</p>
+    <p>The idea behind <a href="https://www.thoughtworks.com/radar/techniques/micro-frontends" target="_blank">micro frontends</a> is to enable multiple teams to seamless work together by fostering end-to-end ownership of independently developed, tested and deployed features.</p>
+    <p>Think about UI as the composition of features which are maintained by independent teams. These teams could be cross functional allowing them to develop such features end-to-end, from a database to user interface and independently deploy them.</p>
   </article>
 
   <div class="hr">
@@ -36,35 +36,35 @@
       <img src="{{staticPath}}img/components.png" />
       <div>
         <h2>Components</h2>
-        <p>Small, immutable, units of universal code mainly consisting of html, javascript and css. They can optionally contain some logic, allowing a server-side node.js application to compose a model that is used to render the view. After rendering they are pieces of pure html to be injected in any html page. <a href="https://github.com/opentable/oc/wiki#components-management" target="_blank">Learn more</a></p>
+        <p>Small, immutable, units of universal code mainly consisting of html, javascript and css. They can optionally contain some logic, allowing a server-side node.js application to compose a model that is used to render the view. After rendering they are pieces of pure html to be injected into any html page. <a href="https://github.com/opentable/oc/wiki#components-management" target="_blank">Learn more</a></p>
       </div>
     </div>
     <div class="block img-right">
       <img src="{{staticPath}}img/template-system.png" />
       <div>
         <h2>Template system</h2>
-        <p>OC is unopionated about components and their underlying client-side JavaScript stack. The template system allows for support of any client-side technology, hiding away all the configuration complexity while avoiding specific UI framework lock-in. <a href="https://github.com/opentable/oc/wiki/The-template-system" target="_blank">Learn more</a></p>
+        <p>OC is unopinionated about components and their underlying client-side JavaScript stack. The template system allows for support of any client-side technology, hiding away all the configuration complexity while avoiding specific UI framework lock-in. <a href="https://github.com/opentable/oc/wiki/The-template-system" target="_blank">Learn more</a></p>
       </div>
     </div>
     <div class="block">
       <img src="{{staticPath}}img/registry.png" />
       <div>
         <h2>Registry</h2>
-        <p>The registry provide a rest API to consume, retrieve, and publish components to a library. When components depend on static resources (such as images, css files, etc.) these are stored, during packaging and publishing, in a publicly-exposed part of the library that serves as cdn. <a href="https://github.com/opentable/oc/wiki/Registry" target="_blank">Learn more</a></p>
+        <p>The registry provides a rest API to consume, retrieve, and publish components to a library. When components depend on static resources (such as images, css files, etc.) these are stored, during packaging and publishing, in a publicly-exposed part of the library that serves as CDN. <a href="https://github.com/opentable/oc/wiki/Registry" target="_blank">Learn more</a></p>
       </div>
     </div>
     <div class="block img-right">
       <img src="{{staticPath}}img/cli.png" />
       <div>
         <h2>CLI</h2>
-        <p>The CLI tool allows developers to create, develop, and test components locally. It also allow to publish components to live  registry. <a href="https://github.com/opentable/oc/wiki/Cli" target="_blank">Learn more</a></p>
+        <p>The CLI tool allows developers to create, develop, and test components locally. It also allows publishing components to your registry. <a href="https://github.com/opentable/oc/wiki/Cli" target="_blank">Learn more</a></p>
       </div>
     </div>
      <div class="block">
       <img src="{{staticPath}}img/clients.png" />
       <div>
         <h2>Client libraries</h2>
-        <p>Multiple libraries are available, allowing to consume components on different environment and platforms. Depending on the library, client are normally able to consume both unrendered components and rendered components. <a href="https://github.com/opencomponents/oc-client-node#oc-client" target="_blank">Learn more</a></p>
+        <p>Multiple libraries are available, allowing to consume components on different environment and platforms. Depending on the library, clients are normally able to consume both unrendered components and rendered components. <a href="https://github.com/opencomponents/oc-client-node#oc-client" target="_blank">Learn more</a></p>
       </div>
     </div>
   </article>
@@ -98,7 +98,7 @@
       <ul>
         <li>endpoint: <a href="http://localhost:3030/my-first-component" target="_blank">http://localhost:3030/my-first-component</a></li>
         <li>info: <a href="http://localhost:3030/my-first-component/~info" target="_blank">http://localhost:3030/my-first-component/~info</a></li>
-        <li>fullPreview: <a href="http://localhost:3030/my-first-component/~preview" target="_blank">http://localhost:3030/my-first-component/~preview</a></li>
+        <li>preview: <a href="http://localhost:3030/my-first-component/~preview" target="_blank">http://localhost:3030/my-first-component/~preview</a></li>
       </ul>
     <h3>#3 Publish the component to the registry</h3>
     <p>Add the registry using the CLI</p>

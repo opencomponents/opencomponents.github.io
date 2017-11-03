@@ -19,10 +19,9 @@
   },
   "homepage": "https://github.com/opencomponents/opencomponents.github.io#readme",
   "devDependencies": {
-    "oc": "^0.41.6"
+    "oc": "^0.41.16"
   },
   "dependencies": {
-    "oc": "^0.41.16",
     "oc-template-handlebars-compiler": "^6.1.3"
   }
 }

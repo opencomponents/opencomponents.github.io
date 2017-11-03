@@ -174,3 +174,27 @@ pre {
 li {
   text-decoration: none;
 }
+
+@media only screen and (min-width : 320px) and (max-width : 768px) {
+  #hero header {
+    padding-top: 60px;
+  }
+  
+  #hero header h1 {
+    font-size: 44px;
+  }
+
+  #hero header h2 {
+    font-size: 24px;
+  }
+
+  .button, button {
+    padding: 5px 14px;
+    margin: 0px 1px;
+    font-size: 17px;
+  }
+
+  nav {
+    margin-top: 25px;
+  }
+}

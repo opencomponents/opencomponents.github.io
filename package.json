@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "oc dev components 3030",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,6 +19,9 @@
   },
   "homepage": "https://github.com/opencomponents/opencomponents.github.io#readme",
   "devDependencies": {
-    "oc": "^0.40.2"
+    "oc": "^0.41.16"
+  },
+  "dependencies": {
+    "oc-template-handlebars-compiler": "^6.1.3"
   }
 }

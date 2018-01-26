@@ -175,6 +175,19 @@ li {
   text-decoration: none;
 }
 
+.logos {
+  align-items: center;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.logos img {
+  max-height: 128px;
+  width: 128px;
+  padding: 20px;
+}
+
 @media only screen and (min-width : 320px) and (max-width : 768px) {
   #hero header {
     padding-top: 60px;

@@ -20,7 +20,7 @@
   "homepage": "https://github.com/opencomponents/opencomponents.github.io#readme",
   "dependencies": {
     "dotenv": "^4.0.0",
-    "oc": "^0.42.7"
+    "oc": "^0.42.19"
   },
   "engines": {
     "node": "8.9.1"

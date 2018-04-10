@@ -1,7 +1,7 @@
 {
   "name": "landing-page",
   "description": "The LandingPage Component for the OpenComponents website",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "oc": {
     "files": {
       "data": "server.js",

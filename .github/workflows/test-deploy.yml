@@ -1,9 +1,9 @@
 name: Test deployment
 
 on:
-  push:
-    branches: [new-website]
-    paths: [./**]
+  pull_request:
+    branches: [main]
+    paths: [website/**]
 
 jobs:
   test-deploy:
@@ -16,7 +16,7 @@ jobs:
           node-version: 14.x
           cache: npm
       - name: Test build
-        working-directory: ./
+        working-directory: website
         run: |
           npm ci
           npm run build

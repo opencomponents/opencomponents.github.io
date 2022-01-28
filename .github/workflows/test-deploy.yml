@@ -1,7 +1,7 @@
 name: Test deployment
 
 on:
-  pull_request:
+  push:
     branches: [new-website]
     paths: [./**]
 

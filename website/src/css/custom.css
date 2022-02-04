@@ -75,3 +75,8 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
 .button.secondary {
   color: #aa79ff;
 }
+
+html[data-theme="dark"] .hero.heroBanner_src-pages-index-module {
+  background: linear-gradient(135deg, #7555a7 0%, #2c1949 100%);
+  color: #fff;
+}

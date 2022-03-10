@@ -101,6 +101,12 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
+      algolia: {
+        appId: 'YKTLKDBBGV',
+        // Public API key: it is safe to commit it
+        apiKey: 'b75f1257f754f7f15e79a16b81bef105',
+        indexName: 'opencomponents'
+      },
     }),
 };
 

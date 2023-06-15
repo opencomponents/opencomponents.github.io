@@ -265,6 +265,8 @@ $ oc publish <componentPath> [options]
 | `--password`    | password used to authenticate when publishing to registry                          |         |
 | `--username`    | username used to authenticate when publishing to registry                          |         |
 | `--skipPackage` | to skip packaging step (useful if you publish at a different stage than packaging) | false   |
+| `--registries`  | alternative to pass a list of registries directly on the command instead of a json |         |
+| `--dryRun`      | Indicates that you don't want to publish the OC and only report if it's ready to   | false   |
 
 #### Examples:
 

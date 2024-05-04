@@ -10,7 +10,7 @@ import UwuLogoUrl from "@site/static/img/uwulogo.png";
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
-  const uwu = new URLSearchParams(window.location.search).get("uwu") !== null;
+  const uwu = window.location.search.includes("uwu");
 
   return (
     <header className={clsx("hero hero--primary", styles.heroBanner)}>

@@ -105,7 +105,7 @@ export const data = (context, callback) => {
 };
 ```
 
-[Advanced server.js operations](The-server.js).
+[Advanced server.js operations](the-server.js).
 
 # Editing, debugging, testing
 

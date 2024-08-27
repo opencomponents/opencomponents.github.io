@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "registries": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mocks": {
+      "type": "object",
+      "properties": {
+        "plugins": {
+          "type": "object",
+          "properties": {
+            "dynamic": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "static": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "registries"
+  ],
+  "additionalProperties": false
+}

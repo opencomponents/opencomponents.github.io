@@ -29,6 +29,9 @@ const Users = () => {
         <a href="https://www.guestline.com/">
           <img src="/img/home/users/guestline.png" alt="Alvarium" />
         </a>
+        <a href="https://devitjobs.uk/">
+          <img src="/img/home/users/devituk-rectangle.png" alt="DevITJobs" />
+        </a>
       </div>
     </article>
   );

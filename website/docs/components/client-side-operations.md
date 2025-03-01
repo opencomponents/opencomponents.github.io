@@ -118,7 +118,7 @@ This is to postback to component's server.js and get just the data back. Callbac
 
 ### oc.renderNestedComponent ($el, callback);
 
-Given a HTMLElement selected (it can also be a jQuery element) $el `<oc-component>` element, renders it and then executes the callback function.
+Given a HTMLElement selected $el `<oc-component>` element, renders it and then executes the callback function.
 
 ### oc. registerTemplates (`[templates]`)
 

@@ -7,6 +7,10 @@ const darkCodeTheme = themes.dracula;
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
+  markdown: {
+    mermaid: true,
+  },
+  themes: ["@docusaurus/theme-mermaid"],
   title: "OpenComponents",
   tagline: "Painless micro frontends delivery",
   url: "https://opencomponents.github.io",

@@ -96,11 +96,11 @@ $ oc dev <dirPath> [port] [baseUrl] [options]
 
 #### Parameters:
 
-| Name      | Description                                                         | Default                |
-| --------- | ------------------------------------------------------------------- | ---------------------- |
+| Name      | Description                                                         | Default                  |
+| --------- | ------------------------------------------------------------------- | ------------------------ |
 | `dirPath` | The name of the directory to watch, where the components are stored |
-| `port`    | The port where to start a local oc instance.                        | 3000                   |
-| `baseUrl` | The base url the component is hosted from.                          | http://localhost:port/ |
+| `port`    | The port where to start a local oc instance.                        | 3000                     |
+| `baseUrl` | The base url the component is hosted from.                          | `http://localhost:port/` |
 
 #### Options:
 

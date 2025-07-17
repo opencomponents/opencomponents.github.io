@@ -591,15 +591,6 @@ oc.registerTemplates([
 
 Template externals load in order and are cached globally.
 
-### Turbo Stream Support
-
-The client automatically handles Turbo Stream responses for efficient updates:
-
-```js
-// Server can respond with Turbo Stream format
-// Client automatically decodes and processes
-```
-
 ## Complete Example
 
 Here's a complete working example you can copy and run:

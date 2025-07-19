@@ -4,7 +4,27 @@ sidebar_position: 1
 
 # Architecture overview
 
-![Architecture](http://matteofigus.github.io/presentations/oc-jsconfuy/img/oc.png)
+```mermaid
+graph TD
+    A[Microsites server-side] --> D[OC Registry]
+    B[Microsites client-side] --> D
+    C[OC CLI] --> D
+    E[OC Components creators/owners] --> C
+
+    D --> F[OC Library]
+    D --> G[OC Runtime agents]
+
+    F --> H[CDN]
+    H --> G
+
+    style A fill:#87CEEB
+    style B fill:#87CEEB
+    style C fill:#87CEEB
+    style D fill:#87CEEB
+    style F fill:#F0E68C
+    style G fill:#87CEEB
+    style H fill:#D3D3D3
+```
 
 OpenComponents' heart is a REST API. It is used for consuming and publishing components.
 

@@ -16,8 +16,10 @@ and we don't need to modify any other files.
 
 But when we want to provide some additional logic in our view:
 
-```html
-<div>hello {{name}}</div>
+```javascript
+export default function(model) {
+  return `<div>hello ${model.name}</div>`;
+}
 ```
 
 we have to modify our `server.js` (model provider).
@@ -160,14 +162,14 @@ First step is to prepare `package.json` file. It is necessary to add `static` pr
     "files": {
       "data": "server.js",
       "template": {
-        "src": "template.html",
-        "type": "oc-template-handlebars"
+        "src": "template.js",
+        "type": "oc-template-es6"
       },
       "static": ["public"]
     }
   },
   "devDependencies": {
-    "oc-template-handlebars-compiler": "6.0.8"
+    "oc-template-es6-compiler": "6.0.8"
   }
 }
 ```
@@ -178,8 +180,10 @@ It is an array of names of directories. In the above example the `public` direct
 
 We can add image to the component view template using `img` tag in which `src` attribute is bound to `img` viewModel property.
 
-```html
-<img src="{{path}}public/static_resource.png" />
+```javascript
+export default function(model) {
+  return `<img src="${model.path}public/static_resource.png" />`;
+}
 ```
 
 ### Update server file

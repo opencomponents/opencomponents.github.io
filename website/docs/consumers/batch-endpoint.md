@@ -49,3 +49,140 @@ curl http://my-components-registry.mydomain.com/
 | components[index].parameters | `object`           | `no`      | Component's parameters                                                                                               |
 | omitHref                     | `boolean`          | `no`      | Default false, when `true` omits the href value in the response of each component                                    |
 | parameters                   | `object`           | `no`      | Global parameters for all components to retrieve. When component has its own parameters, globals will be overwritten |
+
+## Performance Optimization
+
+### When to Use Batch vs Individual Requests
+
+**Use Batch Endpoint When:**
+- Rendering multiple components on the same page
+- Components are needed simultaneously
+- Network latency is a concern
+- You want to reduce HTTP overhead
+
+**Use Individual Requests When:**
+- Loading components asynchronously
+- Implementing lazy loading
+- Components have different caching requirements
+- You need fine-grained error handling
+
+### Optimal Batch Size
+
+```javascript
+// Recommended: 5-10 components per batch
+const componentBatches = chunkArray(allComponents, 8);
+
+for (const batch of componentBatches) {
+  const results = await fetchBatch(batch);
+  renderComponents(results);
+}
+```
+
+### Caching Strategies
+
+```javascript
+// Cache batch responses by component combination
+const cacheKey = components.map(c => `${c.name}:${c.version}`).join(',');
+
+if (cache.has(cacheKey)) {
+  return cache.get(cacheKey);
+}
+
+const result = await fetchBatch(components);
+cache.set(cacheKey, result, { ttl: 300 }); // 5 minutes
+return result;
+```
+
+## Error Handling for Batch Operations
+
+### Partial Failure Handling
+
+```javascript
+async function renderBatchWithFallbacks(components) {
+  try {
+    const results = await fetchBatch(components);
+    
+    return results.map((result, index) => {
+      if (result.status !== 200) {
+        console.warn(`Component ${components[index].name} failed:`, result);
+        return {
+          status: 200,
+          response: {
+            html: getFallbackContent(components[index].name),
+            name: components[index].name
+          }
+        };
+      }
+      return result;
+    });
+  } catch (error) {
+    console.error('Batch request failed:', error);
+    return components.map(comp => ({
+      status: 500,
+      response: { html: getFallbackContent(comp.name), name: comp.name }
+    }));
+  }
+}
+```
+
+### Retry Logic
+
+```javascript
+async function fetchBatchWithRetry(components, maxRetries = 3) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await fetchBatch(components);
+    } catch (error) {
+      if (attempt === maxRetries) throw error;
+      
+      const delay = Math.pow(2, attempt) * 1000; // Exponential backoff
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+  }
+}
+```
+
+## Real-World Examples
+
+### E-commerce Page
+
+```javascript
+// Fetch all components for a product page
+const productPageComponents = await fetchBatch([
+  { name: 'header', parameters: { user: currentUser } },
+  { name: 'product-details', parameters: { productId: '123' } },
+  { name: 'recommendations', parameters: { userId: currentUser.id } },
+  { name: 'reviews', parameters: { productId: '123', limit: 5 } },
+  { name: 'footer' }
+]);
+```
+
+### Dashboard Layout
+
+```javascript
+// Load dashboard widgets in batches
+const dashboardWidgets = await fetchBatch([
+  { name: 'analytics-widget', parameters: { timeframe: 'week' } },
+  { name: 'sales-widget', parameters: { region: 'US' } },
+  { name: 'inventory-widget' },
+  { name: 'notifications-widget', parameters: { userId: user.id } }
+]);
+```
+
+### Performance Monitoring
+
+```javascript
+const startTime = Date.now();
+
+const components = await fetchBatch(componentList);
+
+const endTime = Date.now();
+console.log(`Batch request completed in ${endTime - startTime}ms`);
+
+// Log individual component performance
+components.forEach((comp, index) => {
+  if (comp.status !== 200) {
+    console.error(`Component ${componentList[index].name} failed`);
+  }
+});
+```

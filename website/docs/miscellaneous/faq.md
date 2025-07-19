@@ -4,7 +4,36 @@ sidebar_position: 4
 
 # F.A.Q.
 
-## What's the difference between rendered and un-rendered components?
+## Beginner Questions
+
+### What exactly is OpenComponents?
+
+OpenComponents is a framework for building micro frontends - small, independent UI components that can be developed by different teams and composed into larger applications. Think of it as a way to break down your frontend into manageable, reusable pieces.
+
+### When should I use OpenComponents?
+
+OpenComponents is ideal when you have:
+- Multiple teams working on different parts of the UI
+- Need to share components across different applications
+- Want to deploy parts of your frontend independently
+- Large applications that would benefit from being broken down
+
+### How is this different from regular React/Vue components?
+
+Unlike framework-specific components, OpenComponents:
+- Work across different frameworks (React, Vue, Angular, etc.)
+- Can be deployed and updated independently
+- Have their own server-side logic and data fetching
+- Are framework-agnostic and can be consumed by any web application
+
+### Do I need to know Node.js to use OpenComponents?
+
+For **consuming** components: No, you can use components in any web application.
+For **creating** components: Basic Node.js knowledge is helpful, but our [Quick Start Tutorial](../quick-start-tutorial) will guide you through everything.
+
+## Technical Questions
+
+### What's the difference between rendered and un-rendered components?
 
 Un-rendered components delegate the rendering to the clients. This is useful for performance and cacheability.
 [More details about rendered components](architecture-overview#consuming-rendered-components) and about [un-rendered components](architecture-overview#consuming-un-rendered-components)
@@ -45,3 +74,135 @@ For example, at OpenTable we do logging with the ELK stack for business metrics,
 ## Can I setup a debugger with Visual Studio Code?
 
 Yes, [look at this page](debugging).
+
+## Performance Questions
+
+### How does OpenComponents affect page load performance?
+
+OpenComponents can improve performance through:
+- **Caching**: Components are cached at multiple levels
+- **CDN delivery**: Static assets served from CDN
+- **Lazy loading**: Components can be loaded on-demand
+- **Parallel loading**: Multiple components load simultaneously
+
+However, there is some overhead from the client library and HTTP requests.
+
+### Can I use OpenComponents with a CDN?
+
+Yes! OpenComponents works excellently with CDNs. Set the `s3.path` property in your [registry configuration](../registry/registry-configuration) to your CDN URL.
+
+### How do I optimize component bundle sizes?
+
+- Keep components focused and small
+- Minimize dependencies in package.json
+- Use tree-shaking compatible libraries
+- Optimize images and static assets
+- Consider code splitting for larger components
+
+## Troubleshooting
+
+### My component shows "Loading..." forever
+
+**Common causes:**
+1. **Registry not accessible** - Check if the registry URL is reachable
+2. **JavaScript errors** - Check browser console for errors
+3. **Template compilation errors** - Verify your template syntax
+4. **Network issues** - Check network connectivity
+
+**Solutions:**
+```bash
+# Test registry accessibility
+curl https://your-registry.com/your-component
+
+# Check component locally
+oc dev . 3030
+oc preview http://localhost:3030/your-component
+```
+
+### Publishing fails with authentication errors
+
+**Solutions:**
+1. Verify your username and password
+2. Check if the registry URL is correct
+3. Ensure you have publishing permissions
+4. Try the `--dryRun` flag first to test
+
+### Component works locally but fails in production
+
+**Common issues:**
+1. **Environment variables** - Ensure all required env vars are set
+2. **Dependencies** - Check if all dependencies are installed
+3. **CORS issues** - Verify cross-origin settings
+4. **SSL/HTTPS** - Ensure proper SSL configuration
+
+### Template compilation errors
+
+**For ES6 templates (default):**
+- Check for proper template literal syntax: `${variable}` not `{variable}`
+- Ensure template function returns valid HTML string
+- Verify all variables are defined in server.js
+
+**For React templates:**
+- Verify JSX syntax
+- Check for missing imports
+- Ensure proper export statements
+
+**For legacy Handlebars templates:**
+- Check for unescaped special characters
+- Verify all variables are defined in server.js
+- Ensure proper syntax: `{{variable}}` not `{variable}`
+
+## Development Workflow
+
+### How do I test components before publishing?
+
+1. **Local development:**
+   ```bash
+   oc dev . 3030
+   oc preview http://localhost:3030/your-component
+   ```
+
+2. **Dry run publishing:**
+   ```bash
+   oc publish your-component --dryRun
+   ```
+
+3. **Integration testing:**
+   Create test HTML pages with your components
+
+### Can I use TypeScript with OpenComponents?
+
+Yes! Many templates support TypeScript:
+- Use React templates with TypeScript
+- Configure your build process accordingly
+- Ensure proper type definitions
+
+### How do I handle secrets and environment variables?
+
+- Use environment variables in your registry configuration
+- Never commit secrets to your component code
+- Use the registry's plugin system for secure data access
+
+## Community and Support
+
+### Where can I get help?
+
+- **Documentation**: Start with our [Quick Start Tutorial](../quick-start-tutorial)
+- **GitHub Issues**: Report bugs or ask questions
+- **Community**: Join discussions with other developers
+- **Examples**: Check out the [template repositories](https://github.com/opencomponents/vite-templates)
+
+### How do I contribute to OpenComponents?
+
+1. Check the main [OpenComponents repository](https://github.com/opencomponents/oc)
+2. Look for "good first issue" labels
+3. Read the contributing guidelines
+4. Submit pull requests with improvements
+
+### Is OpenComponents production-ready?
+
+Yes! OpenComponents is used in production by many companies. However:
+- Ensure proper monitoring and alerting
+- Have fallback strategies for component failures
+- Test thoroughly in your specific environment
+- Consider the learning curve for your team

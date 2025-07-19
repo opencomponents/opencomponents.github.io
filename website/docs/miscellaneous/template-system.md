@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Introduction
 
-The template system enable building components with richer client-side libraries other than the currently supported engines (handlebars and jade). One of the goal of this API is to make react a first class citizen of OC without having to lock the platform around it but allowing other technologies to be easily swapped in the future if wanted/needed.
+The template system enable building components with richer client-side libraries. Modern OpenComponents uses ES6 templates by default, with support for React, Vue, Svelte, and other frameworks. Legacy template engines (handlebars and jade) are still supported for backwards compatibility. One of the goal of this API is to make react a first class citizen of OC without having to lock the platform around it but allowing other technologies to be easily swapped in the future if wanted/needed.
 
 Ideally component creators should only care of handling data in order to provide a viewModel within the dataProvider and build the viewLayer using a specific library/fw (i.e. react). The template should hide all the complexity away in order to compile/optimize the client bundle, perform server-side-rendering, and all the related wiring. In order to do so, templates have full access over the whole compilation/packaging phase and provide the information needed for clients to consume and handle such components.
 
@@ -36,12 +36,12 @@ For example a component of type: `oc-template-handlebars` will need a compiler n
 
 ### With the CLI
 
-The CLI allow to bootstrap a new component with the `init` command. By default if no `templateType` is passed to the command a component of type `oc-template-handlebars` is created. Optionally you can pass any valid template as long as it follow the conventions mentioned above.
+The CLI allow to bootstrap a new component with the `init` command. By default if no `templateType` is passed to the command a component of type `oc-template-es6` is created. Optionally you can pass any valid template as long as it follow the conventions mentioned above.
 
 Usage:
 
 ```
-$ oc init myComponent oc-template-jade
+$ oc init myComponent oc-template-jade  # Legacy template - ES6 recommended for new components
 ```
 
 Check the [CLI documentation](/docs/components/cli) for more details.
@@ -71,7 +71,7 @@ via configuration API:
   conf: {
     templates: [
       {
-        "type": "oc-template-jade","externals": [
+        "type": "oc-template-jade","externals": [  // Legacy template - consider ES6 for new components
           {"global": "jade","url": "https://unpkg.com/jade-legacy@1.11.1/runtime.js"}
         ]
       }
@@ -101,12 +101,13 @@ As a note, supported templates on the registry are now exposed via `context.temp
 
 ### Server-side rendering
 
-At the moment `oc-template-handlebars`, `oc-template-jade` and `oc-template-react` support server-side rendering (SSR) as you would expect for the legacy `handlebars` and `jade` components.
+At the moment `oc-template-es6`, `oc-template-react`, and other modern templates support server-side rendering (SSR). Legacy templates (`oc-template-handlebars`, `oc-template-jade`) also support SSR for backwards compatibility.
 
 ## Building templates
 
-At the moment OC come with `oc-template-jade` and `oc-template-handlebars` as default. But you can fork any of those template, or the `oc-template-react`, or simply build your own from scratch in case you need a custom template. Please check the following templates as a reference:
+At the moment OC comes with `oc-template-es6` as the default modern template, with `oc-template-react`, `oc-template-vue`, and `oc-template-svelte` available for framework-specific components. Legacy templates (`oc-template-jade` and `oc-template-handlebars`) are still supported for backwards compatibility. You can fork any of those templates, or simply build your own from scratch in case you need a custom template. Please check the following templates as a reference:
 
-- [oc-template-jade](https://github.com/opencomponents/base-templates/tree/master/packages/oc-template-jade)
-- [oc-template-handlebars](https://github.com/opencomponents/base-templates/tree/master/packages/oc-template-handlebars)
+- [oc-template-es6](https://github.com/opencomponents/base-templates/tree/master/packages/oc-template-es6) (recommended default)
+- [oc-template-jade](https://github.com/opencomponents/base-templates/tree/master/packages/oc-template-jade) (legacy)
+- [oc-template-handlebars](https://github.com/opencomponents/base-templates/tree/master/packages/oc-template-handlebars) (legacy)
 - [oc-template-react](https://github.com/opencomponents/oc-template-react)

@@ -46,11 +46,85 @@ $ oc <command> [options]
 
 Hint: Run -h with any command to show the help
 
-For a list of all the available commands, ype **oc** in your terminal
+For a list of all the available commands, type **oc** in your terminal
 
 ```sh
 $ oc
 ```
+
+## Common Workflows
+
+Here are the most frequently used command sequences for typical OpenComponents workflows:
+
+### Creating and Testing a New Component
+
+```bash
+# Create component
+oc init my-component
+
+# Navigate to component
+cd my-component
+
+# Start development server
+oc dev . 3030
+
+# Preview component (in another terminal)
+oc preview http://localhost:3030/my-component
+```
+
+### Publishing Workflow
+
+```bash
+# Add registry (one-time setup)
+oc registry add https://my-registry.com
+
+# Package and publish
+oc publish my-component --username=myuser --password=mypass
+
+# Or test before publishing
+oc publish my-component --dryRun
+```
+
+### Development and Debugging
+
+```bash
+# Start dev server with verbose output
+oc dev . 3030 --verbose
+
+# Clean node_modules from all components
+oc clean . --yes
+
+# Mock plugins for local development
+oc mock plugin hash "test-value"
+```
+
+## Most Frequently Used Commands
+
+### Essential Commands (Daily Use)
+- `oc init <name>` - Create new component
+- `oc dev . <port>` - Start development server
+- `oc preview <url>` - Preview component
+- `oc publish <path>` - Publish component
+
+### Setup Commands (One-time)
+- `oc registry add <url>` - Add registry
+- `oc registry ls` - List registries
+
+### Maintenance Commands (Occasional)
+- `oc clean <path>` - Clean dependencies
+- `oc package <path>` - Package component
+- `oc mock plugin <name> <value>` - Mock plugins
+
+## Quick Reference
+
+| Command | Purpose | Example |
+|---------|---------|---------|
+| `init` | Create component | `oc init header` |
+| `dev` | Start dev server | `oc dev . 3030` |
+| `preview` | Test component | `oc preview http://localhost:3030/header` |
+| `publish` | Deploy component | `oc publish header/` |
+| `registry add` | Add registry | `oc registry add https://my-registry.com` |
+| `clean` | Remove node_modules | `oc clean . --yes` |
 
 ---
 
@@ -135,18 +209,18 @@ $ oc init <componentPath> [templateType]
 | Name            | Description                                              | Default                |
 | --------------- | -------------------------------------------------------- | ---------------------- |
 | `componentPath` | The relative path with a name of the component to create |
-| `templateType`  | The name of the published template module on npm         | oc-template-handlebars |
+| `templateType`  | The name of the published template module on npm         | oc-template-es6 |
 
 #### Example:
 
 ```sh
-$ oc init test-component oc-template-jade
+$ oc init test-component oc-template-es6
 ```
 
 or with using relative path:
 
 ```sh
-$ oc init components/test-component oc-template-jade
+$ oc init components/test-component oc-template-es6
 ```
 
 which will create `test-component` in `components` directory.

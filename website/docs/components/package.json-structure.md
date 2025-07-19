@@ -15,13 +15,13 @@ The basic package file `package.json` looks as follows:
     "files": {
       "data": "server.js",
       "template": {
-        "src": "template.hbs",
-        "type": "oc-template-handlebars"
+        "src": "template.js",
+        "type": "oc-template-es6"
       }
     }
   },
   "devDependencies": {
-    "oc-template-handlebars-compiler": "6.0.8"
+    "oc-template-es6-compiler": "6.0.8"
   }
 }
 ```
@@ -42,7 +42,7 @@ The basic package file `package.json` looks as follows:
 | `oc.files.data`                  | `string`           | the model provider's filename, by default `server.js`                                                                                                                          |
 | `oc.files.template`              | `object`           | represents the data involved with template - view, template engine                                                                                                             |
 | `oc.files.template.src`          | `string`           | the view's filename, by default template.html                                                                                                                                  |
-| `oc.files.template.type`         | `string`           | the template engine's type, by default `handlebars`                                                                                                                            |
+| `oc.files.template.type`         | `string`           | the template engine's type, by default `es6` (modern JavaScript templates). Legacy options like `handlebars` are still supported for backwards compatibility                |
 | `oc.files.static`                | `array of strings` | An array of directories that contain static resources referenced from the component's markup                                                                                   |
 | `oc.minify`                      | `boolean`          | Default `true`, will minify static css and js files during publishing                                                                                                          |
 | `oc.parameters`                  | `object`           | Describes the component's api. Used to auto-generate documentation and get requests validation. Each `key` is the parameter name                                               |

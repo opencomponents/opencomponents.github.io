@@ -80,10 +80,13 @@ Configure the client by exposing settings before including the script:
 
 ### Default Templates Configuration
 
+Modern OpenComponents uses ES6 templates by default. Legacy template types are still supported for backwards compatibility:
+
 ```js
 [
+  // Legacy template types (supported for backwards compatibility)
   {
-    type: "oc-template-jade",
+    type: "oc-template-jade", // Legacy - use ES6 templates for new components
     externals: [
       {
         global: "jade",
@@ -102,6 +105,8 @@ Configure the client by exposing settings before including the script:
   },
 ];
 ```
+
+**Note**: ES6 templates are the recommended default for new components and don't require external dependencies.
 
 ## API Methods
 
@@ -228,7 +233,7 @@ Render a component using compiled view information and data model.
 ```js
 oc.render(
   {
-    type: "handlebars",
+    type: "es6", // Modern ES6 template (recommended)
     src: "https://registry.com/component/template.js",
     key: "template-hash",
   },
@@ -791,7 +796,7 @@ Available settings:
 | `retryInterval`    | `number` (milliseconds) | Retry interval for when component rendering fails                                                                                                                                                                                             | 5000                                                                                                                                                                                                                                                                                                 |
 | `retryLimit`       | `number`                | Max number of retries when component rendering fails                                                                                                                                                                                          | 30                                                                                                                                                                                                                                                                                                   |
 | `retrySendNumber`  | `boolean`               | Appends an `__ocRetry=(number)` to a request to mark the retry number. This is a quite powerful feature that you can handle in the server-side logic in order to make your component even behave differently in case something is going wrong | true                                                                                                                                                                                                                                                                                                 |
-| `templates`        | `array`                 | The configuration needed for performing client-side rendering of specific template types.                                                                                                                                                     | `[{"type": "oc-template-jade","externals": [{"global": "jade","url": "https://unpkg.com/jade-legacy@1.11.1/runtime.js"}]},{"type": "oc-template-handlebars","externals": [{"global": "Handlebars","url": "https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.runtime.min.js"}]}]` |
+| `templates`        | `array`                 | The configuration needed for performing client-side rendering of legacy template types. ES6 templates (default) don't require configuration.                                                                                                 | `[{"type": "oc-template-jade","externals": [{"global": "jade","url": "https://unpkg.com/jade-legacy@1.11.1/runtime.js"}]},{"type": "oc-template-handlebars","externals": [{"global": "Handlebars","url": "https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.runtime.min.js"}]}]` |
 | `tag`              | `string`                | The html tag you want to use for your components in the page                                                                                                                                                                                  | `oc-component`                                                                                                                                                                                                                                                                                       |
 
 ## API

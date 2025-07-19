@@ -4,16 +4,52 @@ sidebar_position: 1
 
 # Introduction
 
-OpenComponents involves two parts:
+OpenComponents is a framework for building and deploying **micro frontends** - small, independent, and reusable UI components that can be developed by different teams and composed into larger applications.
 
-- The [`components`](#components-management) are small units of isomorphic code mainly consisting of html, javascript, css. They can optionally contain some logic, allowing a server-side node.js application to compose a model that is used to render the view. After rendering they are pieces of pure html to be injected in any html page.
-- The [`consumers`](#consuming-components) are websites or microsites ([small independently deployable web sites all connected by a front-door service or any routing mechanism](http://tech.opentable.co.uk/blog/2015/02/09/dismantling-the-monolith-microsites-at-opentable/)) that need components for rendering partial contents in their web pages.
+## What is OpenComponents?
 
-The framework consists mainly of three parts.
+Think of OpenComponents as a way to break down your frontend into small, manageable pieces that can be:
+- **Developed independently** by different teams
+- **Deployed separately** without affecting other parts
+- **Reused across** multiple applications
+- **Updated individually** without full application rebuilds
 
-- The [`cli`](#install-the-cli) allows developers to create, develop, test, and publish components.
-- The [`library`](#setup-a-library) is where the components are stored after the publishing. When components depend on static resources (such as images, css files, etc.) these are stored, during packaging and publishing, in a publicly-exposed part of the library that serves as cdn.
-- The [`registry`](#setup-a-registry) is a rest api that is used to consume, retrieve, and publish components. Since they are immutable, the registry is the entity that handles the traffic between the library and the consumers.
+## Quick Start
+
+**New to OpenComponents?** Start with our [Quick Start Tutorial](quick-start-tutorial) for a complete step-by-step guide.
+
+**Ready to dive in?** Here's the 30-second overview:
+
+```bash
+# Install the CLI
+npm install -g oc
+
+# Create your first component
+oc init my-component
+
+# Start local development
+oc dev . 3030
+
+# View your component
+open http://localhost:3030/my-component/~preview
+```
+
+## Core Concepts
+
+OpenComponents involves two main parts:
+
+- **[Components](#components-management)** are small units of isomorphic code mainly consisting of HTML, JavaScript, and CSS. They can optionally contain some logic, allowing a server-side Node.js application to compose a model that is used to render the view. After rendering they are pieces of pure HTML to be injected in any HTML page.
+- **[Consumers](#consuming-components)** are websites or microsites ([small independently deployable web sites all connected by a front-door service or any routing mechanism](http://tech.opentable.co.uk/blog/2015/02/09/dismantling-the-monolith-microsites-at-opentable/)) that need components for rendering partial contents in their web pages.
+
+## Architecture Overview
+
+The framework consists mainly of three parts:
+
+- The **[CLI](#install-the-cli)** allows developers to create, develop, test, and publish components.
+- The **[Library](#setup-a-library)** is where the components are stored after publishing. When components depend on static resources (such as images, CSS files, etc.) these are stored, during packaging and publishing, in a publicly-exposed part of the library that serves as CDN.
+- The **[Registry](#setup-a-registry)** is a REST API that is used to consume, retrieve, and publish components. Since they are immutable, the registry is the entity that handles the traffic between the library and the consumers.
+
+For a detailed technical overview, see our [Architecture Overview](miscellaneous/architecture-overview).
 
 ## Components management
 
@@ -22,7 +58,7 @@ A component is a directory composed by
 | File                     | Description                                                                                                                                                                                                                               |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `package`                | The component definition, dependencies, and more.                                                                                                                                                                                         |
-| `view`                   | The view in charge to output the final markup. OC support `Handlebars` and `Jade` out of the box, but come with a powerful template system to support components built with any javascript UI framework like `React`, `Angular`, `Vue`... |
+| `view`                   | The view in charge to output the final markup. OC uses `ES6` templates by default and comes with a powerful template system to support components built with any javascript UI framework like `React`, `Angular`, `Vue`. Legacy `Handlebars` and `Jade` templates are still supported for backwards compatibility. |
 | `server` (optional)      | If the component need logic, including consuming services, this is the entity that will produce the view-model to compile the view.                                                                                                       |
 | static assets (optional) | Images, Javascript, and files to be uploaded to the CDN and referenced in the HTML markup.                                                                                                                                                |
 | \*                       | Any other files that will be useful for the development such as tests, docs, etc.                                                                                                                                                         |
@@ -72,13 +108,19 @@ oc publish hello-world/
 
 Now, it should be available at `http://my-components-registry.mydomain.com/hello-world`.
 
-# Consuming components
+# Consuming Components
 
 From a consumer's perspective, a component is an HTML fragment. You can render components just on the client-side, just on the server-side, or use the client-side rendering as failover strategy for when the server-side rendering fails (for example because the registry is not responding quickly or is down).
 
-You don't need node.js to consume components on the server-side. The registry can provide you rendered components so that you can consume them using any tech stack.
+You don't need Node.js to consume components on the server-side. The registry can provide you rendered components so that you can consume them using any tech stack.
 
 When published, components are immutable and semantic versioned. The registry allows consumers to get any version of the component: the latest patch, or minor version, etc.
+
+**When to use OpenComponents:**
+- Building micro frontends with multiple teams
+- Need for independent deployment of UI components
+- Sharing components across different applications
+- Gradual migration from monolithic frontends
 
 ## Client-side rendering
 
@@ -130,7 +172,7 @@ Nevertheless, for improving caching and response size, when using the `node.js` 
   },
   "template": {
     "src": "https://s3.amazonaws.com/your-s3-bucket/components/hello-world/1.0.0/template.js",
-    "type": "handlebars",
+    "type": "es6",
     "key": "cad2a9671257d5033d2abfd739b1660993021d02"
   },
   "type": "oc-component",
@@ -211,3 +253,29 @@ registry.start(function (err, app) {
 ```
 
 For the registry configuration's documentation, [look at this page](/docs/registry/registry-configuration).
+
+## What Should I Read Next?
+
+**Choose your path based on your role:**
+
+### 🚀 **I'm new to OpenComponents**
+Start with the [Quick Start Tutorial](quick-start-tutorial) for a complete hands-on introduction.
+
+### 🔧 **I want to build components**
+1. [Components Getting Started](components/getting-started) - Learn component creation
+2. [CLI Reference](components/cli) - Master the command-line tools
+3. [Server-side Logic](components/the-server.js) - Add dynamic behavior
+
+### 🌐 **I want to consume components**
+1. [Client-side Rendering](consumers/client-side-rendering) - Browser integration
+2. [Server-side Rendering](consumers/server-side-rendering) - Backend integration
+3. [Batch Endpoint](consumers/batch-endpoint) - Efficient multi-component loading
+
+### ⚙️ **I need to set up infrastructure**
+1. [Registry Configuration](registry/registry-configuration) - Set up your component registry
+2. [Architecture Overview](miscellaneous/architecture-overview) - Understand the system design
+
+### 🔍 **I need help with specific topics**
+- [FAQ](miscellaneous/faq) - Common questions and answers
+- [Debugging](miscellaneous/debugging) - Troubleshooting guide
+- [Template System](miscellaneous/template-system) - Advanced templating options

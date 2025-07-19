@@ -12,30 +12,40 @@ const GettingStarted = () => {
       </p>
       <ul>
         <li>
-          An account on{" "}
-          <a href="https://signup.heroku.com/" target="_blank">
-            Heroku
-          </a>
+          A cloud storage solution such as:
+          <ul>
+            <li>
+              <a href="https://aws.amazon.com/s3" target="_blank">
+                AWS S3
+              </a>
+            </li>
+            <li>
+              <a href="https://azure.microsoft.com/en-us/services/storage/blobs/" target="_blank">
+                Azure Blob Storage
+              </a>
+            </li>
+            <li>
+              <a href="https://cloud.google.com/storage" target="_blank">
+                Google Cloud Storage
+              </a>
+            </li>
+          </ul>
         </li>
         <li>
-          An{" "}
-          <a href="https://aws.amazon.com/s3" target="_blank">
-            S3
-          </a>{" "}
-          bucket on AWS
+          A Node.js hosting platform (Vercel, Netlify, Railway, DigitalOcean, AWS, Azure, Google Cloud, or any VPS)
         </li>
       </ul>
       <p></p>
-      <h3>#1 - Deploy the registry to Heroku</h3>
+      <h3>#1 - Deploy the registry</h3>
       <p>
+        Deploy your OpenComponents registry to any Node.js hosting platform. You can use the{" "}
         <a
-          className="button secondary"
-          href="https://heroku.com/deploy?template=https://github.com/opencomponents/starter-kit"
+          href="https://github.com/opencomponents/starter-kit"
           target="_blank"
         >
-          Click to deploy to Heroku
+          starter kit
         </a>{" "}
-        - deploy your OpenComponents registry
+        as a foundation and deploy it to platforms like Vercel, Netlify, Railway, or any cloud provider that supports Node.js applications.
       </p>
       <h3>#2 - Build your first component</h3>
       <p>Install the OpenComponents CLI</p>
@@ -73,7 +83,7 @@ const GettingStarted = () => {
       </ul>
       <h3>#3 Publish the component to the registry</h3>
       <p>Add the registry using the CLI</p>
-      <pre>$ oc registry add http://my-registry.on.herokuapp.com/</pre>
+      <pre>$ oc registry add https://your-registry-domain.com/</pre>
       <p>Publish your component</p>
       <pre>
         $ oc publish my-first-component --username=YOURVALUEHERE
@@ -82,10 +92,10 @@ const GettingStarted = () => {
       <p>
         Your component is now published:{" "}
         <a
-          href="http://my-registry.on.herokuapp.com/my-first-component"
+          href="https://your-registry-domain.com/my-first-component"
           target="_blank"
         >
-          http://my-registry.on.herokuapp.com/my-first-component
+          https://your-registry-domain.com/my-first-component
         </a>
       </p>
     </article>

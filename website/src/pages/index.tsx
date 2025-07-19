@@ -25,6 +25,11 @@ function HomepageHeader() {
           }
         </BrowserOnly>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <p className={styles.heroDescription}>
+          OpenComponents enables teams to develop, test, and deploy UI
+          components independently while composing them into cohesive
+          applications. Break free from monolithic frontends.
+        </p>
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"

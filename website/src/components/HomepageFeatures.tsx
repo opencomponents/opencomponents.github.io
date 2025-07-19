@@ -20,11 +20,10 @@ const FeatureList: FeatureItem[] = [
     description: (
       <>
         <p>
-          Small, immutable, units of universal code mainly consisting of html,
-          javascript and css. They can optionally contain some logic, allowing a
-          server-side node.js application to compose a model that is used to
-          render the view. After rendering they are pieces of pure html to be
-          injected into any html page.
+          <strong>Independent, reusable UI pieces</strong> that teams can
+          develop and deploy separately. Components are self-contained with
+          their own HTML, CSS, and JavaScript, making them easy to maintain and
+          update without affecting other parts of your application.
         </p>
         <Link to="/docs/intro#components-management">Learn more</Link>
       </>
@@ -36,10 +35,10 @@ const FeatureList: FeatureItem[] = [
     description: (
       <>
         <p>
-          OC is unopinionated about components and their underlying client-side
-          JavaScript stack. The template system allows for support of any
-          client-side technology, hiding away all the configuration complexity
-          while avoiding specific UI framework lock-in.
+          <strong>Use any frontend technology</strong> - React, Vue, Angular, or
+          vanilla JavaScript. The template system handles the complexity of
+          supporting multiple frameworks, so teams can choose the best tool for
+          their needs without being locked into a single technology stack.
         </p>
         <Link to="/docs/miscellaneous/template-system">Learn more</Link>
       </>
@@ -51,11 +50,10 @@ const FeatureList: FeatureItem[] = [
     description: (
       <>
         <p>
-          The registry provides a rest API to consume, retrieve, and publish
-          components to a library. When components depend on static resources
-          (such as images, css files, etc.) these are stored, during packaging
-          and publishing, in a publicly-exposed part of the library that serves
-          as a CDN.
+          <strong>Centralized component distribution</strong> with built-in
+          versioning and CDN capabilities. The registry provides REST APIs for
+          consuming and publishing components, with automatic static asset
+          management for images, CSS, and other resources.
         </p>
         <Link to="/docs/registry/registry-configuration">Learn more</Link>
       </>
@@ -134,32 +132,44 @@ export default function HomepageFeatures(): JSX.Element {
     <section className={styles.features}>
       <div className="container">
         <div className="row margin-bottom--xl">
-          <h2>Building web applications together, faster.</h2>
+          <h2>Why OpenComponents?</h2>
           <p>
-            While microservice architectures allowed teams to scale delivery of
-            independently deployable services, most frontend layers are still
-            run as monolithic applications. Similar to server-side applications,
-            frontend layers often grow into large monoliths that are difficult
-            to maintain and evolve.
+            <strong>Scale your frontend development</strong> by enabling
+            multiple teams to work independently on different parts of your
+            application. Each team can own their components end-to-end - from
+            development to deployment.
           </p>
           <p>
-            The idea behind{" "}
-            <Link
-              to="https://www.thoughtworks.com/radar/techniques/micro-frontends"
-              target="_blank"
-            >
-              micro frontends
-            </Link>{" "}
-            is to enable multiple teams to work seamlessy together by fostering
-            end-to-end ownership of independently developed, tested and deployed
-            features.
+            <strong>Avoid the monolith trap.</strong> As applications grow,
+            frontend codebases become difficult to maintain and deploy.
+            OpenComponents lets you break your UI into independently deployable
+            pieces that can be composed at runtime.
           </p>
           <p>
-            Think about UI as the composition of features which are maintained
-            by independent teams. These teams could be cross-functional allowing
-            them to develop such features end-to-end, from a database to user
-            interface and independently deploy them.
+            <strong>Technology freedom.</strong> Teams can choose their
+            preferred frontend stack (React, Vue, vanilla JS) while still
+            contributing to the same application. No more framework lock-in or
+            migration headaches.
           </p>
+          <div className="margin-top--lg">
+            <h3>Perfect for:</h3>
+            <ul>
+              <li>
+                <strong>Growing engineering teams</strong> that need to work
+                independently
+              </li>
+              <li>
+                <strong>Large applications</strong> with multiple feature areas
+              </li>
+              <li>
+                <strong>Organizations</strong> wanting to avoid frontend
+                monoliths
+              </li>
+              <li>
+                <strong>Teams</strong> using different frontend technologies
+              </li>
+            </ul>
+          </div>
         </div>
 
         <div className="row">

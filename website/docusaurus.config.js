@@ -12,7 +12,7 @@ const config = {
   },
   themes: ["@docusaurus/theme-mermaid"],
   title: "OpenComponents",
-  tagline: "Painless micro frontends delivery",
+  tagline: "Build, deploy, and scale micro frontends with independent teams",
   url: "https://opencomponents.github.io",
   baseUrl: "/",
   onBrokenLinks: "throw",

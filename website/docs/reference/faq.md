@@ -13,6 +13,7 @@ OpenComponents is a framework for building micro frontends - small, independent 
 ### When should I use OpenComponents?
 
 OpenComponents is ideal when you have:
+
 - Multiple teams working on different parts of the UI
 - Need to share components across different applications
 - Want to deploy parts of your frontend independently
@@ -21,6 +22,7 @@ OpenComponents is ideal when you have:
 ### How is this different from regular React/Vue components?
 
 Unlike framework-specific components, OpenComponents:
+
 - Work across different frameworks (React, Vue, Angular, etc.)
 - Can be deployed and updated independently
 - Have their own server-side logic and data fetching
@@ -36,15 +38,15 @@ For **creating** components: Basic Node.js knowledge is helpful, but our [Quick 
 ### What's the difference between rendered and un-rendered components?
 
 Un-rendered components delegate the rendering to the clients. This is useful for performance and cacheability.
-[More details about rendered components](architecture-overview#consuming-rendered-components) and about [un-rendered components](architecture-overview#consuming-un-rendered-components)
+[More details about rendered components](../concepts/architecture-overview#consuming-rendered-components) and about [un-rendered components](../concepts/architecture-overview#consuming-un-rendered-components)
 
 ## What happens when a publish is made?
 
-[Look at this page](architecture-overview#what-happens-when-a-publish-is-made)
+[Look at this page](../concepts/architecture-overview#what-happens-when-a-publish-is-made)
 
 ## How the distribution works?
 
-[Look at this page](architecture-overview#how-distribution-works)
+[Look at this page](../concepts/architecture-overview#how-distribution-works)
 
 ## Can I link a CDN on top of the S3 bucket?
 
@@ -73,13 +75,14 @@ For example, at OpenTable we do logging with the ELK stack for business metrics,
 
 ## Can I setup a debugger with Visual Studio Code?
 
-Yes, [look at this page](debugging).
+Yes, [look at this page](../building/debugging).
 
 ## Performance Questions
 
 ### How does OpenComponents affect page load performance?
 
 OpenComponents can improve performance through:
+
 - **Caching**: Components are cached at multiple levels
 - **CDN delivery**: Static assets served from CDN
 - **Lazy loading**: Components can be loaded on-demand
@@ -104,12 +107,14 @@ Yes! OpenComponents works excellently with CDNs. Set the `s3.path` property in y
 ### My component shows "Loading..." forever
 
 **Common causes:**
+
 1. **Registry not accessible** - Check if the registry URL is reachable
 2. **JavaScript errors** - Check browser console for errors
 3. **Template compilation errors** - Verify your template syntax
 4. **Network issues** - Check network connectivity
 
 **Solutions:**
+
 ```bash
 # Test registry accessibility
 curl https://your-registry.com/your-component
@@ -122,6 +127,7 @@ oc preview http://localhost:3030/your-component
 ### Publishing fails with authentication errors
 
 **Solutions:**
+
 1. Verify your username and password
 2. Check if the registry URL is correct
 3. Ensure you have publishing permissions
@@ -130,6 +136,7 @@ oc preview http://localhost:3030/your-component
 ### Component works locally but fails in production
 
 **Common issues:**
+
 1. **Environment variables** - Ensure all required env vars are set
 2. **Dependencies** - Check if all dependencies are installed
 3. **CORS issues** - Verify cross-origin settings
@@ -138,16 +145,19 @@ oc preview http://localhost:3030/your-component
 ### Template compilation errors
 
 **For ES6 templates (default):**
+
 - Check for proper template literal syntax: `${variable}` not `{variable}`
 - Ensure template function returns valid HTML string
 - Verify all variables are defined in server.js
 
 **For React templates:**
+
 - Verify JSX syntax
 - Check for missing imports
 - Ensure proper export statements
 
 **For legacy Handlebars templates:**
+
 - Check for unescaped special characters
 - Verify all variables are defined in server.js
 - Ensure proper syntax: `{{variable}}` not `{variable}`
@@ -157,12 +167,14 @@ oc preview http://localhost:3030/your-component
 ### How do I test components before publishing?
 
 1. **Local development:**
+
    ```bash
    oc dev . 3030
    oc preview http://localhost:3030/your-component
    ```
 
 2. **Dry run publishing:**
+
    ```bash
    oc publish your-component --dryRun
    ```
@@ -173,6 +185,7 @@ oc preview http://localhost:3030/your-component
 ### Can I use TypeScript with OpenComponents?
 
 Yes! Many templates support TypeScript:
+
 - Use React templates with TypeScript
 - Configure your build process accordingly
 - Ensure proper type definitions
@@ -202,6 +215,7 @@ Yes! Many templates support TypeScript:
 ### Is OpenComponents production-ready?
 
 Yes! OpenComponents is used in production by many companies. However:
+
 - Ensure proper monitoring and alerting
 - Have fallback strategies for component failures
 - Test thoroughly in your specific environment

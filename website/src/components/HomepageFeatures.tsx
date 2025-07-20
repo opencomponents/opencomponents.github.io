@@ -40,7 +40,7 @@ const FeatureList: FeatureItem[] = [
           supporting multiple frameworks, so teams can choose the best tool for
           their needs without being locked into a single technology stack.
         </p>
-        <Link to="/docs/miscellaneous/template-system">Learn more</Link>
+        <Link to="/docs/building/template-system">Learn more</Link>
       </>
     ),
   },

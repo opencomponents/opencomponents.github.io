@@ -35,7 +35,7 @@ const FeatureList: FeatureItem[] = [
     description: (
       <>
         <p>
-          <strong>Use any frontend technology</strong> - React, Vue, Angular, or
+          <strong>Use any frontend technology</strong> - React, Vue, SolidJS, or
           vanilla JavaScript. The template system handles the complexity of
           supporting multiple frameworks, so teams can choose the best tool for
           their needs without being locked into a single technology stack.

@@ -2,7 +2,54 @@
 sidebar_position: 1
 ---
 
-# Architecture overview
+# Architecture Overview
+
+## What is OpenComponents?
+
+OpenComponents is a **micro frontend architecture** that enables teams to build, deploy, and consume UI components independently. Think of it as a way to break down monolithic frontend applications into smaller, manageable pieces that different teams can own and maintain.
+
+### Simple Conceptual Introduction
+
+Imagine you're building a large e-commerce website. Instead of one massive application, you could have:
+
+- **Header component** (owned by the Platform team)
+- **Product listing** (owned by the Catalog team)
+- **Shopping cart** (owned by the Commerce team)
+- **User profile** (owned by the Identity team)
+
+Each team can:
+
+- ✅ **Develop independently** using their preferred technology stack
+- ✅ **Deploy on their own schedule** without coordinating releases
+- ✅ **Scale their components** based on usage patterns
+- ✅ **Maintain ownership** of their specific domain expertise
+
+This is exactly what OpenComponents enables - **component independence at scale**.
+
+## Why Choose OpenComponents?
+
+### Team Independence
+
+- **Autonomous development**: Teams work on their components without blocking each other
+- **Technology flexibility**: Use React, Vue, ES6, or any framework per component
+- **Independent deployments**: Release updates without coordinating with other teams
+- **Clear ownership**: Each team owns their components end-to-end
+
+### Gradual Migration
+
+- **Start small**: Begin with one component and gradually expand
+- **No big bang**: Migrate from monolith to micro frontends incrementally
+- **Risk mitigation**: Test the architecture with non-critical components first
+- **Backward compatibility**: Existing applications continue working during migration
+
+### A/B Testing and Experimentation
+
+- **Component-level testing**: Test different versions of individual components
+- **Isolated experiments**: Changes to one component don't affect others
+- **Faster iteration**: Deploy and test new features quickly
+- **Data-driven decisions**: Measure impact of component changes independently
+
+## Core Architecture Components
 
 ```mermaid
 graph TD
@@ -26,71 +73,134 @@ graph TD
     style H fill:#D3D3D3
 ```
 
-OpenComponents' heart is a REST API. It is used for consuming and publishing components.
+OpenComponents' heart is a **REST API** that enables consuming and publishing components across distributed systems.
 
-## Consuming rendered components
+## Publishing Workflow
 
-This is the easiest way to consume components. Useful for server-side requests performed by applications that are not able to execute Javascript (for instance, Java or C# apps). The result will be html.
+### CLI Operations
 
-When doing browser-rendering with old browsers such as IE9, this modality will be useful too. The amount of information that travels over this HTTP request is very verbose and poorly cacheable.
+**1. Component Analysis & Compilation**
 
-## Consuming un-rendered components
-
-This is the optimal way to consume components. This is used by the node.js OC client and the browser client as default modality. The response contains 3 main parts:
-
-- the data used to render the component (the view-model)
-- the components' compiled view's url (the view is compiled to a javascript closure during the publish process and uploaded to the CDN)
-- metadata about the component and its rendering info (version, view type, template type etc.)
-
-Both the browser and the node.js client, after making this request, are going to perform the rendering.
-A simplified representation may look like this:
-
-```js
-const data = { name: "matteo" };
-const compiledView = (data) => `<div>Hello ${data.name}</div>`;
-const html = compiledView(data);
+```bash
+oc publish my-component/
 ```
 
-The benefit of this approach derives from components' immutability: despite data can change for every request we make to the component, the view is immutable and infinitely cacheable. This means that both the node.js client and the browser, after a request to a component, will keep a cache of the compiled view and keep the responses small and tidy. The compiled view's cache are organised by hashing the content. This means that, for instance, 10 versions of the same component with 10 different changes to server-side logic (server.js) but unmodified view will be cached once.
+- **Validation**: Check component structure and dependencies
+- **Server bundling**: Minify and bundle `server.js` with safety checks
+- **Template compilation**: Precompile view to optimized JavaScript
+- **Asset processing**: Bundle CSS, images, and static resources
+- **Cross-browser compatibility**: Transform code for browser support
 
-## What happens when a publish is made
+**2. Package Preparation**
 
-When publishing a component, the CLI will perform the following operations:
+- **Metadata update**: Enhance `package.json` with build information
+- **Bundle creation**: Generate compressed `.tar.gz` package
+- **Version verification**: Ensure semantic versioning compliance
 
-- First the component is analysed to make a preliminary validation. Then it is compiled by bundling and minifying the server-side logic (the `server.js` file), bundling and precompiling the view layer to javascript, and then minifying the compiled view. If anything is wrong with the code, more than likely it will be detected during this phase and publish will be aborted. There are extra operations performed by specific templates such as transforming the `server.js` by applying some safety checks to prevent infinite loops or bundling the front-end static resources to be cross-browser compatible etc.
-- Then the `package.json` is reworked in such way that contains information about the bundling, rendering and the newly created files.
-- A bundle is produced and a tar.gz file is created.
-- The CLI contacts the registry and makes a PUT request for component with given version.
-- The CLI now waits a response from the registry, and gets back either the components' unique endpoint or shows an error message.
+**3. Registry Communication**
 
-When the Registry API receives a PUT request for the component, it will perform the following operations:
+```http
+PUT /my-component/1.0.0
+Content-Type: application/octet-stream
+Authorization: Bearer <token>
+```
 
-- First the registry verifies a component with the same name and version doesn't already exist. If it does, it immediately refuses to proceed.
-- If the registry implements an authorisation mechanism (at the moment it is optional and customisable) it will verify the credentials.
-- Then the package will be uncompressed and saved to a temporary location.
-- If the registry implements a validation phase for the components' `package.json`, it will be done now. This is optional and customisable.
-- Then, the registry will upload the resources to the CDN following the path `baseDir/componentName/version/files`.
-- The compiled view, called `template.js` will be uploaded, together with `package.json` and all the static resources, with no restrictions in terms of public visibility. This is because both are needed by the clients in order to perform the rendering.
-- The `server.js` will be uploaded with some restrictions in terms of public visibility. This is because the code may contain private information and secrets that shouldn't be shared publicly. Only the registry instances (which contain CDN credentials) will be able to access this file.
-- In the CDN, a `components.json` will be updated for containing the components' name and version. This will be needed to allow other registry instances to know about the newly published component and handle replication
-- The API responds successfully
+### Registry Operations
 
-## How distribution works
+**1. Validation & Security**
 
-When a registry instance is running, a polling mechanism will look for changes done to the `components.json` file in the CDN. As soon as a change will be detected (because a publish happened) - the instance will know about that. In this way we can have many registry instances, differently geo-located, watching for changes in the same CDN: in fact, after the first data fetch for each component, everything will be kept in memory (server.js closure, template.js closure, package.json information).
+- **Version conflict check**: Prevent duplicate versions
+- **Authentication**: Verify publishing credentials (if enabled)
+- **Package validation**: Check component structure and metadata
 
-This comes handy in case of network issues between the registry and CDN: when the polling mechanism will fail, the registry will keep retrying, in the meanwhile it will be totally able to serve components until the connection is re-established. The worst it can happen, if a new publish happened during the network issues, some consumer may be able to get the new versions and some not.
+**2. Asset Distribution**
 
-The following scenario describes a possible fail use-case:
+```
+CDN Structure:
+├── my-component/
+│   └── 1.0.0/
+│       ├── template.js      (public - needed by clients)
+│       ├── package.json     (public - component metadata)
+│       ├── server.js        (private - registry access only)
+│       └── static/          (public - CSS, images, fonts)
+│           ├── styles.css
+│           └── images/
+```
 
-- Component is present in the registry with version `1.2.3`.
-- Component is published for version `1.2.4` by doing a PUT request to registry instance `x`.
-- Network problems start to happen and registry instance `y` fails to sync with CDN
-- Consumers for version `1.2.4` accessing the registry instances via a load balancer, will get the component when instance is `x`, and a `404` error when happen to consume instance `y`. Not great!
-- Consumers for version `1.X.X` accessing instance `x` will get the component for version `1.2.4` and when happen to be in instance `y` they get `1.2.3`. Not great, but better.
+**3. Registry Synchronization**
 
-A couple of considerations here:
+- **Component registry update**: Add to `components.json` manifest
+- **Multi-instance notification**: Trigger polling for distributed registries
+- **Cache invalidation**: Clear old component versions from cache
 
-- Consuming strict versions is never recommended
-- Polling time should happen in a short time, for instance every 5 seconds. This means that in case of network issues, most likely all the instances will be having problems (and the publish will fail in the first place) or all of them will know about the component quick enough
-- The registry publishes a set of events in case of errors. This allows maintainers to setup monitoring and alerting on top of it.
+## Distribution & Replication
+
+### Multi-Registry Architecture
+
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│  Registry   │    │  Registry   │    │  Registry   │
+│   US-East   │    │   EU-West   │    │  Asia-Pac   │
+└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
+       │                  │                  │
+       └──────────────────┼──────────────────┘
+                          │
+                   ┌──────▼──────┐
+                   │   Shared    │
+                   │     CDN     │
+                   └─────────────┘
+```
+
+### Polling Mechanism
+
+**How it works**:
+
+1. **Registry startup**: Begin polling `components.json` every 5 seconds
+2. **Change detection**: Compare file hash with last known state
+3. **Component sync**: Download new/updated component metadata
+4. **Memory caching**: Store compiled templates and server logic
+5. **Resilience**: Continue serving cached components during network issues
+
+### Failure Scenarios & Mitigation
+
+**Scenario**: Network partition between registry and CDN
+
+```
+Timeline:
+T0: Component v1.2.3 available on all registries
+T1: Component v1.2.4 published to Registry-A
+T2: Network issues prevent Registry-B from syncing
+T3: Load balancer routes requests randomly
+
+Results:
+- Registry-A: Serves v1.2.4 ✅
+- Registry-B: Serves v1.2.3 ⚠️ (stale but functional)
+- Strict version requests to Registry-B: 404 ❌
+```
+
+**Best Practices**:
+
+- ✅ **Use semantic versioning**: `~1.2.0` instead of `1.2.4`
+- ✅ **Short polling intervals**: 5-second sync reduces inconsistency window
+- ✅ **Monitoring & alerting**: Track registry sync health
+- ✅ **Graceful degradation**: Serve cached versions during outages
+
+### Advanced Distribution Features
+
+**🔄 Automatic Failover**
+
+- Registry instances automatically retry failed CDN connections
+- Components remain available from memory cache during outages
+- Health checks detect and route around unhealthy instances
+
+**📊 Monitoring Integration**
+
+- Registry publishes events for sync failures and recoveries
+- Metrics tracking for component usage and performance
+- Alerting for version inconsistencies across regions
+
+**🚀 Performance Optimization**
+
+- Template deduplication across component versions
+- Intelligent caching based on usage patterns
+- CDN edge caching for global distribution

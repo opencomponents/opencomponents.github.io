@@ -4,21 +4,96 @@ sidebar_position: 3
 
 # Structure of package.json
 
-The basic package file `package.json` looks as follows:
+## Overview
+
+The `package.json` file is the heart of your OpenComponents component configuration. It defines not only standard npm package information but also OpenComponents-specific settings that control how your component is built, rendered, and consumed.
+
+## Essential vs Optional Parameters
+
+### ✅ Essential Parameters (Required)
+
+These parameters are required for every OpenComponents component:
 
 ```js
 {
-  "name": "hello-world",
-  "description": "description of my hello-world component",
-  "version": "1.0.0",
+  "name": "hello-world",                    // Required: Component name
+  "version": "1.0.0",                       // Required: Semantic version
+  "oc": {                                   // Required: OpenComponents config
+    "files": {                              // Required: File definitions
+      "template": {                         // Required: Template config
+        "src": "template.js",               // Required: Template file
+        "type": "oc-template-es6"           // Required: Template type
+      }
+    }
+  },
+  "devDependencies": {                      // Required: Template compiler
+    "oc-template-es6-compiler": "6.0.8"
+  }
+}
+```
+
+### 🔧 Optional Parameters (Recommended)
+
+These parameters enhance your component's functionality and documentation:
+
+```js
+{
+  "description": "A reusable header component",  // Recommended: Clear description
+  "author": "John Doe <john@doe.com>",          // Recommended: Author info
+  "repository": "https://github.com/...",       // Recommended: Source repo
   "oc": {
     "files": {
-      "data": "server.js",
+      "data": "server.js",                      // Optional: Server-side logic
+      "static": ["public", "assets"]            // Optional: Static assets
+    },
+    "parameters": {                             // Recommended: API documentation
+      "title": {
+        "type": "string",
+        "mandatory": true,
+        "description": "The header title to display"
+      }
+    }
+  }
+}
+```
+
+## Complete Example Templates
+
+### Basic Static Component
+
+For simple components without server-side logic:
+
+```js
+{
+  "name": "simple-banner",
+  "description": "A static promotional banner component",
+  "version": "1.0.0",
+  "author": "Your Team <team@company.com>",
+  "repository": "https://github.com/company/components",
+  "oc": {
+    "files": {
       "template": {
         "src": "template.js",
         "type": "oc-template-es6"
+      },
+      "static": ["public"]
+    },
+    "parameters": {
+      "message": {
+        "type": "string",
+        "mandatory": true,
+        "description": "Banner message to display",
+        "example": "Special offer - 20% off!"
+      },
+      "variant": {
+        "type": "string",
+        "mandatory": false,
+        "default": "primary",
+        "description": "Banner style variant",
+        "example": "primary"
       }
-    }
+    },
+    "state": "active"
   },
   "devDependencies": {
     "oc-template-es6-compiler": "6.0.8"
@@ -26,31 +101,185 @@ The basic package file `package.json` looks as follows:
 }
 ```
 
-| Parameter                        | Type               | Description                                                                                                                                                                    |
-| -------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `name`                           | `string`           | the component's name, by default the name of initialised component                                                                                                             |
-| `description`                    | `string`           | the component's description, by default an empty string                                                                                                                        |
-| `version`                        | `string`           | the component's version, by default `1.0.0`                                                                                                                                    |
-| `author`                         | `string`           | the component's author - suggested format is `John Doe <john@doe.com>`                                                                                                         |
-| `repository`                     | `string`           | the component's repository                                                                                                                                                     |
-| `dependencies`                   | `object`           | the npm modules the component requires                                                                                                                                         |
-| `devDependencies`                | `object`           | the npm modules the component requires in order to be developed. By convention a component of templateTypeX will require a devDependency called templateTypeX-compiler to work |
-| `oc`                             | `object`           | the data involved with the component                                                                                                                                           |
-| `oc.container`                   | `boolean`          | forces the component to be server-side rendered without being wrapped inside the `<oc-component />` tag.                                                                       |
-| `oc.files`                       | `object`           | non-static component files                                                                                                                                                     |
-| `oc.files.env`                   | `object`           | optional path for a .env file with environment variables                                                                                                                                                 |
-| `oc.files.data`                  | `string`           | the model provider's filename, by default `server.js`                                                                                                                          |
-| `oc.files.template`              | `object`           | represents the data involved with template - view, template engine                                                                                                             |
-| `oc.files.template.src`          | `string`           | the view's filename, by default template.html                                                                                                                                  |
-| `oc.files.template.type`         | `string`           | the template engine's type, by default `es6` (modern JavaScript templates). Legacy options like `handlebars` are still supported for backwards compatibility                |
-| `oc.files.static`                | `array of strings` | An array of directories that contain static resources referenced from the component's markup                                                                                   |
-| `oc.minify`                      | `boolean`          | Default `true`, will minify static css and js files during publishing                                                                                                          |
-| `oc.parameters`                  | `object`           | Describes the component's api. Used to auto-generate documentation and get requests validation. Each `key` is the parameter name                                               |
-| `oc.parameters[key].mandatory`   | `boolean`          | Default `false`, if `true`, any request that does not include a valid value will be rejected with a `400` code.                                                                |
-| `oc.parameters[key].type`        | `string`           | Type of parameter, used for a basic validation check Allowed types are `string`, `boolean`, `number`. When parameter is not valid, request will be rejected with a `400` code  |
-| `oc.parameters[key].description` | `string`           | Used for auto-generated documentation                                                                                                                                          |
-| `oc.parameters[key].example`     | `string`           | Used for auto-generated documentation                                                                                                                                          |
-| oc.parameters[key].default       | \*                 | Default value of optional parameter - applied when value is not specified in the request                                                                                       |
-| `oc.plugins`                     | `array of strings` | the [plugins](/docs/registry/registry-configuration#plugins) the component requires                                                                                            |
-| `oc.renderInfo`                  | `boolean`          | Default `true`, appends script, which adds rendered component information (name and version) to the `oc.renderedComponents` object                                             |
-| `oc.state`                       | `string`           | Describes the state of the component with a keyword. Suggested values are `active`, `experimental`, `deprecated`                                                               |
+### Dynamic Component with Server Logic
+
+For components that fetch data or perform server-side processing:
+
+```js
+{
+  "name": "user-profile",
+  "description": "Dynamic user profile component with API integration",
+  "version": "2.1.0",
+  "author": "Frontend Team <frontend@company.com>",
+  "repository": "https://github.com/company/user-components",
+  "dependencies": {
+    "axios": "^1.0.0",
+    "lodash": "^4.17.21"
+  },
+  "oc": {
+    "files": {
+      "data": "server.js",
+      "template": {
+        "src": "template.js",
+        "type": "oc-template-es6"
+      },
+      "static": ["public", "assets"]
+    },
+    "parameters": {
+      "userId": {
+        "type": "string",
+        "mandatory": true,
+        "description": "User ID to fetch profile for",
+        "example": "user123"
+      },
+      "showAvatar": {
+        "type": "boolean",
+        "mandatory": false,
+        "default": true,
+        "description": "Whether to display user avatar"
+      },
+      "theme": {
+        "type": "string",
+        "mandatory": false,
+        "default": "light",
+        "description": "Component theme",
+        "example": "dark"
+      }
+    },
+    "plugins": ["oc-plugin-hash"],
+    "state": "active",
+    "renderInfo": true
+  },
+  "devDependencies": {
+    "oc-template-es6-compiler": "6.0.8"
+  }
+}
+```
+
+## Complete Parameter Reference
+
+### Standard npm Parameters
+
+| Parameter         | Type     | Required           | Description                                                            |
+| ----------------- | -------- | ------------------ | ---------------------------------------------------------------------- |
+| `name`            | `string` | ✅ **Required**    | Component name (must be unique in registry). Use kebab-case format     |
+| `version`         | `string` | ✅ **Required**    | Semantic version (e.g., "1.0.0"). Follow [semver](https://semver.org/) |
+| `description`     | `string` | 🔧 **Recommended** | Clear, concise component description for documentation                 |
+| `author`          | `string` | 🔧 **Recommended** | Author info: `"John Doe <john@doe.com>"`                               |
+| `repository`      | `string` | 🔧 **Recommended** | Git repository URL for source code                                     |
+| `dependencies`    | `object` | ⚪ **Optional**    | npm modules required at runtime                                        |
+| `devDependencies` | `object` | ✅ **Required**    | Development dependencies (always include template compiler)            |
+
+### OpenComponents Configuration (`oc`)
+
+| Parameter | Type     | Required        | Description                              |
+| --------- | -------- | --------------- | ---------------------------------------- |
+| `oc`      | `object` | ✅ **Required** | Main OpenComponents configuration object |
+
+#### File Configuration (`oc.files`)
+
+| Parameter                | Type     | Required        | Description                                                               |
+| ------------------------ | -------- | --------------- | ------------------------------------------------------------------------- |
+| `oc.files`               | `object` | ✅ **Required** | Defines component file structure                                          |
+| `oc.files.template`      | `object` | ✅ **Required** | Template configuration                                                    |
+| `oc.files.template.src`  | `string` | ✅ **Required** | Template filename (e.g., "template.js")                                   |
+| `oc.files.template.type` | `string` | ✅ **Required** | Template type: `"oc-template-es6"` (default), `"oc-template-react"`, etc. |
+| `oc.files.data`          | `string` | ⚪ **Optional** | Server-side logic filename (default: "server.js")                         |
+| `oc.files.static`        | `array`  | ⚪ **Optional** | Static asset directories (e.g., `["public", "assets"]`)                   |
+| `oc.files.env`           | `string` | ⚪ **Optional** | Environment variables file path                                           |
+
+#### Component Behavior
+
+| Parameter       | Type      | Required           | Description                                                            |
+| --------------- | --------- | ------------------ | ---------------------------------------------------------------------- |
+| `oc.container`  | `boolean` | ⚪ **Optional**    | If `true`, renders without `<oc-component>` wrapper (default: `false`) |
+| `oc.minify`     | `boolean` | ⚪ **Optional**    | Minify CSS/JS during publishing (default: `true`)                      |
+| `oc.renderInfo` | `boolean` | ⚪ **Optional**    | Include component info in rendered output (default: `true`)            |
+| `oc.state`      | `string`  | 🔧 **Recommended** | Component lifecycle: `"active"`, `"experimental"`, `"deprecated"`      |
+
+#### API Documentation (`oc.parameters`)
+
+| Parameter                        | Type      | Required           | Description                                         |
+| -------------------------------- | --------- | ------------------ | --------------------------------------------------- |
+| `oc.parameters`                  | `object`  | 🔧 **Recommended** | Component API definition for validation and docs    |
+| `oc.parameters[key].type`        | `string`  | ✅ **Required**    | Parameter type: `"string"`, `"boolean"`, `"number"` |
+| `oc.parameters[key].mandatory`   | `boolean` | ⚪ **Optional**    | If `true`, parameter is required (default: `false`) |
+| `oc.parameters[key].description` | `string`  | 🔧 **Recommended** | Parameter description for documentation             |
+| `oc.parameters[key].example`     | `string`  | 🔧 **Recommended** | Example value for documentation                     |
+| `oc.parameters[key].default`     | `any`     | ⚪ **Optional**    | Default value when parameter not provided           |
+
+#### Advanced Configuration
+
+| Parameter    | Type    | Required        | Description                                                                                    |
+| ------------ | ------- | --------------- | ---------------------------------------------------------------------------------------------- |
+| `oc.plugins` | `array` | ⚪ **Optional** | Required [plugins](/docs/registry/registry-configuration#plugins) (e.g., `["oc-plugin-hash"]`) |
+
+## Validation and Best Practices
+
+### Package.json Validation
+
+Before publishing, validate your `package.json`:
+
+```bash
+# Check for required fields
+oc package ./my-component --dry-run
+
+# Validate parameter definitions
+oc preview http://localhost:3030/my-component?param=value
+```
+
+### Common Validation Errors
+
+| Error                       | Cause                                  | Solution                                        |
+| --------------------------- | -------------------------------------- | ----------------------------------------------- |
+| "Missing template compiler" | No `devDependencies` for template type | Add `"oc-template-{type}-compiler": "version"`  |
+| "Invalid parameter type"    | Unsupported parameter type             | Use `"string"`, `"boolean"`, or `"number"` only |
+| "Template file not found"   | Wrong `template.src` path              | Verify file exists and path is correct          |
+| "Invalid component name"    | Name contains invalid characters       | Use kebab-case, lowercase, no spaces            |
+
+### Naming Conventions
+
+- **Component names**: Use kebab-case (`user-profile`, not `UserProfile`)
+- **Parameter names**: Use camelCase (`showAvatar`, not `show_avatar`)
+- **File names**: Use kebab-case for consistency
+- **Versions**: Follow semantic versioning (major.minor.patch)
+
+### Performance Considerations
+
+- **Dependencies**: Only include runtime dependencies, keep bundle size minimal
+- **Static assets**: Organize in logical directories, use compression
+- **Parameters**: Define clear types for better validation and performance
+- **Minification**: Keep `oc.minify: true` for production components
+
+## Troubleshooting
+
+### Common Issues
+
+**Problem**: Component won't build
+
+```bash
+# Check package.json syntax
+npm run build
+# Verify all required fields are present
+```
+
+**Problem**: Parameters not working
+
+```bash
+# Validate parameter definitions
+oc preview http://localhost:3030/component?debug=true
+```
+
+**Problem**: Static assets not loading
+
+```bash
+# Verify static directories exist and are listed in oc.files.static
+ls -la public/
+```
+
+## Next Steps
+
+- **[Learn server.js structure](the-server.js)** - Add dynamic data to your components
+- **[Understand CLI commands](cli)** - Master component development workflow
+- **[Publishing guide](publishing-to-a-registry)** - Deploy your components
+- **[Template system](../miscellaneous/template-system)** - Choose the right template type

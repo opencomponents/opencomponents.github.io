@@ -239,6 +239,6 @@ Once you've created your first component:
 2. **[Understand package.json structure](package.json-structure)** - Configure your component properly
 3. **[Add server-side logic](the-server.js)** - Make your component dynamic
 4. **[Publish to a registry](publishing-to-a-registry)** - Share your component
-5. **[Explore client-side operations](client-side-operations)** - Advanced browser integration
+5. **[Explore client-side operations](../consumers/rendering-lifecycle)** - Advanced browser integration
 
 For a complete hands-on tutorial, see our [Quick Start Tutorial](../quick-start-tutorial).

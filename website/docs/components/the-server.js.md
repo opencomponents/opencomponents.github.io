@@ -9,22 +9,25 @@ sidebar_position: 4
 Understanding when to use `server.js` is crucial for building effective OpenComponents. Here's a simple decision guide:
 
 ### Static Components (No server.js needed)
+
 Use static components when your content doesn't change based on user input or external data:
 
 ```javascript
 // template.js - Static component
-export default function(model) {
+export default function (model) {
   return `<div class="banner">Welcome to our site!</div>`;
 }
 ```
 
 **Use cases:**
+
 - Static banners or promotional content
 - Fixed navigation menus
 - Copyright footers
 - Terms of service links
 
 ### Dynamic Components (server.js required)
+
 Use `server.js` when you need to:
 
 - **Fetch data from APIs or databases**
@@ -35,7 +38,7 @@ Use `server.js` when you need to:
 
 ```javascript
 // template.js - Dynamic component
-export default function(model) {
+export default function (model) {
   return `<div>Hello ${model.name}, you have ${model.messageCount} messages</div>`;
 }
 ```
@@ -47,7 +50,7 @@ module.exports.data = function (context, callback) {
   // Fetch user data and message count
   callback(null, {
     name: "John",
-    messageCount: 5
+    messageCount: 5,
   });
 };
 ```
@@ -64,14 +67,14 @@ Let's start with the most basic dynamic component and gradually add complexity.
 // server.js - Simple parameter handling
 module.exports.data = function (context, callback) {
   callback(null, {
-    name: context.params.name || "Guest"
+    name: context.params.name || "Guest",
   });
 };
 ```
 
 ```javascript
 // template.js
-export default function(model) {
+export default function (model) {
   return `<div>Hello ${model.name}!</div>`;
 }
 ```
@@ -89,14 +92,14 @@ module.exports.data = function (context, callback) {
   callback(null, {
     currentDate: now.toLocaleDateString(),
     currentTime: now.toLocaleTimeString(),
-    dayOfWeek: now.toLocaleDateString('en-US', { weekday: 'long' })
+    dayOfWeek: now.toLocaleDateString("en-US", { weekday: "long" }),
   });
 };
 ```
 
 ```javascript
 // template.js
-export default function(model) {
+export default function (model) {
   return `
     <div class="date-widget">
       <h3>Today is ${model.dayOfWeek}</h3>
@@ -114,14 +117,14 @@ export default function(model) {
 ```javascript
 // server.js - Conditional logic
 module.exports.data = function (context, callback) {
-  const theme = context.params.theme || 'light';
-  const showWelcome = context.params.showWelcome === 'true';
-  
+  const theme = context.params.theme || "light";
+  const showWelcome = context.params.showWelcome === "true";
+
   callback(null, {
     theme: theme,
     showWelcome: showWelcome,
-    cssClass: theme === 'dark' ? 'dark-theme' : 'light-theme',
-    welcomeMessage: showWelcome ? 'Welcome back!' : ''
+    cssClass: theme === "dark" ? "dark-theme" : "light-theme",
+    welcomeMessage: showWelcome ? "Welcome back!" : "",
   });
 };
 ```
@@ -134,21 +137,21 @@ module.exports.data = function (context, callback) {
 // server.js - Authentication check
 module.exports.data = function (context, callback) {
   const authToken = context.requestHeaders.authorization;
-  
-  if (authToken && authToken.startsWith('Bearer ')) {
+
+  if (authToken && authToken.startsWith("Bearer ")) {
     // In real implementation, validate token
     callback(null, {
       isAuthenticated: true,
-      userRole: 'user',
+      userRole: "user",
       showLoginButton: false,
-      showLogoutButton: true
+      showLogoutButton: true,
     });
   } else {
     callback(null, {
       isAuthenticated: false,
-      userRole: 'guest',
+      userRole: "guest",
       showLoginButton: true,
-      showLogoutButton: false
+      showLogoutButton: false,
     });
   }
 };
@@ -160,11 +163,11 @@ module.exports.data = function (context, callback) {
 // server.js - API integration (requires dependencies in package.json)
 module.exports.data = function (context, callback) {
   const userId = context.params.userId;
-  
+
   if (!userId) {
-    return callback(null, { error: 'User ID required' });
+    return callback(null, { error: "User ID required" });
   }
-  
+
   // Example API call (requires axios in dependencies)
   // const axios = require('axios');
   // axios.get(`https://api.example.com/users/${userId}`)
@@ -178,12 +181,12 @@ module.exports.data = function (context, callback) {
   //   .catch(error => {
   //     callback(null, { error: 'Failed to load user data' });
   //   });
-  
+
   // Mock data for example
   callback(null, {
-    user: { name: 'John Doe', email: 'john@example.com' },
-    lastLogin: '2025-01-15',
-    profileComplete: true
+    user: { name: "John Doe", email: "john@example.com" },
+    lastLogin: "2025-01-15",
+    profileComplete: true,
   });
 };
 ```
@@ -193,30 +196,30 @@ module.exports.data = function (context, callback) {
 ```javascript
 // server.js - Internationalization
 module.exports.data = function (context, callback) {
-  const language = context.params.lang || 
-                  context.acceptLanguage[0]?.code || 'en';
-  
+  const language =
+    context.params.lang || context.acceptLanguage[0]?.code || "en";
+
   const translations = {
     en: {
-      welcome: 'Welcome',
-      goodbye: 'Goodbye',
-      loading: 'Loading...'
+      welcome: "Welcome",
+      goodbye: "Goodbye",
+      loading: "Loading...",
     },
     es: {
-      welcome: 'Bienvenido',
-      goodbye: 'Adiós',
-      loading: 'Cargando...'
+      welcome: "Bienvenido",
+      goodbye: "Adiós",
+      loading: "Cargando...",
     },
     fr: {
-      welcome: 'Bienvenue',
-      goodbye: 'Au revoir',
-      loading: 'Chargement...'
-    }
+      welcome: "Bienvenue",
+      goodbye: "Au revoir",
+      loading: "Chargement...",
+    },
   };
-  
+
   callback(null, {
     language: language,
-    text: translations[language] || translations.en
+    text: translations[language] || translations.en,
   });
 };
 ```
@@ -230,15 +233,14 @@ module.exports.data = function (context, callback) {
 module.exports.data = function (context, callback) {
   try {
     const requiredParam = context.params.required;
-    
+
     if (!requiredParam) {
-      return callback(new Error('Required parameter missing'));
+      return callback(new Error("Required parameter missing"));
     }
-    
+
     // Process data
     const result = processData(requiredParam);
     callback(null, result);
-    
   } catch (error) {
     callback(error);
   }
@@ -411,7 +413,7 @@ It is an array of names of directories. In the above example the `public` direct
 We can add image to the component view template using `img` tag in which `src` attribute is bound to `img` viewModel property.
 
 ```javascript
-export default function(model) {
+export default function (model) {
   return `<img src="${model.path}public/static_resource.png" />`;
 }
 ```
@@ -450,9 +452,9 @@ module.exports.data = function (context, callback) {
   if (cached) {
     return callback(null, cached);
   }
-  
+
   // Or delegate to background service
-  callback(null, { message: 'Processing started', status: 'pending' });
+  callback(null, { message: "Processing started", status: "pending" });
 };
 ```
 
@@ -462,23 +464,23 @@ module.exports.data = function (context, callback) {
 // ✅ Good - efficient data fetching
 module.exports.data = function (context, callback) {
   const userId = context.params.userId;
-  
+
   // Only fetch what you need
-  const fields = 'name,email,avatar';
-  
+  const fields = "name,email,avatar";
+
   // Use timeouts to prevent hanging
   const timeout = setTimeout(() => {
-    callback(null, { error: 'Request timeout' });
+    callback(null, { error: "Request timeout" });
   }, 5000);
-  
+
   fetchUserData(userId, fields)
-    .then(data => {
+    .then((data) => {
       clearTimeout(timeout);
       callback(null, data);
     })
-    .catch(error => {
+    .catch((error) => {
       clearTimeout(timeout);
-      callback(null, { error: 'Failed to load data' });
+      callback(null, { error: "Failed to load data" });
     });
 };
 ```
@@ -489,13 +491,13 @@ module.exports.data = function (context, callback) {
 // ✅ Clean up resources
 module.exports.data = function (context, callback) {
   const largeData = processLargeDataset();
-  
+
   // Extract only what's needed for the view
   const viewData = {
     summary: largeData.summary,
-    count: largeData.items.length
+    count: largeData.items.length,
   };
-  
+
   // Don't pass large objects to the view
   callback(null, viewData);
 };
@@ -521,17 +523,17 @@ List dependencies in your component's `package.json`:
 Then use them in `server.js`:
 
 ```javascript
-const _ = require('lodash');
-const moment = require('moment');
-const axios = require('axios');
+const _ = require("lodash");
+const moment = require("moment");
+const axios = require("axios");
 
 module.exports.data = function (context, callback) {
-  const users = _.uniqBy(context.params.users, 'id');
-  const formattedDate = moment().format('YYYY-MM-DD');
-  
+  const users = _.uniqBy(context.params.users, "id");
+  const formattedDate = moment().format("YYYY-MM-DD");
+
   callback(null, {
     users: users,
-    currentDate: formattedDate
+    currentDate: formattedDate,
   });
 };
 ```
@@ -560,7 +562,7 @@ module.exports.data = function (context, callback) {
 // ✅ Solution - defensive programming
 module.exports.data = function (context, callback) {
   const user = context.params.user || {};
-  const name = user.name || 'Anonymous';
+  const name = user.name || "Anonymous";
   callback(null, { name });
 };
 ```
@@ -571,17 +573,17 @@ module.exports.data = function (context, callback) {
 // ❌ Problem - calling callback multiple times
 module.exports.data = function (context, callback) {
   if (context.params.error) {
-    callback(new Error('Something went wrong'));
+    callback(new Error("Something went wrong"));
   }
-  callback(null, { data: 'success' }); // Error - callback called twice
+  callback(null, { data: "success" }); // Error - callback called twice
 };
 
 // ✅ Solution - use return statements
 module.exports.data = function (context, callback) {
   if (context.params.error) {
-    return callback(new Error('Something went wrong'));
+    return callback(new Error("Something went wrong"));
   }
-  callback(null, { data: 'success' });
+  callback(null, { data: "success" });
 };
 ```
 
@@ -590,13 +592,13 @@ module.exports.data = function (context, callback) {
 ```javascript
 // ❌ Problem - forgetting to call callback
 module.exports.data = function (context, callback) {
-  const data = { message: 'Hello' };
+  const data = { message: "Hello" };
   // Forgot to call callback(null, data);
 };
 
 // ✅ Solution - always call callback
 module.exports.data = function (context, callback) {
-  const data = { message: 'Hello' };
+  const data = { message: "Hello" };
   callback(null, data);
 };
 ```
@@ -607,8 +609,8 @@ module.exports.data = function (context, callback) {
 // ❌ Common syntax issues
 module.exports.data = function (context, callback) {
   // Missing semicolon
-  const name = context.params.name
-  
+  const name = context.params.name;
+
   // Incorrect callback usage
   callback({ name: name }); // Missing null as first parameter
 };
@@ -633,4 +635,4 @@ module.exports.data = function (context, callback) {
 - **[Learn package.json structure](package.json-structure)** - Configure your component properly
 - **[Master the CLI](cli)** - Efficient development workflow
 - **[Publishing guide](publishing-to-a-registry)** - Deploy your components
-- **[Client-side operations](client-side-operations)** - Browser integration patterns
+- **[Client-side operations](../consumers/rendering-lifecycle)** - Browser integration patterns

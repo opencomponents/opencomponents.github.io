@@ -141,7 +141,7 @@ This is all you need:
 </html>
 ```
 
-For more information about client-side operations, look at [this page](/docs/components/client-side-operations).
+For more information about client-side operations, look at [this page](/docs/consumers/rendering-lifecycle).
 
 ## Server-side rendering
 

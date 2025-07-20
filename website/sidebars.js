@@ -47,10 +47,13 @@ const sidebars = {
       type: "category",
       label: "Consuming Components",
       items: [
+        "consumers/client-setup",
+        "consumers/client-api",
+        "consumers/rendering-lifecycle",
+        "consumers/events-hooks",
         "consumers/client-side-rendering",
         "consumers/server-side-rendering",
         "consumers/batch-endpoint",
-        "components/client-side-operations",
       ],
     },
     {

@@ -23,7 +23,7 @@ This is how to integrate the component:
 
 - It is recommended to use protocol-less urls for rendering so that we can use https where possible for security reasons
 - The `/oc-client/client.js` is a convenient shortcut for serving the browser oc-client of the **same version as the registry**.
-- The client can be before or after the components. When after, a rendering needs to happen via explicit call as described in this page: [advanced client-side operations](/docs/components/client-side-operations).
+- The client can be before or after the components. When after, a rendering needs to happen via explicit call – see [advanced client-side operations](/docs/consumers/rendering-lifecycle).
 
 ## What exactly happens during a component's client-side rendering?
 
@@ -43,9 +43,9 @@ This is how to integrate the component:
 ### React Integration
 
 ```jsx
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
 
-function OCComponent({ href, fallback = 'Loading...' }) {
+function OCComponent({ href, fallback = "Loading..." }) {
   const ref = useRef();
 
   useEffect(() => {
@@ -74,39 +74,39 @@ function OCComponent({ href, fallback = 'Loading...' }) {
 
 <script>
 export default {
-  props: ['componentUrl', 'fallbackText'],
+  props: ["componentUrl", "fallbackText"],
   mounted() {
     if (window.oc) {
       window.oc.renderNestedComponent(this.$refs.ocComponent);
     }
-  }
-}
+  },
+};
 </script>
 ```
 
 ### Angular Integration
 
 ```typescript
-import { Component, ElementRef, Input, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, Input, AfterViewInit } from "@angular/core";
 
 @Component({
-  selector: 'oc-wrapper',
+  selector: "oc-wrapper",
   template: `
     <oc-component [attr.href]="href" #ocElement>
       {{ fallback }}
     </oc-component>
-  `
+  `,
 })
 export class OCWrapperComponent implements AfterViewInit {
   @Input() href: string;
-  @Input() fallback: string = 'Loading...';
+  @Input() fallback: string = "Loading...";
 
   constructor(private elementRef: ElementRef) {}
 
   ngAfterViewInit() {
     if ((window as any).oc) {
       (window as any).oc.renderNestedComponent(
-        this.elementRef.nativeElement.querySelector('oc-component')
+        this.elementRef.nativeElement.querySelector("oc-component")
       );
     }
   }
@@ -121,19 +121,21 @@ export class OCWrapperComponent implements AfterViewInit {
 // Load components only when needed
 function loadComponentWhenVisible(element) {
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
         window.oc.renderNestedComponent(entry.target);
         observer.unobserve(entry.target);
       }
     });
   });
-  
+
   observer.observe(element);
 }
 
 // Apply to all oc-components
-document.querySelectorAll('oc-component[data-lazy]').forEach(loadComponentWhenVisible);
+document
+  .querySelectorAll("oc-component[data-lazy]")
+  .forEach(loadComponentWhenVisible);
 ```
 
 ### Caching Strategies
@@ -144,8 +146,8 @@ window.oc.conf = {
   cache: {
     enabled: true,
     maxAge: 300000, // 5 minutes
-    maxEntries: 100
-  }
+    maxEntries: 100,
+  },
 };
 ```
 
@@ -166,9 +168,9 @@ window.oc.conf = {
 
 ```javascript
 // Listen for component errors
-document.addEventListener('oc:error', function(event) {
-  console.error('Component failed to load:', event.detail);
-  
+document.addEventListener("oc:error", function (event) {
+  console.error("Component failed to load:", event.detail);
+
   // Show fallback content or retry
   const component = event.target;
   component.innerHTML = '<div class="error">Component failed to load</div>';
@@ -177,4 +179,4 @@ document.addEventListener('oc:error', function(event) {
 
 ## What can I do in the client-side?
 
-Look at this page: [advanced client-side operations](../components/client-side-operations)
+Look at this page: [advanced client-side operations](rendering-lifecycle)

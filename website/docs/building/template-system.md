@@ -91,7 +91,7 @@ cons templates = oc.registerTemplates([{
 }]);
 ```
 
-Check the [browser client documentation](/docs/components/client-side-operations) for more details.
+Check the [browser client documentation](/docs/consumers/rendering-lifecycle) for more details.
 
 #### templates exposed in context
 

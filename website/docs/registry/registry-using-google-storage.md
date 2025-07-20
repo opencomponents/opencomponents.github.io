@@ -61,23 +61,23 @@ const storageOptions = {
   projectId: "myproject-12345",
   bucket: "my-components-bucket",
   path: "//storage.googleapis.com/my-components-bucket/",
-  
+
   // Optional
-  componentsDir: "components",           // Directory for components
-  maxAge: 3600,                         // Cache control max-age (seconds)
+  componentsDir: "components", // Directory for components
+  maxAge: 3600, // Cache control max-age (seconds)
   keyFilename: "./service-account.json", // Path to service account key
-  
+
   // Advanced options
-  timeout: 30000,                       // Request timeout (ms)
-  retries: 3,                          // Number of retries for failed requests
-  autoRetry: true,                     // Enable automatic retries
-  maxRetryDelay: 64000,                // Maximum retry delay (ms)
-  
+  timeout: 30000, // Request timeout (ms)
+  retries: 3, // Number of retries for failed requests
+  autoRetry: true, // Enable automatic retries
+  maxRetryDelay: 64000, // Maximum retry delay (ms)
+
   // Custom metadata
   metadata: {
     cacheControl: "public, max-age=3600",
-    contentType: "application/javascript"
-  }
+    contentType: "application/javascript",
+  },
 };
 ```
 
@@ -117,8 +117,8 @@ const configuration = {
       componentsDir: "components",
       maxAge: 604800, // 7 days for CDN caching
       metadata: {
-        cacheControl: "public, max-age=604800, s-maxage=86400"
-      }
+        cacheControl: "public, max-age=604800, s-maxage=86400",
+      },
     },
   },
 };
@@ -128,24 +128,24 @@ const configuration = {
 
 ```js
 // Environment-based configuration
-const environment = process.env.NODE_ENV || 'development';
+const environment = process.env.NODE_ENV || "development";
 
 const configurations = {
   development: {
     bucket: "components-dev",
     maxAge: 300, // 5 minutes
-    verbosity: 2
+    verbosity: 2,
   },
   staging: {
     bucket: "components-staging",
     maxAge: 3600, // 1 hour
-    verbosity: 1
+    verbosity: 1,
   },
   production: {
     bucket: "components-prod",
     maxAge: 86400, // 24 hours
-    verbosity: 0
-  }
+    verbosity: 0,
+  },
 };
 
 const config = configurations[environment];
@@ -171,54 +171,54 @@ const configuration = {
 
 ```js
 // Configure lifecycle policies for cost optimization
-const { Storage } = require('@google-cloud/storage');
+const { Storage } = require("@google-cloud/storage");
 
 const setupLifecyclePolicies = async (bucketName) => {
   const storage = new Storage();
   const bucket = storage.bucket(bucketName);
-  
+
   await bucket.setMetadata({
     lifecycle: {
       rule: [
         {
           condition: {
             age: 30, // 30 days
-            matchesStorageClass: ['STANDARD']
+            matchesStorageClass: ["STANDARD"],
           },
           action: {
-            type: 'SetStorageClass',
-            storageClass: 'NEARLINE'
-          }
+            type: "SetStorageClass",
+            storageClass: "NEARLINE",
+          },
         },
         {
           condition: {
             age: 90, // 90 days
-            matchesStorageClass: ['NEARLINE']
+            matchesStorageClass: ["NEARLINE"],
           },
           action: {
-            type: 'SetStorageClass',
-            storageClass: 'COLDLINE'
-          }
+            type: "SetStorageClass",
+            storageClass: "COLDLINE",
+          },
         },
         {
           condition: {
             age: 365, // 1 year
-            matchesStorageClass: ['COLDLINE']
+            matchesStorageClass: ["COLDLINE"],
           },
           action: {
-            type: 'SetStorageClass',
-            storageClass: 'ARCHIVE'
-          }
-        }
-      ]
-    }
+            type: "SetStorageClass",
+            storageClass: "ARCHIVE",
+          },
+        },
+      ],
+    },
   });
-  
+
   console.log(`Lifecycle policies set for bucket ${bucketName}`);
 };
 
 // Apply lifecycle policies
-setupLifecyclePolicies('my-components-bucket');
+setupLifecyclePolicies("my-components-bucket");
 ```
 
 ### CDN Integration
@@ -235,8 +235,8 @@ const configuration = {
       path: "//storage.googleapis.com/components-prod/",
       maxAge: 2592000, // 30 days
       metadata: {
-        cacheControl: "public, max-age=2592000, s-maxage=86400"
-      }
+        cacheControl: "public, max-age=2592000, s-maxage=86400",
+      },
     },
   },
 };
@@ -255,8 +255,8 @@ const configuration = {
       path: "//storage.googleapis.com/components-prod/",
       metadata: {
         contentEncoding: "gzip",
-        cacheControl: "public, max-age=86400"
-      }
+        cacheControl: "public, max-age=86400",
+      },
     },
   },
 };
@@ -284,38 +284,38 @@ gcloud projects add-iam-policy-binding myproject-12345 \
 
 ```js
 // Secure bucket configuration
-const { Storage } = require('@google-cloud/storage');
+const { Storage } = require("@google-cloud/storage");
 
 const setupBucketSecurity = async (bucketName) => {
   const storage = new Storage();
   const bucket = storage.bucket(bucketName);
-  
+
   // Set uniform bucket-level access
   await bucket.setMetadata({
     iamConfiguration: {
       uniformBucketLevelAccess: {
-        enabled: true
-      }
-    }
+        enabled: true,
+      },
+    },
   });
-  
+
   // Enable versioning for component history
   await bucket.setMetadata({
     versioning: {
-      enabled: true
-    }
+      enabled: true,
+    },
   });
-  
+
   // Set CORS policy for web access
   await bucket.setCorsConfiguration([
     {
-      origin: ['https://mycompany.com', 'https://*.mycompany.com'],
-      method: ['GET', 'HEAD'],
-      responseHeader: ['Content-Type', 'Access-Control-Allow-Origin'],
-      maxAgeSeconds: 3600
-    }
+      origin: ["https://mycompany.com", "https://*.mycompany.com"],
+      method: ["GET", "HEAD"],
+      responseHeader: ["Content-Type", "Access-Control-Allow-Origin"],
+      maxAgeSeconds: 3600,
+    },
   ]);
-  
+
   console.log(`Security configuration applied to bucket ${bucketName}`);
 };
 ```
@@ -381,7 +381,7 @@ const configuration = {
     options: {
       // ... your options
       timeout: 60000, // Increase timeout for large components
-      retries: 5,     // Increase retry attempts
+      retries: 5, // Increase retry attempts
     },
   },
 };
@@ -414,8 +414,8 @@ const configuration = {
       // Enable compression
       metadata: {
         contentEncoding: "gzip",
-        cacheControl: "public, max-age=86400"
-      }
+        cacheControl: "public, max-age=86400",
+      },
     },
   },
 };
@@ -480,26 +480,29 @@ const configuration = {
   // ... other options
   customRoutes: [
     {
-      route: '/health',
-      method: 'get',
+      route: "/health",
+      method: "get",
       handler: (req, res) => {
         // Check storage connectivity
-        const storage = new (require('@google-cloud/storage').Storage)();
-        storage.bucket(process.env.GOOGLE_STORAGE_BUCKET)
+        const storage = new (require("@google-cloud/storage").Storage)();
+        storage
+          .bucket(process.env.GOOGLE_STORAGE_BUCKET)
           .exists()
           .then(([exists]) => {
             if (exists) {
-              res.json({ status: 'healthy', storage: 'connected' });
+              res.json({ status: "healthy", storage: "connected" });
             } else {
-              res.status(500).json({ status: 'unhealthy', storage: 'bucket not found' });
+              res
+                .status(500)
+                .json({ status: "unhealthy", storage: "bucket not found" });
             }
           })
-          .catch(error => {
-            res.status(500).json({ status: 'unhealthy', error: error.message });
+          .catch((error) => {
+            res.status(500).json({ status: "unhealthy", error: error.message });
           });
-      }
-    }
-  ]
+      },
+    },
+  ],
 };
 ```
 
@@ -508,7 +511,7 @@ const configuration = {
 ```js
 // Enhanced logging configuration
 const configuration = {
-  verbosity: process.env.NODE_ENV === 'production' ? 0 : 1,
+  verbosity: process.env.NODE_ENV === "production" ? 0 : 1,
   storage: {
     adapter: gs,
     options: {
@@ -517,10 +520,13 @@ const configuration = {
   },
   // Custom logging
   customLogger: {
-    info: (message) => console.log(`[INFO] ${new Date().toISOString()} ${message}`),
-    warn: (message) => console.warn(`[WARN] ${new Date().toISOString()} ${message}`),
-    error: (message) => console.error(`[ERROR] ${new Date().toISOString()} ${message}`)
-  }
+    info: (message) =>
+      console.log(`[INFO] ${new Date().toISOString()} ${message}`),
+    warn: (message) =>
+      console.warn(`[WARN] ${new Date().toISOString()} ${message}`),
+    error: (message) =>
+      console.error(`[ERROR] ${new Date().toISOString()} ${message}`),
+  },
 };
 ```
 
@@ -529,4 +535,4 @@ const configuration = {
 - **[Registry Configuration](registry-configuration)** - Complete registry setup options
 - **[Publishing Components](../components/publishing-to-a-registry)** - Deploy components to your registry
 - **[Client-side Integration](../consumers/client-side-rendering)** - Consume components in applications
-- **[Architecture Overview](../miscellaneous/architecture-overview)** - Understand the complete system
+- **[Architecture Overview](../concepts/architecture-overview)** - Understand the complete system

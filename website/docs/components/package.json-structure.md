@@ -282,4 +282,4 @@ ls -la public/
 - **[Learn server.js structure](the-server.js)** - Add dynamic data to your components
 - **[Understand CLI commands](cli)** - Master component development workflow
 - **[Publishing guide](publishing-to-a-registry)** - Deploy your components
-- **[Template system](../miscellaneous/template-system)** - Choose the right template type
+- **[Template system](../building/template-system)** - Choose the right template type

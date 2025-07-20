@@ -385,7 +385,7 @@ Now that you've created your first component, explore these advanced topics:
 2. **[Server-side Logic](components/the-server.js)** - Add complex data processing
 3. **[Client-side Operations](components/client-side-operations)** - Advanced browser integration
 4. **[Registry Configuration](registry/registry-configuration)** - Production registry setup
-5. **[Template System](miscellaneous/template-system)** - Use React, Vue, or other frameworks
+5. **[Template System](building/template-system)** - Use React, Vue, or other frameworks
 
 ## Best Practices
 

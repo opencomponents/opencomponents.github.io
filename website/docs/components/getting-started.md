@@ -46,15 +46,15 @@ The basic component directory is composed by the following files:
 ```
 ├── hello-world/
     ├── package.json
-    ├── template.hbs
-    ├── server.js
-    ├── img/
+    ├── src/view.ts
+    ├── src/server.ts
+    ├── public/
         ├── logo.png
 ```
 
 - `package.json` contains the component definition, dependencies, and [more](#structure-of-the-package)
-- `template.hbs` is a [template](#template) containing the markup
-- `server.js` is an optional [file](#basic-server), needed when the component has some logic
+- `view.ts` is a [template](#template) containing the markup
+- `server.ts` is an optional [file](#basic-server), needed when the component has some logic
 
 Additionally the component can have static contents such as images, js, and files that will be referenced in the html markup and any other files that will be useful for the development such as tests, docs, etc.
 
@@ -64,7 +64,7 @@ The basic package file `package.json` looks as follows:
 
 ```json
 {
-  "name": "base-component-handlebars",
+  "name": "base-component-es6",
   "description": "",
   "version": "1.0.0",
   "oc": {
@@ -72,8 +72,8 @@ The basic package file `package.json` looks as follows:
       "data": "server.js",
       "static": ["img"],
       "template": {
-        "src": "template.hbs",
-        "type": "oc-template-handlebars"
+        "src": "src/view.ts",
+        "type": "oc-template-es6"
       }
     },
     "parameters": {

@@ -71,9 +71,9 @@ This creates a new directory with the following structure:
 ```
 hello-world/
 ├── package.json          # Component configuration
-├── template.js           # ES6 template (the view)
-├── server.js             # Server-side logic (optional)
-└── img/
+├── src/view.ts           # ES6 template (the view)
+├── src/server.js         # Server-side logic (optional)
+└── public/
     └── logo.png          # Static assets
 ```
 
@@ -81,9 +81,9 @@ hello-world/
 
 **package.json**: Contains component metadata, dependencies, and OpenComponents-specific configuration.
 
-**template.js**: The ES6 template that defines how your component looks using modern JavaScript.
+**template.ts**: The ES6 template that defines how your component looks using modern JavaScript.
 
-**server.js**: Optional file for server-side logic, data fetching, or API calls.
+**server.ts**: Optional file for server-side logic, data fetching, or API calls.
 
 ### Template Options
 

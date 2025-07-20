@@ -21,13 +21,13 @@ For example a component of type: `oc-template-handlebars` will need a compiler n
 "oc": {
   "files": {
     "template": {
-      "src": "template.hbs",
-      "type": "oc-template-handlebars"
+      "src": "src/view.ts",
+      "type": "oc-template-es6"
     }
   }
 },
 "devDependencies": {
-  "oc-template-handlebars-compiler": "6.0.8"
+  "oc-template-es6-compiler": "6.0.0"
 },
 ...
 ```

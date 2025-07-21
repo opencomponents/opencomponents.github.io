@@ -104,7 +104,7 @@ cat src/view.ts
 
 You'll see something like:
 
-```javascript
+```typescript
 export default function (model) {
   return `
     <div>
@@ -147,13 +147,39 @@ Watching for changes...
 Open your browser and visit:
 
 - **Component endpoint**: http://localhost:3030/hello-world?userId=1
-- **Component info**: http://localhost:3030/hello-world/~info
+- **Component info**: http://localhost:3030/hello-world/1.0.0/~info
 
 **Important**: The generated component requires parameters. If you get an error about "missing mandatory parameters", check the component info page to see what parameters are required.
 
 ### Check Component Information
 
-Visit http://localhost:3030/hello-world/~info to see detailed information about your component, including all available parameters and which ones are mandatory.
+Visit http://localhost:3030/hello-world/1.0.0/~info to see detailed information about your component, including all available parameters and which ones are mandatory.
+
+### Understanding Different Component URLs
+
+OpenComponents provides several ways to access your component:
+
+1. **JSON API** (for programmatic access):
+
+   ```
+   http://localhost:3030/hello-world?userId=1
+   ```
+
+   Returns the component data as JSON
+
+2. **Component Info Page** (for development/testing):
+
+   ```
+   http://localhost:3030/hello-world/1.0.0/~info
+   ```
+
+   Shows component details with live preview
+
+3. **Direct Preview** (for embedding):
+   ```
+   http://localhost:3030/hello-world/1.0.0/~preview
+   ```
+   Shows just the rendered component
 
 Or use the CLI preview:
 
@@ -171,7 +197,7 @@ oc preview http://localhost:3030/hello-world
 
 ## Step 4: Customize Your Component
 
-Let's modify the component to make it more interesting. Edit the `server.js` file:
+Let's modify the component to make it more interesting. Edit the `server.ts` file:
 
 ```javascript
 export const data = (context, callback) => {
@@ -197,7 +223,7 @@ function getTimeBasedGreeting() {
 }
 ```
 
-Update the template (`template.js`):
+Update the template (`view.ts`):
 
 ```javascript
 export default function (model) {
@@ -401,8 +427,9 @@ Update your HTML to use the production registry:
 ### Understanding Your Component
 
 The generated component demonstrates several OpenComponents features:
+
 - **Parameter Handling**: Shows how to define and use mandatory/optional parameters
-- **Server Actions**: The "funFact" button demonstrates client-server communication  
+- **Server Actions**: The "funFact" button demonstrates client-server communication
 - **CSS Modules**: Scoped styling that won't conflict with other components
 - **TypeScript**: Type safety for better development experience
 - **Client-side Interactivity**: Event handling within components
@@ -420,7 +447,7 @@ Now that you've created your first component, explore these advanced topics:
 ### For Beginners
 
 - **Always run `oc dev` from the directory containing your components**, not from inside a component
-- **Check component info** at `/~info` to see required parameters  
+- **Check component info** at `/~info` to see required parameters
 - **Use the browser console** to debug client-side issues
 - **Test both client-side and server-side rendering** to ensure compatibility
 

@@ -22,6 +22,12 @@ By the end of this tutorial, you'll know how to:
 
 ## Step 1: Create Your First Component
 
+Let's start by creating a working directory:
+
+```bash
+mkdir oc-tutorial && cd oc-tutorial
+```
+
 Let's create a simple "hello-world" component:
 
 ```bash
@@ -33,19 +39,24 @@ This creates a new directory with the following structure:
 ```
 hello-world/
 ├── package.json          # Component configuration
-├── src/view.ts           # ES6 template (the view)
-├── src/server.js         # Server-side logic (optional)
+├── src/
+│   ├── view.ts           # TypeScript template (the view)
+│   └── server.ts         # Server-side logic
 └── public/
     └── logo.png          # Static assets
+├── tsconfig.json         # TypeScript configuration
+└── node_modules/         # Dependencies
 ```
 
 ### Understanding the Files
 
 **package.json**: Contains component metadata, dependencies, and OpenComponents-specific configuration.
 
-**template.ts**: The ES6 template that defines how your component looks using modern JavaScript.
+**src/view.ts**: The TypeScript template that defines how your component looks using modern JavaScript with CSS imports and client-side event handling.
 
-**server.ts**: Optional file for server-side logic, data fetching, or API calls.
+**src/server.ts**: Contains server-side logic, data fetching, parameter definitions, and API actions.
+
+**Important Note**: The generated component is more sophisticated than basic examples you might see in documentation. It includes TypeScript, CSS modules, client-side interactivity, and server actions.
 
 ### Template Options
 
@@ -66,6 +77,19 @@ oc init my-component --template-type=svelte
 
 ## Step 2: Explore Your Component
 
+### Understanding Component Parameters
+
+The generated component includes parameters that you need to know about. Let's check what parameters are required:
+
+```bash
+cd hello-world
+cat package.json
+```
+
+Look for the `oc.parameters` section in the package.json. You'll notice that some parameters may be marked as `"mandatory": true`. This is crucial for testing your component.
+
+### Examine the Generated Files
+
 Navigate to your component directory:
 
 ```bash
@@ -75,7 +99,7 @@ cd hello-world
 Look at the generated template:
 
 ```bash
-cat template.js
+cat src/view.ts
 ```
 
 You'll see something like:
@@ -92,6 +116,12 @@ export default function (model) {
 ```
 
 ## Step 3: Start Local Development
+
+**Important**: Run the development server from the parent directory (not inside the component directory):
+
+```bash
+cd ..  # Go back to oc-tutorial directory
+```
 
 Start a local development registry:
 
@@ -116,15 +146,28 @@ Watching for changes...
 
 Open your browser and visit:
 
-- **Component endpoint**: http://localhost:3030/hello-world
+- **Component endpoint**: http://localhost:3030/hello-world?userId=1
 - **Component info**: http://localhost:3030/hello-world/~info
-- **Component preview**: http://localhost:3030/hello-world/~preview
+
+**Important**: The generated component requires parameters. If you get an error about "missing mandatory parameters", check the component info page to see what parameters are required.
+
+### Check Component Information
+
+Visit http://localhost:3030/hello-world/~info to see detailed information about your component, including all available parameters and which ones are mandatory.
 
 Or use the CLI preview:
 
 ```bash
 oc preview http://localhost:3030/hello-world
 ```
+
+**Note**: If the preview command doesn't work, don't worry - you can test your component directly in the browser using the URLs above.
+
+## Step 4: Test Interactive Features
+
+1. Visit http://localhost:3030/hello-world?userId=1
+2. Click the "Fun year fact" button
+3. You should see a fact about the birth year appear
 
 ## Step 4: Customize Your Component
 
@@ -175,7 +218,7 @@ Save the files and refresh your browser - you should see the changes immediately
 Try your component with different parameters:
 
 ```
-http://localhost:3030/hello-world?name=Alice
+http://localhost:3030/hello-world?userId=0
 ```
 
 ## Step 6: Create a Test HTML Page
@@ -192,7 +235,7 @@ Create a simple HTML file to test client-side rendering:
     <h1>My Website</h1>
 
     <!-- Your component will be rendered here -->
-    <oc-component href="http://localhost:3030/hello-world?name=Developer">
+    <oc-component href="http://localhost:3030/hello-world?userId=1">
       Loading component...
     </oc-component>
 
@@ -298,6 +341,18 @@ Update your HTML to use the production registry:
 
 ## Common Troubleshooting
 
+### Directory Issues
+
+**Problem**: "no components found in specified path"
+**Solution**: Make sure you're running `oc dev . 3030` from the parent directory containing your components, not from inside the component directory.
+
+### Parameter Issues
+
+**Problem**: "Expected mandatory parameters are missing"
+**Solution**: Check the component info page at `/~info` to see what parameters are required, then include them in your URL.
+
+### General Issues
+
 ### Component Won't Start
 
 **Problem**: `Error: Cannot find module`
@@ -319,6 +374,8 @@ Update your HTML to use the production registry:
 **Problem**: Component shows "Loading..." forever
 **Solution**:
 
+- Check if you're including required parameters in the component URL
+- Visit the component info page (`/~info`) to see parameter requirements
 - Check browser console for errors
 - Verify registry is accessible
 - Check component syntax
@@ -341,6 +398,15 @@ Update your HTML to use the production registry:
 
 ## Next Steps
 
+### Understanding Your Component
+
+The generated component demonstrates several OpenComponents features:
+- **Parameter Handling**: Shows how to define and use mandatory/optional parameters
+- **Server Actions**: The "funFact" button demonstrates client-server communication  
+- **CSS Modules**: Scoped styling that won't conflict with other components
+- **TypeScript**: Type safety for better development experience
+- **Client-side Interactivity**: Event handling within components
+
 Now that you've created your first component, explore these advanced topics:
 
 1. **[Component Structure](components/getting-started)** - Learn about advanced component patterns
@@ -350,6 +416,13 @@ Now that you've created your first component, explore these advanced topics:
 5. **[Template System](building/template-system)** - Use React, Vue, or other frameworks
 
 ## Best Practices
+
+### For Beginners
+
+- **Always run `oc dev` from the directory containing your components**, not from inside a component
+- **Check component info** at `/~info` to see required parameters  
+- **Use the browser console** to debug client-side issues
+- **Test both client-side and server-side rendering** to ensure compatibility
 
 - **Keep components small and focused** - Each component should have a single responsibility
 - **Use semantic versioning** - Follow semver for component versions

@@ -203,58 +203,14 @@ See the dedicated [CLI guide](components/cli#install-the-cli) for installation, 
 
 # Setup a library
 
-At the moment the only supported libraries are Amazon S3 & Google Storage.
+See detailed guides for:
 
-- S3 - Create an account and for S3 get the API credentials; you will need them while setting up the registry.
-- Google Storage - Create an account and setup your [gcloud](https://cloud.google.com/sdk/docs/#install_the_latest_cloud_tools_version_cloudsdk_current_version) cli.
+- [S3 library adapter](registry/registry-configuration#s3)
+- [Google Cloud Storage adapter](registry/registry-using-google-storage)
 
 # Setup a registry
 
-The registry is a node.js express app that serves the components. You can have multiple registries connected to a library, but you can't have multiple libraries connected to a registry.
-First, create a dir and install oc:
-
-```sh
-mkdir oc-registry && cd oc-registry
-npm init
-npm install oc --save
-```
-
-For Google Storage registry configuration's documentation, [look at this page](/docs/registry/registry-using-google-storage).
-
-Then on the entry point, what you need on an `index.js` file is:
-
-```js
-var oc = require("oc");
-
-var configuration = {
-  verbosity: 0,
-  baseUrl: "https://my-components-registry.mydomain.com/",
-  port: 3000,
-  tempDir: "./temp/",
-  refreshInterval: 600,
-  pollingInterval: 5,
-  s3: {
-    key: "your-s3-key",
-    secret: "your-s3-secret",
-    bucket: "your-s3-bucket",
-    region: "your-s3-region",
-    path: "//s3.amazonaws.com/your-s3-bucket/",
-    componentsDir: "components",
-  },
-  env: { name: "production" },
-};
-
-var registry = oc.Registry(configuration);
-
-registry.start(function (err, app) {
-  if (err) {
-    console.log("Registry not started: ", err);
-    process.exit(1);
-  }
-});
-```
-
-For the registry configuration's documentation, [look at this page](/docs/registry/registry-configuration).
+A full configuration reference and production-ready examples live in [Registry Configuration](registry/registry-configuration). Start there when you need to spin up your first registry.
 
 ## What Should I Read Next?
 

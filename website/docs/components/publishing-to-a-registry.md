@@ -17,12 +17,13 @@ Publishing is the process of uploading your packaged component to a registry whe
 
 ## Prerequisites
 
-Before publishing components, ensure you have:
+Publishing assumes:
 
-- An OpenComponents registry set up and accessible
-- A properly structured component with valid `package.json`
-- Registry credentials (if authentication is required)
-- Compatible CLI and Node.js versions
+1. A reachable registry (see [Registry Configuration](../registry/registry-configuration))
+2. A component folder that passes `oc dev` validation
+3. OC CLI installed (see [CLI install](cli.md#install-the-cli))
+
+That's all you need—no extra global setup.
 
 ## Basic Publishing Workflow
 
@@ -174,79 +175,7 @@ This validates your component and simulates the publish process without actually
 
 ## Troubleshooting
 
-### Common Errors
-
-**Unauthorized (401)**
-
-```
-Error: Unauthorized
-```
-
-**Solution**: Provide valid credentials using `--username` and `--password` options, or ensure your authentication is properly configured.
-
-**Component Already Exists**
-
-```
-Error: Component already exists: my-component@1.0.0
-```
-
-**Solution**: Update the version in your `package.json` file before publishing.
-
-**CLI Version Mismatch**
-
-```
-Error: OC CLI version needs upgrade
-```
-
-**Solution**: Update your CLI to the required version:
-
-```sh
-npm install -g oc@latest
-```
-
-**Node Version Incompatibility**
-
-```
-Error: Node CLI version needs upgrade
-```
-
-**Solution**: Update Node.js to a compatible version as specified in the error message.
-
-**Invalid Component Name**
-
-```
-Error: Component name not valid
-```
-
-**Solution**: Ensure your component name follows naming conventions (lowercase, no spaces, valid npm package name format).
-
-**Invalid Component Version**
-
-```
-Error: Component version not valid
-```
-
-**Solution**: Use semantic versioning (e.g., "1.0.0", "2.1.3") in your `package.json`.
-
-**Package Validation Failed**
-
-```
-Error: Package is not valid
-```
-
-**Solution**: Check that your component has:
-
-- Valid `package.json` with required `oc` configuration
-- All required files (template, server.js if needed)
-- Proper component structure
-
-**Template Version Incompatibility**
-
-```
-Error: Your template requires a version of OC higher than X.X.X
-```
-
-**Solution**: Either upgrade your registry or downgrade your template requirements.
+For error messages and advanced diagnostics, refer to the [CLI Troubleshooting Guide](cli.md#installation-troubleshooting). It covers authentication, versioning, validation failures, and more.
 
 ### Debugging Tips
 

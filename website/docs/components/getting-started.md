@@ -6,24 +6,9 @@ sidebar_position: 1
 
 ## Prerequisites
 
-Before creating your first component, ensure you have:
+Before creating your first component, make sure your workstation meets the [CLI installation requirements](cli.md#installation). If you followed the **Quick-Start Tutorial** you can skip this.
 
-- **Node.js** (version 20 or higher) - [Download here](https://nodejs.org/)
-- **npm** (comes with Node.js) - Basic familiarity with npm commands
-- **Basic JavaScript knowledge** - Understanding of functions, objects, and modules
-- **Command line familiarity** - Ability to navigate directories and run commands
-
-**New to OpenComponents?** Consider starting with our [Quick Start Tutorial](../quick-start-tutorial) for a complete step-by-step guide.
-
-## Component Creation
-
-To create a component you need to install oc with a command:
-
-```bash
-$ npm install oc -g
-```
-
-The next step is to initialise a component:
+First create the component directory:
 
 ```bash
 $ oc init hello-world
@@ -167,69 +152,7 @@ Explore these example repositories to see OpenComponents in action:
 
 ## Troubleshooting Common Issues
 
-### Installation Problems
-
-**Problem**: Permission errors when installing globally
-
-```bash
-# Solution: Use sudo (macOS/Linux) or run as administrator (Windows)
-sudo npm install oc -g
-```
-
-**Problem**: `oc` command not found after installation
-
-```bash
-# Check if npm global bin is in your PATH
-npm config get prefix
-# Add {prefix}/bin to your PATH environment variable
-```
-
-### Component Creation Issues
-
-**Problem**: `oc init` fails with template errors
-
-```bash
-# Solution: Specify template explicitly (ES6 is default)
-oc init hello-world oc-template-es6
-```
-
-**Problem**: Component won't start with `oc dev`
-
-```bash
-# Solution: Install dependencies first
-cd hello-world
-npm install
-oc dev . 3030
-```
-
-### Development Server Issues
-
-**Problem**: Port already in use
-
-```bash
-# Solution: Use a different port
-oc dev . 3031
-```
-
-**Problem**: Component shows "Loading..." forever
-
-- Check browser console for JavaScript errors
-- Verify the registry URL is accessible
-- Ensure component syntax is valid
-
-### Template Compilation Errors
-
-**Problem**: Template syntax errors
-
-- For ES6 templates: Validate your template literal syntax and ensure the function returns valid HTML
-- For legacy Handlebars templates: Validate template syntax and check for missing variables in server.js
-- Check for missing variables in server.js
-
-**Problem**: Server.js runtime errors
-
-- Check the server.js syntax
-- Verify all required parameters are handled
-- Add error handling in your data function
+- For installation problems, component creation errors, or dev-server hiccups, refer to the in-depth [CLI guide](cli.md#troubleshooting) which contains up-to-date solutions.
 
 ## Next Steps
 

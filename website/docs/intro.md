@@ -6,6 +6,10 @@ sidebar_position: 1
 
 OpenComponents is a framework for building and deploying **micro frontends** - small, independent, and reusable UI components that can be developed by different teams and composed into larger applications.
 
+## Target Audience
+
+OpenComponents is built for **companies with multiple autonomous teams** that ship UI independently. If you’re a solo developer, this approach may be over-engineering.
+
 ## What is OpenComponents?
 
 Think of OpenComponents as a way to break down your frontend into small, manageable pieces that can be:
@@ -193,13 +197,9 @@ When retrieving multiple components, a [batch POST endpoint](/docs/consumers/bat
 - [Rails client](https://github.com/opencomponents/opencomponents-rails)
 - [Sinatra client](https://github.com/opencomponents/sinatra-opencomponents)
 
-# Install the cli
+### Install the CLI
 
-```sh
-npm install oc -g
-# to see available commands:
-oc
-```
+See the dedicated [CLI guide](components/cli#install-the-cli) for installation, shell-autocomplete, and update instructions.
 
 # Setup a library
 

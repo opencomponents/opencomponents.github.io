@@ -8,16 +8,7 @@ This comprehensive tutorial will guide you through creating your first OpenCompo
 
 ## Prerequisites
 
-Before you begin, make sure you have:
-
-- **Node.js** (version 20 or higher) - [Download here](https://nodejs.org/)
-- **npm** (comes with Node.js) - Basic familiarity with npm commands
-- **Basic JavaScript knowledge** - Understanding of functions, objects, and modules
-- **Command line familiarity** - Ability to navigate directories and run commands
-- **A cloud storage solution** such as:
-  - [AWS S3](https://aws.amazon.com/s3)
-  - [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
-  - [Google Cloud Storage](https://cloud.google.com/storage)
+OpenComponents requires [Node.js](https://nodejs.org/) 20+ and the OC CLI. If the CLI isn’t installed yet, follow the [CLI installation guide](components/cli#install-the-cli) and then return here.
 
 ## What You'll Learn
 
@@ -29,36 +20,7 @@ By the end of this tutorial, you'll know how to:
 - Publish components to a registry
 - Consume components in web applications
 
-## Step 1: Install the OpenComponents CLI
-
-First, install the OpenComponents command-line interface globally:
-
-```bash
-npm install -g oc
-```
-
-Verify the installation:
-
-```bash
-oc --version
-```
-
-You should see the version number displayed.
-
-### Troubleshooting Installation
-
-**Problem**: Permission errors on macOS/Linux
-
-```bash
-sudo npm install -g oc
-```
-
-**Problem**: `oc` command not found
-
-- Make sure your npm global bin directory is in your PATH
-- Try: `npm config get prefix` and add `{prefix}/bin` to your PATH
-
-## Step 2: Create Your First Component
+## Step 1: Create Your First Component
 
 Let's create a simple "hello-world" component:
 
@@ -102,7 +64,7 @@ oc init my-component --template-type=vue
 oc init my-component --template-type=svelte
 ```
 
-## Step 3: Explore Your Component
+## Step 2: Explore Your Component
 
 Navigate to your component directory:
 
@@ -129,7 +91,7 @@ export default function (model) {
 }
 ```
 
-## Step 4: Start Local Development
+## Step 3: Start Local Development
 
 Start a local development registry:
 
@@ -164,7 +126,7 @@ Or use the CLI preview:
 oc preview http://localhost:3030/hello-world
 ```
 
-## Step 5: Customize Your Component
+## Step 4: Customize Your Component
 
 Let's modify the component to make it more interesting. Edit the `server.js` file:
 
@@ -208,7 +170,7 @@ export default function (model) {
 
 Save the files and refresh your browser - you should see the changes immediately!
 
-## Step 6: Test with Parameters
+## Step 5: Test with Parameters
 
 Try your component with different parameters:
 
@@ -216,7 +178,7 @@ Try your component with different parameters:
 http://localhost:3030/hello-world?name=Alice
 ```
 
-## Step 7: Create a Test HTML Page
+## Step 6: Create a Test HTML Page
 
 Create a simple HTML file to test client-side rendering:
 
@@ -242,7 +204,7 @@ Create a simple HTML file to test client-side rendering:
 
 Open this HTML file in your browser to see client-side rendering in action.
 
-## Step 8: Set Up a Registry (Production)
+## Step 7: Set Up a Registry (Production)
 
 For production use, you'll need a registry connected to cloud storage. Here's a basic setup:
 
@@ -294,7 +256,7 @@ registry.start((err, app) => {
 });
 ```
 
-## Step 9: Publish Your Component
+## Step 8: Publish Your Component
 
 ### Configure Registry
 
@@ -321,7 +283,7 @@ Your component should now be available at:
 https://your-registry-domain.com/hello-world
 ```
 
-## Step 10: Consume in Production
+## Step 9: Consume in Production
 
 Update your HTML to use the production registry:
 

@@ -4,6 +4,14 @@ sidebar_position: 2
 
 # Command Line Tool
 
+## Prerequisites
+
+- **Node.js** 20 or newer (verify with `node -v`)
+- **npm** (ships with Node) — ensure it’s on your `$PATH`
+- Network reachability to your component registry (VPN/proxy if corporate)
+
+If these are satisfied you can install the CLI as shown below.
+
 ## Install the cli
 
 To install cli, you should type:
@@ -101,32 +109,46 @@ oc mock plugin hash "test-value"
 ## Most Frequently Used Commands
 
 ### Essential Commands (Daily Use)
+
 - `oc init <name>` - Create new component
 - `oc dev . <port>` - Start development server
 - `oc preview <url>` - Preview component
 - `oc publish <path>` - Publish component
 
 ### Setup Commands (One-time)
+
 - `oc registry add <url>` - Add registry
 - `oc registry ls` - List registries
 
 ### Maintenance Commands (Occasional)
+
 - `oc clean <path>` - Clean dependencies
 - `oc package <path>` - Package component
 - `oc mock plugin <name> <value>` - Mock plugins
 
 ## Quick Reference
 
-| Command | Purpose | Example |
-|---------|---------|---------|
-| `init` | Create component | `oc init header` |
-| `dev` | Start dev server | `oc dev . 3030` |
-| `preview` | Test component | `oc preview http://localhost:3030/header` |
-| `publish` | Deploy component | `oc publish header/` |
-| `registry add` | Add registry | `oc registry add https://my-registry.com` |
-| `clean` | Remove node_modules | `oc clean . --yes` |
+| Command        | Purpose             | Example                                   |
+| -------------- | ------------------- | ----------------------------------------- |
+| `init`         | Create component    | `oc init header`                          |
+| `dev`          | Start dev server    | `oc dev . 3030`                           |
+| `preview`      | Test component      | `oc preview http://localhost:3030/header` |
+| `publish`      | Deploy component    | `oc publish header/`                      |
+| `registry add` | Add registry        | `oc registry add https://my-registry.com` |
+| `clean`        | Remove node_modules | `oc clean . --yes`                        |
 
 ---
+
+## Installation Troubleshooting
+
+| Symptom                                   | Fix                                                                                     |
+| ----------------------------------------- | --------------------------------------------------------------------------------------- |
+| `EACCES` permission errors on macOS/Linux | Re-run with `sudo npm install -g oc` or configure a user-level npm prefix               |
+| `oc: command not found`                   | Ensure npm global bin folder is in `$PATH` (`npm config get prefix` → add `prefix/bin`) |
+| Port already in use when running `oc dev` | Choose another port: `oc dev . 3031`                                                    |
+| Component stuck on "Loading…"             | Check browser console, verify registry URL, review template syntax                      |
+
+For additional issues search the [GitHub discussions](https://github.com/opencomponents/opencomponents/discussions) or open a new ticket.
 
 ### clean
 
@@ -206,8 +228,8 @@ $ oc init <componentPath> [templateType]
 
 #### Parameters:
 
-| Name            | Description                                              | Default                |
-| --------------- | -------------------------------------------------------- | ---------------------- |
+| Name            | Description                                              | Default         |
+| --------------- | -------------------------------------------------------- | --------------- |
 | `componentPath` | The relative path with a name of the component to create |
 | `templateType`  | The name of the published template module on npm         | oc-template-es6 |
 

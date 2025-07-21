@@ -20,7 +20,7 @@ const sidebars = {
     {
       type: "category",
       label: "Introduction & Concepts",
-      items: ["concepts/architecture-overview"],
+      items: ["concepts/why-opencomponents", "concepts/architecture-overview"],
     },
     {
       type: "category",

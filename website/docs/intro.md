@@ -115,7 +115,7 @@ Now, it should be available at `http://my-components-registry.mydomain.com/hello
 
 # Consuming Components
 
-From a consumer's perspective, a component is an HTML fragment. You can render components just on the client-side, just on the server-side, or use the client-side rendering as failover strategy for when the server-side rendering fails (for example because the registry is not responding quickly or is down).
+From a consumer's perspective, a component is an HTML fragment. You can render components **client-side, server-side, or fall back to client-side rendering** when server-side rendering fails (for example, if the registry is slow or unavailable).
 
 You don't need Node.js to consume components on the server-side. The registry can provide you rendered components so that you can consume them using any tech stack.
 

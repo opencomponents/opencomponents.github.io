@@ -14,7 +14,7 @@ Within the component's `package.json` a template type need to be specified toget
 
 > By convention the compiler need to follow the naming structure: **`<template-type>-compiler`**.
 
-For example a component of type: `oc-template-handlebars` will need a compiler named `oc-template-handlebars-compiler` in order to be correctly packaged and published:
+For example a component of type: `oc-template-es6` will need a compiler named `oc-template-es6-compiler` **so it can be** correctly packaged and published:
 
 ```json
 ...

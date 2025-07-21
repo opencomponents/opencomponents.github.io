@@ -34,9 +34,9 @@ This is how to integrate the component:
 5. In case of error (timeout or 5xx response) the client is going to retry 30 times (retry attempts and timeout are configurable)
 6. In case of success, the client is going to find what kind of template the component uses and verify dependencies are satisfied. For ES6 templates (the default), it ensures the template function is ready. For legacy template types like Handlebars, it ensures the respective runtime is available and ready, downloading it if necessary before proceeding to the next step
 7. The client will take the compiled view url, for instance `//cdn.com/components/my-component/1.2.3/template.js` and put it in the `<head>` tag, then waiting for it to be ready. If the template is already there (for example because there are multiple components of the same type and version in the page) it is going to skip step 7. When the template is ready it is exposed in the `window.oc.components['hash-of-the-component']` namespace as a function: `view(viewModel)=html`.
-8. This is going to take the viewModel (part of the HTTP response) and use it to render the view, in order to obtain the html. When finished, it is going to place the HTML result inside the `<oc-component>` container tag. Some templates may perform additional actions. In case of a React template, for instance, the HTML may be bound to the Virtual DOM.
+8. This is going to take the viewModel (part of the HTTP response) and use it to render the view, **producing** the HTML. When finished, it places the HTML result inside the `<oc-component>` container tag. Some templates may perform additional actions. In case of a React template, for instance, the HTML may be bound to the Virtual DOM.
 9. An `oc:rendered` event is published containing the pointer to the component, and all the information (version, name, html, etc.)
-10. Back to 3) In order to render, in case, nested client-side components
+10. Back to 3) **To render nested client-side components, if any are present**
 
 ## What can I do in the client-side?
 

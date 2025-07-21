@@ -182,7 +182,7 @@ $ oc clean ../all-components --yes
 
 ### dev
 
-Runs a local oc test registry in order to develop and test components
+Runs a local oc test registry **to develop and test components**
 
 #### Usage:
 
@@ -251,7 +251,7 @@ which will create `test-component` in `components` directory.
 
 ### mock
 
-Allows to mock configuration in order to facilitate local development
+Allows **mocking configuration to simplify local development**
 
 #### Usage
 

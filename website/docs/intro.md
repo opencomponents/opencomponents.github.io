@@ -4,26 +4,63 @@ sidebar_position: 1
 
 # Introduction
 
-OpenComponents is a framework for building and deploying **micro frontends** - small, independent, and reusable UI components that can be developed by different teams and composed into larger applications.
+<div className="hero-section">
 
-## Target Audience
+## Build, Deploy, and Scale Micro Frontends with Independent Teams
 
-OpenComponents is built for **companies with multiple autonomous teams** that ship UI independently. If you’re a solo developer, this approach may be over-engineering.
+OpenComponents is a **powerful, language-agnostic micro frontend framework** that enables teams to develop, test, and deploy UI components independently while composing them into cohesive applications.
 
-## What is OpenComponents?
+**Break free from monolithic frontends.**
 
-Think of OpenComponents as a way to break down your frontend into small, manageable pieces that can be:
+</div>
 
-- **Developed independently** by different teams
-- **Deployed separately** without affecting other parts
-- **Reused across** multiple applications
-- **Updated individually** without full application rebuilds
+<div className="value-props">
+
+  <div className="value-prop-card">
+    <span className="value-prop-card-icon">🚀</span>
+    <div className="value-prop-card-content">
+      <div className="value-prop-card-title">Team Independence</div>
+      <div className="value-prop-card-desc">Develop components with your preferred tech stack while maintaining seamless integration across your organization.</div>
+    </div>
+  </div>
+
+  <div className="value-prop-card">
+    <span className="value-prop-card-icon">⚡</span>
+    <div className="value-prop-card-content">
+      <div className="value-prop-card-title">Server-Side Rendering Anywhere</div>
+      <div className="value-prop-card-desc">Get SSR benefits without Node.js on your edge - works with C#, PHP, Java, Go, and any backend stack.</div>
+    </div>
+  </div>
+
+  <div className="value-prop-card">
+    <span className="value-prop-card-icon">🔒</span>
+    <div className="value-prop-card-content">
+      <div className="value-prop-card-title">Immutable & Versioned</div>
+      <div className="value-prop-card-desc">Semantic versioning with immutable artifacts ensures safe rollbacks and deterministic deployments.</div>
+    </div>
+  </div>
+
+  <div className="value-prop-card">
+    <span className="value-prop-card-icon">🌐</span>
+    <div className="value-prop-card-content">
+      <div className="value-prop-card-title">Language Agnostic</div>
+      <div className="value-prop-card-desc">Consume components from any backend or CMS using simple HTTP + HTML contracts.</div>
+    </div>
+  </div>
+
+</div>
 
 ## Quick Start
 
-**New to OpenComponents?** Start with our [Quick Start Tutorial](quick-start-tutorial) for a complete step-by-step guide.
+<div className="quick-start-options">
 
-**Ready to dive in?** Here's the 30-second overview:
+### 🆕 **New to OpenComponents?**
+
+Start with our [**Quick Start Tutorial**](quick-start-tutorial) for a complete hands-on introduction.
+
+### ⚡ **Ready to dive in?**
+
+Get up and running in 30 seconds:
 
 ```bash
 # Install the CLI
@@ -39,22 +76,118 @@ oc dev . 3030
 open http://localhost:3030/my-component/~preview
 ```
 
+</div>
+
 ## Core Concepts
 
-OpenComponents involves two main parts:
+<div className="concept-cards">
 
-- **[Components](#components-management)** are small units of isomorphic code mainly consisting of HTML, JavaScript, and CSS. They can optionally contain some logic, allowing a server-side Node.js application to compose a model that is used to render the view. After rendering they are pieces of pure HTML to be injected in any HTML page.
-- **[Consumers](#consuming-components)** are websites or microsites ([small independently deployable web sites all connected by a front-door service or any routing mechanism](http://tech.opentable.co.uk/blog/2015/02/09/dismantling-the-monolith-microsites-at-opentable/)) that need components for rendering partial contents in their web pages.
+<div className="concept-card">
 
-## Architecture Overview
+### 🧩 **Components**
 
-The framework consists mainly of three parts:
+Small units of isomorphic code consisting of HTML, JavaScript, and CSS. Components can include server-side logic for data fetching and model composition, rendering to pure HTML for injection into any page.
 
-- The **[CLI](#install-the-cli)** allows developers to create, develop, test, and publish components.
-- The **[Library](#setup-a-library)** is where the components are stored after publishing. When components depend on static resources (such as images, CSS files, etc.) these are stored, during packaging and publishing, in a publicly-exposed part of the library that serves as CDN.
-- The **[Registry](#setup-a-registry)** is a REST API that is used to consume, retrieve, and publish components. Since they are immutable, the registry is the entity that handles the traffic between the library and the consumers.
+[Learn about Components →](components/getting-started)
 
-For a detailed technical overview, see our [Architecture Overview](concepts/architecture-overview).
+</div>
+
+<div className="concept-card">
+
+### 🌐 **Registry**
+
+A REST API that handles component consumption, retrieval, and publishing. The registry manages immutable, versioned components and serves as the central contract between producers and consumers.
+
+[Explore Registry Setup →](registry/registry-configuration)
+
+</div>
+
+<div className="concept-card">
+
+### 📦 **Library & CDN**
+
+Centralized storage for published components with automatic CDN distribution for static assets (images, CSS, JavaScript). Ensures fast, global delivery of component resources.
+
+[Setup Library →](registry/registry-configuration#s3)
+
+</div>
+
+<div className="concept-card">
+
+### 🛠️ **CLI Tools**
+
+Powerful command-line interface for creating, developing, testing, and publishing components. Includes local development server with hot reloading and component preview capabilities.
+
+[CLI Reference →](components/cli)
+
+</div>
+
+</div>
+
+## Why Choose OpenComponents?
+
+<div className="why-oc-list-section">
+  <div style={{fontWeight: 700, color: 'var(--ifm-color-primary)', fontSize: '1.1rem', marginBottom: '0.5rem'}}>
+    <span style={{fontSize: '1.3rem', marginRight: '0.5rem'}}>✅</span> Perfect For:
+  </div>
+  <ul className="why-oc-list">
+    <li>
+      <span className="why-oc-list-icon">🖥️</span>
+      <div className="why-oc-list-content">
+        <span className="why-oc-list-title">Mixed technology organizations</span> <span className="why-oc-list-desc">- .NET, Java, PHP backends with JavaScript frontends</span>
+      </div>
+    </li>
+    <li>
+      <span className="why-oc-list-icon">📝</span>
+      <div className="why-oc-list-content">
+        <span className="why-oc-list-title">Large-scale applications</span> <span className="why-oc-list-desc">- Multiple teams, complex deployment requirements</span>
+      </div>
+    </li>
+    <li>
+      <span className="why-oc-list-icon">🎯</span>
+      <div className="why-oc-list-content">
+        <span className="why-oc-list-title">SEO-critical applications</span> <span className="why-oc-list-desc">- E-commerce, content sites, marketing pages</span>
+      </div>
+    </li>
+    <li>
+      <span className="why-oc-list-icon">🔄</span>
+      <div className="why-oc-list-content">
+        <span className="why-oc-list-title">Gradual modernization</span> <span className="why-oc-list-desc">- Migrating from legacy systems without big-bang rewrites</span>
+      </div>
+    </li>
+    <li>
+      <span className="why-oc-list-icon">🌐</span>
+      <div className="why-oc-list-content">
+        <span className="why-oc-list-title">Multi-brand platforms</span> <span className="why-oc-list-desc">- Shared components across different properties</span>
+      </div>
+    </li>
+    <li>
+      <span className="why-oc-list-icon">⚡</span>
+      <div className="why-oc-list-content">
+        <span className="why-oc-list-title">Performance-critical applications</span> <span className="why-oc-list-desc">- Need for server-side rendering and CDN optimization</span>
+      </div>
+    </li>
+  </ul>
+</div>
+<div className="why-oc-list-section">
+  <div style={{fontWeight: 700, color: 'var(--ifm-color-primary)', fontSize: '1.1rem', margin: '1.5rem 0 0.5rem 0'}}>
+    <span style={{fontSize: '1.3rem', marginRight: '0.5rem', color: '#e53935'}}>❌</span> Not Ideal For:
+  </div>
+  <ul className="why-oc-list">
+    <li>
+      <span className="why-oc-list-icon">🔒</span>
+      <div className="why-oc-list-content">
+        <span className="why-oc-list-title">Highly coupled monoliths</span> <span className="why-oc-list-desc">- Projects that require tight integration and single-stack deployments</span>
+      </div>
+    </li>
+    <li>
+      <span className="why-oc-list-icon">🚫</span>
+      <div className="why-oc-list-content">
+        <span className="why-oc-list-title">Single-team, small projects</span> <span className="why-oc-list-desc">- Simpler architectures may be more efficient</span>
+      </div>
+    </li>
+  </ul>
+</div>
 
 ## Components management
 
@@ -214,31 +347,81 @@ A full configuration reference and production-ready examples live in [Registry C
 
 ## What Should I Read Next?
 
-**Choose your path based on your role:**
+<div className="next-steps-grid">
+
+<div className="next-step-card primary">
 
 ### 🚀 **I'm new to OpenComponents**
 
-Start with the [Quick Start Tutorial](quick-start-tutorial) for a complete hands-on introduction.
+Get started with a complete hands-on introduction that covers all the basics.
 
-### 🔧 **I want to build components**
+[**Start Tutorial →**](quick-start-tutorial)
 
-1. [Components Getting Started](components/getting-started) - Learn component creation
-2. [CLI Reference](components/cli) - Master the command-line tools
-3. [Server-side Logic](components/the-server.js) - Add dynamic behavior
+</div>
 
-### 🌐 **I want to consume components**
+<div className="next-step-card">
 
-1. [Client-side Rendering](consumers/client-side-rendering) - Browser integration
-2. [Server-side Rendering](consumers/server-side-rendering) - Backend integration
-3. [Batch Endpoint](consumers/batch-endpoint) - Efficient multi-component loading
+### 🧠 **Understand the Concepts**
 
-### ⚙️ **I need to set up infrastructure**
+Learn why OpenComponents exists and how it compares to other solutions.
 
-1. [Registry Configuration](registry/registry-configuration) - Set up your component registry
-2. [Architecture Overview](concepts/architecture-overview) - Understand the system design
+[**Core Concepts →**](concepts/why-opencomponents)
 
-### 🔍 **I need help with specific topics**
+</div>
 
-- [FAQ](reference/faq) - Common questions and answers
-- [Debugging](building/debugging) - Troubleshooting guide
-- [Template System](building/template-system) - Advanced templating options
+<div className="next-step-card">
+
+### 🔧 **Build Components**
+
+Create your first component and learn development workflows.
+
+**Start here:**
+
+- [Getting Started](components/getting-started)
+- [CLI Reference](components/cli)
+- [Server Logic](components/the-server.js)
+
+</div>
+
+<div className="next-step-card">
+
+### 🌐 **Consume Components**
+
+Integrate components into your applications and websites.
+
+**Integration guides:**
+
+- [Client-side Rendering](consumers/client-side-rendering)
+- [Server-side Rendering](consumers/server-side-rendering)
+- [Batch Loading](consumers/batch-endpoint)
+
+</div>
+
+<div className="next-step-card">
+
+### ⚙️ **Setup Infrastructure**
+
+Deploy registries and configure production environments.
+
+**Infrastructure:**
+
+- [Registry Configuration](registry/registry-configuration)
+- [Architecture Overview](concepts/architecture-overview)
+
+</div>
+
+<div className="next-step-card">
+
+### 🔍 **Get Help**
+
+Find answers to common questions and troubleshooting guides.
+
+**Support resources:**
+
+- [FAQ](reference/faq)
+- [Debugging Guide](building/debugging)
+- [Template System](building/template-system)
+
+</div>
+
+</div>

@@ -15,32 +15,35 @@
 const sidebars = {
   // By default, Docusaurus generates a sidebar from the docs folder structure
   tutorialSidebar: [
-    "intro",
-    "quick-start-tutorial",
     {
       type: "category",
-      label: "Introduction & Concepts",
-      items: ["concepts/why-opencomponents", "concepts/architecture-overview"],
+      label: "Getting Started",
+      collapsed: false,
+      items: [
+        "intro",
+        "quick-start-tutorial",
+      ],
+    },
+    {
+      type: "category", 
+      label: "Core Concepts",
+      collapsed: false,
+      items: [
+        "concepts/index",
+        "concepts/why-opencomponents", 
+        "concepts/architecture-overview"
+      ],
     },
     {
       type: "category",
       label: "Building Components",
       items: [
         "components/getting-started",
-        "building/template-system",
         "components/package.json-structure",
         "components/the-server.js",
+        "building/template-system",
         "components/cli",
         "building/debugging",
-      ],
-    },
-    {
-      type: "category",
-      label: "Publishing & Registry",
-      items: [
-        "components/publishing-to-a-registry",
-        "registry/registry-configuration",
-        "registry/registry-using-google-storage",
       ],
     },
     {
@@ -58,7 +61,16 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Reference & FAQ",
+      label: "Registry & Infrastructure",
+      items: [
+        "components/publishing-to-a-registry",
+        "registry/registry-configuration",
+        "registry/registry-using-google-storage",
+      ],
+    },
+    {
+      type: "category",
+      label: "Reference",
       items: ["reference/faq"],
     },
   ],

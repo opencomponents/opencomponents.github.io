@@ -4,59 +4,131 @@ sidebar_position: 2
 
 # Quick Start Tutorial
 
-This comprehensive tutorial will guide you through creating your first OpenComponents component from scratch. Perfect for complete beginners who want to get started with micro frontends using OpenComponents.
+<div className="tutorial-hero">
 
-## Prerequisites
+## Build Your First OpenComponents Component
 
-OpenComponents requires [Node.js](https://nodejs.org/) 20+ and the OC CLI. If the CLI isn’t installed yet, follow the [CLI installation guide](components/cli#install-the-cli) and then return here.
+This comprehensive tutorial guides you through creating, developing, and deploying your first micro frontend component. **Perfect for complete beginners** who want hands-on experience with OpenComponents.
 
-## What You'll Learn
+</div>
 
-By the end of this tutorial, you'll know how to:
+<div className="tutorial-overview">
 
-- Install and configure the OpenComponents CLI
-- Create your first component
-- Develop and test components locally
-- Publish components to a registry
-- Consume components in web applications
+### 🎯 **What You'll Learn**
 
-## Step 1: Create Your First Component
+<div className="learning-objectives">
 
-Let's start by creating a working directory:
+- ✅ **Install and configure** the OpenComponents CLI
+- ✅ **Create your first component** with modern TypeScript and CSS
+- ✅ **Develop and test locally** with hot reloading
+- ✅ **Understand component structure** and best practices
+- ✅ **Publish to a registry** for production use
+- ✅ **Consume components** in web applications
+
+</div>
+
+### ⏱️ **Time Required:** ~15 minutes
+
+### 📋 **Prerequisites**
+
+- [Node.js](https://nodejs.org/) 20+ installed
+- Basic familiarity with command line
+- Text editor of your choice
+
+</div>
+
+<div className="tutorial-setup">
+
+## 🚀 **Step 0: Install the CLI**
+
+If you haven't installed the OpenComponents CLI yet:
+
+```bash
+npm install -g oc
+```
+
+**Verify installation:**
+```bash
+oc --version
+```
+
+You should see the version number. If not, check the [CLI installation guide](components/cli#install-the-cli) for troubleshooting.
+
+</div>
+
+## 🏗️ **Step 1: Create Your First Component**
+
+<div className="step-section">
+
+### Create Project Directory
 
 ```bash
 mkdir oc-tutorial && cd oc-tutorial
 ```
 
-Let's create a simple "hello-world" component:
+### Generate Component
 
 ```bash
 oc init hello-world
 ```
 
-This creates a new directory with the following structure:
+<div className="success-indicator">
+✅ **Success!** You should see output confirming the component was created.
+</div>
+
+### 📁 **Understanding the Generated Structure**
 
 ```
 hello-world/
-├── package.json          # Component configuration
-├── src/
-│   ├── view.ts           # TypeScript template (the view)
-│   └── server.ts         # Server-side logic
-└── public/
-    └── logo.png          # Static assets
-├── tsconfig.json         # TypeScript configuration
-└── node_modules/         # Dependencies
+├── 📄 package.json          # Component configuration & metadata
+├── 📁 src/
+│   ├── 🎨 view.ts           # TypeScript template (the UI)
+│   └── ⚙️ server.ts         # Server-side logic & data
+├── 📁 public/
+│   └── 🖼️ logo.png          # Static assets (images, CSS, etc.)
+├── ⚙️ tsconfig.json         # TypeScript configuration
+└── 📦 node_modules/         # Dependencies
 ```
 
-### Understanding the Files
+### 🔍 **Key Files Explained**
 
-**package.json**: Contains component metadata, dependencies, and OpenComponents-specific configuration.
+<div className="file-explanations">
 
-**src/view.ts**: The TypeScript template that defines how your component looks using modern JavaScript with CSS imports and client-side event handling.
+<div className="file-explanation">
 
-**src/server.ts**: Contains server-side logic, data fetching, parameter definitions, and API actions.
+#### **📄 package.json**
+Component metadata, dependencies, and OpenComponents-specific configuration including parameters, version, and build settings.
 
-**Important Note**: The generated component is more sophisticated than basic examples you might see in documentation. It includes TypeScript, CSS modules, client-side interactivity, and server actions.
+</div>
+
+<div className="file-explanation">
+
+#### **🎨 src/view.ts**
+The TypeScript template defining your component's appearance. Uses modern JavaScript with CSS imports and client-side event handling.
+
+</div>
+
+<div className="file-explanation">
+
+#### **⚙️ src/server.ts**
+Server-side logic for data fetching, parameter validation, and API actions. Runs when the component is rendered.
+
+</div>
+
+<div className="file-explanation">
+
+#### **🖼️ public/**
+Static assets like images, CSS files, and other resources that will be served via CDN.
+
+</div>
+
+</div>
+
+<div className="pro-tip">
+💡 **Pro Tip:** The generated component includes TypeScript, CSS modules, client-side interactivity, and server actions - much more sophisticated than basic examples you might see elsewhere!
+</div>
+
+</div>
 
 ### Template Options
 

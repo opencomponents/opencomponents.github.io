@@ -1,30 +1,76 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
 ---
 
 # Architecture Overview
 
-## What is OpenComponents?
+<div className="hero-section">
 
-OpenComponents is a **micro frontend architecture** that enables teams to build, deploy, and consume UI components independently. Think of it as a way to break down monolithic frontend applications into smaller, manageable pieces that different teams can own and maintain.
+## How OpenComponents Works
 
-### Simple Conceptual Introduction
+OpenComponents is a **micro frontend architecture** that breaks down monolithic applications into independently deployable, reusable components that teams can own and maintain autonomously.
 
-Imagine you're building a large e-commerce website. Instead of one massive application, you could have:
+</div>
 
-- **Header component** (owned by the Platform team)
-- **Product listing** (owned by the Catalog team)
-- **Shopping cart** (owned by the Commerce team)
-- **User profile** (owned by the Identity team)
+## Conceptual Overview
 
-Each team can:
+<div className="concept-example">
 
-- ✅ **Develop independently** using their preferred technology stack
-- ✅ **Deploy on their own schedule** without coordinating releases
-- ✅ **Scale their components** based on usage patterns
-- ✅ **Maintain ownership** of their specific domain expertise
+### 🛒 **Real-World Example: E-commerce Platform**
 
-This is exactly what OpenComponents enables - **component independence at scale**.
+Instead of building one massive application, imagine decomposing it into independent components:
+
+<div className="component-breakdown">
+
+**🏠 Header Component** → Platform Team
+- Navigation, search, user menu
+- Deployed independently
+- Shared across all pages
+
+**📦 Product Listing** → Catalog Team  
+- Product cards, filters, pagination
+- A/B test new layouts
+- Optimized for performance
+
+**🛒 Shopping Cart** → Commerce Team
+- Cart state, checkout flow
+- Payment integrations
+- Independent scaling
+
+**👤 User Profile** → Identity Team
+- Authentication, preferences
+- Privacy controls
+- Account management
+
+</div>
+
+**The Result:** Each team develops, tests, and deploys independently while users see a seamless, integrated experience.
+
+</div>
+
+## Benefits of This Approach
+
+<div className="benefits-overview">
+
+### 🚀 **Team Independence**
+- **Autonomous development** - No coordination bottlenecks
+- **Technology flexibility** - React, Vue, ES6, or any framework per component  
+- **Independent deployments** - Release on your own schedule
+- **Clear ownership** - Teams own components end-to-end
+
+### 📈 **Scalability & Performance**
+- **Component-level scaling** - Scale based on actual usage patterns
+- **CDN optimization** - Automatic asset distribution globally
+- **Server-side rendering** - SEO and performance without Node.js requirements
+- **Caching strategies** - Intelligent caching at multiple levels
+
+### 🔄 **Gradual Migration**
+- **Start small** - Begin with one component, expand gradually
+- **No big bang** - Migrate from monolith incrementally
+- **Risk mitigation** - Test architecture with non-critical components
+- **Backward compatibility** - Existing applications continue working
+
+</div>
 
 ## Why Choose OpenComponents?
 
@@ -49,31 +95,98 @@ This is exactly what OpenComponents enables - **component independence at scale*
 - **Faster iteration**: Deploy and test new features quickly
 - **Data-driven decisions**: Measure impact of component changes independently
 
-## Core Architecture Components
+## System Architecture
+
+<div className="architecture-diagram">
 
 ```mermaid
-graph TD
-    A[Microsites server-side] --> D[OC Registry]
-    B[Microsites client-side] --> D
-    C[OC CLI] --> D
-    E[OC Components creators/owners] --> C
-
-    D --> F[OC Library]
-    D --> G[OC Runtime agents]
-
-    F --> H[CDN]
-    H --> G
-
-    style A fill:#87CEEB
-    style B fill:#87CEEB
-    style C fill:#87CEEB
-    style D fill:#87CEEB
-    style F fill:#F0E68C
-    style G fill:#87CEEB
-    style H fill:#D3D3D3
+graph TB
+    subgraph "Development"
+        CLI[OC CLI]
+        DEV[Local Dev Server]
+        COMP[Components]
+    end
+    
+    subgraph "Registry & Distribution"
+        REG[OC Registry<br/>REST API]
+        LIB[Component Library<br/>Storage]
+        CDN[CDN<br/>Static Assets]
+    end
+    
+    subgraph "Consumption"
+        SSR[Server-Side<br/>Rendering]
+        CSR[Client-Side<br/>Rendering]
+        APPS[Applications<br/>Any Backend]
+    end
+    
+    CLI --> REG
+    DEV --> REG
+    COMP --> CLI
+    
+    REG --> LIB
+    LIB --> CDN
+    
+    REG --> SSR
+    REG --> CSR
+    CDN --> SSR
+    CDN --> CSR
+    
+    SSR --> APPS
+    CSR --> APPS
+    
+    style REG fill:#4CAF50
+    style LIB fill:#2196F3
+    style CDN fill:#FF9800
+    style CLI fill:#9C27B0
 ```
 
-OpenComponents' heart is a **REST API** that enables consuming and publishing components across distributed systems.
+</div>
+
+### 🏗️ **Core Components**
+
+<div className="architecture-components">
+
+<div className="arch-component">
+
+#### **🛠️ CLI & Development Tools**
+- Component scaffolding and development
+- Local testing with hot reload
+- Publishing and version management
+- Built-in preview and debugging tools
+
+</div>
+
+<div className="arch-component">
+
+#### **🌐 Registry (REST API)**
+- Central component catalog and metadata
+- Version management and resolution
+- Authentication and access control
+- Component rendering and serving
+
+</div>
+
+<div className="arch-component">
+
+#### **📦 Component Library**
+- Immutable component storage
+- Version history and artifacts
+- Dependency management
+- Backup and disaster recovery
+
+</div>
+
+<div className="arch-component">
+
+#### **🚀 CDN & Asset Distribution**
+- Global static asset delivery
+- Automatic optimization and compression
+- Edge caching for performance
+- Bandwidth cost optimization
+
+</div>
+
+</div>
 
 ## Publishing Workflow
 

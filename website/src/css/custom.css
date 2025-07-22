@@ -1,7 +1,6 @@
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * Custom styles for OpenComponents documentation
+ * Inspired by nx.dev's design patterns
  */
 
 /* You can override the default Infima variables here. */
@@ -14,6 +13,9 @@
   --ifm-color-primary-lighter: #be99ff;
   --ifm-color-primary-lightest: #cbadff;
   --ifm-code-font-size: 95%;
+  --ifm-color-secondary-darkest: #33373a; /* Updated for WCAG AA compliance */
+  --ifm-color-secondary: #4a4f55;
+  --ifm-color-secondary-light: #6c737a;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -79,4 +81,726 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
 html[data-theme="dark"] .hero.heroBanner_src-pages-index-module {
   background: linear-gradient(135deg, #7555a7 0%, #2c1949 100%);
   color: #fff;
+}
+
+/* Hero sections */
+.hero-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.hero-section h2 {
+  color: white;
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.hero-section p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  margin-bottom: 0;
+}
+
+/* Value propositions */
+.value-props {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.value-props h3 {
+  color: var(--ifm-color-primary);
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.value-props p {
+  margin-bottom: 0;
+  color: var(--ifm-color-secondary-darkest);
+}
+
+/* Quick start options */
+.quick-start-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.quick-start-options h3 {
+  color: var(--ifm-color-primary);
+  margin-bottom: 1rem;
+}
+
+/* Concept cards */
+.concept-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.concept-card {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 12px;
+  padding: 1.5rem;
+  background: var(--ifm-background-color);
+  transition: all 0.2s ease;
+}
+
+.concept-card:hover {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.concept-card h3 {
+  color: var(--ifm-color-primary);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.concept-card p {
+  margin-bottom: 1rem;
+  color: var(--ifm-color-secondary-darkest);
+}
+
+.concept-card a {
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.concept-card a:hover {
+  text-decoration: underline;
+}
+
+/* Comparison section */
+.comparison-section {
+  margin: 2rem 0;
+  overflow-x: auto;
+}
+
+.comparison-section table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.comparison-section th,
+.comparison-section td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.comparison-section th {
+  background: var(--ifm-color-emphasis-100);
+  font-weight: 600;
+}
+
+/* Next steps grid */
+.next-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.next-step-card {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 12px;
+  padding: 1.5rem;
+  background: var(--ifm-background-color);
+  transition: all 0.2s ease;
+}
+
+.next-step-card.primary {
+  border-color: var(--ifm-color-primary);
+  background: linear-gradient(
+    135deg,
+    var(--ifm-color-primary-lightest),
+    var(--ifm-color-primary-lighter)
+  );
+}
+
+.next-step-card:hover {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.next-step-card h3 {
+  color: var(--ifm-color-primary);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.next-step-card p {
+  margin-bottom: 1rem;
+  color: var(--ifm-color-secondary-darkest);
+}
+
+.next-step-card a {
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.next-step-card a:hover {
+  text-decoration: underline;
+}
+
+/* Concepts overview */
+.concepts-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.concept-overview-card {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 12px;
+  padding: 2rem;
+  background: var(--ifm-background-color);
+  transition: all 0.2s ease;
+}
+
+.concept-overview-card:hover {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+}
+
+.concept-overview-card h2 {
+  color: var(--ifm-color-primary);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.concept-overview-card a {
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.concept-overview-card a:hover {
+  text-decoration: underline;
+}
+
+/* Quick reference */
+.quick-reference {
+  background: var(--ifm-color-emphasis-100);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.quick-reference h3 {
+  color: var(--ifm-color-primary);
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.quick-reference p {
+  margin-bottom: 1.5rem;
+  color: var(--ifm-color-secondary-darkest);
+}
+
+.quick-reference p:last-child {
+  margin-bottom: 0;
+}
+
+/* Problem solution section */
+.problem-solution {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.problem-solution h3 {
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.problem-solution ul {
+  list-style: none;
+  padding: 0;
+}
+
+.problem-solution li {
+  padding: 0.5rem 0;
+  color: var(--ifm-color-secondary-darkest);
+}
+
+/* Benefits grid */
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.benefit-card {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 12px;
+  padding: 1.5rem;
+  background: var(--ifm-background-color);
+  transition: all 0.2s ease;
+}
+
+.benefit-card:hover {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.benefit-card h3 {
+  color: var(--ifm-color-primary);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.benefit-card h4 {
+  color: var(--ifm-color-primary);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.benefit-card p {
+  margin-bottom: 1rem;
+  color: var(--ifm-color-secondary-darkest);
+}
+
+.benefit-card ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 0;
+}
+
+.benefit-card li {
+  padding: 0.25rem 0;
+  color: var(--ifm-color-secondary-darkest);
+}
+
+/* Comparison table */
+.comparison-table {
+  margin: 2rem 0;
+  overflow-x: auto;
+}
+
+.comparison-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.comparison-table th {
+  background: var(--ifm-color-emphasis-100);
+  font-weight: 600;
+}
+
+/* Use cases */
+.use-cases {
+  margin: 2rem 0;
+}
+
+.use-cases h3 {
+  color: var(--ifm-color-primary);
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.use-cases ul {
+  list-style: none;
+  padding: 0;
+}
+
+.use-cases li {
+  padding: 0.5rem 0;
+  color: var(--ifm-color-secondary-darkest);
+}
+
+/* Success stories */
+.success-stories {
+  background: var(--ifm-color-emphasis-100);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.success-stories h3 {
+  color: var(--ifm-color-primary);
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.success-stories p {
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  color: var(--ifm-color-secondary-darkest);
+}
+
+.success-stories p:last-child {
+  margin-bottom: 0;
+}
+
+/* Next steps CTA */
+.next-steps-cta {
+  background: var(--ifm-color-primary-lightest);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.next-steps-cta ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0 0;
+}
+
+.next-steps-cta li {
+  padding: 0.5rem 0;
+}
+
+.next-steps-cta a {
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.next-steps-cta a:hover {
+  text-decoration: underline;
+}
+
+/* Benefits overview */
+.benefits-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.benefits-overview h3 {
+  color: var(--ifm-color-primary);
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.benefits-overview ul {
+  list-style: none;
+  padding: 0;
+}
+
+.benefits-overview li {
+  padding: 0.5rem 0;
+  color: var(--ifm-color-secondary-darkest);
+}
+
+/* Concept example */
+.concept-example {
+  background: var(--ifm-color-emphasis-100);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.concept-example h3 {
+  color: var(--ifm-color-primary);
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.component-breakdown {
+  margin: 1rem 0;
+}
+
+.component-breakdown p {
+  margin-bottom: 0.5rem;
+  color: var(--ifm-color-secondary-darkest);
+}
+
+/* Architecture components */
+.architecture-components {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.arch-component {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 12px;
+  padding: 1.5rem;
+  background: var(--ifm-background-color);
+}
+
+.arch-component h4 {
+  color: var(--ifm-color-primary);
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.arch-component ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.arch-component li {
+  padding: 0.25rem 0;
+  color: var(--ifm-color-secondary-darkest);
+}
+
+/* Architecture diagram */
+.architecture-diagram {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+/* Tutorial styles */
+.tutorial-hero {
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.tutorial-hero h2 {
+  color: white;
+  margin-bottom: 1rem;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.tutorial-hero p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 0;
+}
+
+.tutorial-overview {
+  background: var(--ifm-color-emphasis-100);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.tutorial-overview h3 {
+  color: var(--ifm-color-primary);
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.learning-objectives {
+  margin: 1rem 0;
+}
+
+.learning-objectives ul {
+  list-style: none;
+  padding: 0;
+}
+
+.learning-objectives li {
+  padding: 0.5rem 0;
+  color: var(--ifm-color-secondary-darkest);
+}
+
+.tutorial-setup {
+  border: 2px solid var(--ifm-color-primary-lighter);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.tutorial-setup h2 {
+  color: var(--ifm-color-primary);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.step-section {
+  margin: 2rem 0;
+}
+
+.step-section h3 {
+  color: var(--ifm-color-primary);
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.success-indicator {
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  color: #155724;
+}
+
+.file-explanations {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.file-explanation {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 8px;
+  padding: 1rem;
+  background: var(--ifm-background-color);
+}
+
+.file-explanation h4 {
+  color: var(--ifm-color-primary);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.file-explanation p {
+  margin-bottom: 0;
+  color: var(--ifm-color-secondary-darkest);
+  font-size: 0.9rem;
+}
+
+.pro-tip {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  color: #856404;
+}
+
+/* Value proposition cards for hero points */
+.value-prop-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: var(--ifm-background-color);
+  border-radius: 10px;
+  padding: 1.25rem 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  margin-bottom: 0.5rem;
+}
+.value-prop-card-icon {
+  font-size: 1.7rem;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+.value-prop-card-content {
+  flex: 1;
+}
+.value-prop-card-title {
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+  font-size: 1.08rem;
+}
+.value-prop-card-desc {
+  color: var(--ifm-color-secondary-darkest);
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+/* Improved list styling for 'Perfect For' and 'Not Ideal For' */
+.why-oc-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 0.75rem 2rem;
+  margin: 1.5rem 0 2.5rem 0;
+  padding: 0;
+  list-style: none;
+}
+.why-oc-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: var(--ifm-background-color);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+  color: var(--ifm-color-secondary-darkest);
+  font-size: 1rem;
+}
+.why-oc-list .why-oc-list-icon {
+  font-size: 1.3rem;
+  margin-top: 0.1rem;
+  flex-shrink: 0;
+}
+.why-oc-list .why-oc-list-content {
+  flex: 1;
+}
+.why-oc-list .why-oc-list-title {
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+  margin-bottom: 0.1rem;
+  font-size: 1.02rem;
+}
+.why-oc-list .why-oc-list-desc {
+  color: var(--ifm-color-secondary-darkest);
+  font-size: 0.98rem;
+  margin-bottom: 0;
+}
+
+/* Hero section button override for better contrast */
+.hero .button--secondary {
+  background: #fff;
+  color: var(--ifm-color-primary-darkest);
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(120, 80, 180, 0.08);
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+.hero .button--secondary:hover,
+.hero .button--secondary:focus {
+  background: var(--ifm-color-primary-lightest);
+  color: var(--ifm-color-primary-darkest);
+  box-shadow: 0 4px 16px rgba(120, 80, 180, 0.13);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .hero-section h2 {
+    font-size: 2rem;
+  }
+
+  .tutorial-hero h2 {
+    font-size: 1.8rem;
+  }
+
+  .concept-cards,
+  .benefits-grid,
+  .next-steps-grid,
+  .concepts-overview,
+  .architecture-components,
+  .file-explanations {
+    grid-template-columns: 1fr;
+  }
+
+  .comparison-section,
+  .comparison-table {
+    font-size: 0.9rem;
+  }
 }

@@ -1,8 +1,3 @@
-/**
- * Custom styles for OpenComponents documentation
- * Inspired by nx.dev's design patterns
- */
-
 /* You can override the default Infima variables here. */
 :root {
   --ifm-color-primary: #aa79ff;
@@ -13,9 +8,9 @@
   --ifm-color-primary-lighter: #be99ff;
   --ifm-color-primary-lightest: #cbadff;
   --ifm-code-font-size: 95%;
-  --ifm-color-secondary-darkest: #33373a; /* Updated for WCAG AA compliance */
-  --ifm-color-secondary: #4a4f55;
-  --ifm-color-secondary-light: #6c737a;
+  --ifm-color-secondary-darkest: #2d3136;
+  --ifm-color-secondary: #3a4147;
+  --ifm-color-secondary-light: #5a6169;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -75,12 +70,28 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
 }
 
 .button.secondary {
-  color: #aa79ff;
+  color: #8b47ff;
+  border-color: #8b47ff;
 }
 
 html[data-theme="dark"] .hero.heroBanner_src-pages-index-module {
   background: linear-gradient(135deg, #7555a7 0%, #2c1949 100%);
   color: #fff;
+}
+
+/* Ensure proper contrast for hero text elements */
+.hero.heroBanner_src-pages-index-module h1,
+.hero.heroBanner_src-pages-index-module p,
+.hero.heroBanner_src-pages-index-module .heroDescription {
+  color: #ffffff !important;
+}
+
+html[data-theme="dark"] .hero.heroBanner_src-pages-index-module h1,
+html[data-theme="dark"] .hero.heroBanner_src-pages-index-module p,
+html[data-theme="dark"]
+  .hero.heroBanner_src-pages-index-module
+  .heroDescription {
+  color: #ffffff !important;
 }
 
 /* Hero sections */

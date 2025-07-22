@@ -10,6 +10,7 @@
   position: relative;
   overflow: hidden;
   background: linear-gradient(135deg, #cb9fea 0%, #7555a7 100%);
+  color: #ffffff;
   position: relative;
   border-bottom: 6px solid #aa79ff;
 }

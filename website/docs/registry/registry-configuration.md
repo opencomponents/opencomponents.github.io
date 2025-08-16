@@ -397,9 +397,19 @@ options.routes = [
 
 ## Plugins
 
-Plugins are a way to extend registry's context allowing components to inherit custom functionalities.
+Plugins are a way to extend registry's context allowing components to inherit custom functionalities. They can be configured to receive component context information (name and version) when needed for enhanced security and decision-making capabilities.
 
-This is a plugin example:
+### Plugin Structure
+
+A plugin consists of two main parts:
+
+- **register**: Function called during plugin initialization
+- **execute**: Function that provides the actual plugin functionality
+- **context** (optional): Boolean flag to enable component context awareness
+
+### Basic Plugin Example
+
+This is a basic plugin example without context awareness:
 
 ```js
 // ./registry/oc-plugins/hobknob.js
@@ -418,53 +428,212 @@ module.exports.execute = function (featureName) {
 };
 ```
 
-This is how to register it in a registry:
+### Context-Aware Plugin Example
+
+When you need to make decisions based on which component is calling the plugin, you can enable context awareness:
+
+```js
+// ./registry/oc-plugins/feature-flags.js
+var connection,
+  client = require("./feature-flags-client");
+
+module.exports.register = function (options, dependencies, next) {
+  client.connect(options.connectionString, function (err, conn) {
+    connection = conn;
+    next();
+  });
+};
+
+// With context: true, execute receives component context and returns a function
+module.exports.execute = function (context) {
+  // context contains: { name: "component-name", version: "1.2.3" }
+  return function (featureName) {
+    // Validate if this component is allowed to access this feature
+    if (
+      context.name.startsWith("internal/") &&
+      featureName.startsWith("public/")
+    ) {
+      throw new Error("Internal components cannot access public features");
+    }
+
+    // Log feature access for audit purposes
+    console.log(
+      `Component ${context.name}@${context.version} accessing feature: ${featureName}`
+    );
+
+    return connection.get(featureName);
+  };
+};
+
+// Enable context awareness
+module.exports.context = true;
+```
+
+### Plugin Registration
+
+This is how to register plugins in a registry:
 
 ```js
 // ./registry/init.js
-...
+var oc = require("oc");
 var registry = new oc.Registry(configuration);
 
+// Register a basic plugin
 registry.register({
-  name: 'getFeatureSwitch',
-  register: require('./oc-plugins/hobknob'),
+  name: "getFeatureSwitch",
+  register: require("./oc-plugins/hobknob"),
   options: {
-      connectionString: connectionString
-  }
+    connectionString: connectionString,
+  },
 });
-...
+
+// Register a context-aware plugin
+registry.register({
+  name: "getSecureFeature",
+  register: require("./oc-plugins/feature-flags"),
+  options: {
+    connectionString: connectionString,
+  },
+});
 ```
 
-This is how to use a plugin from a component:
+### Using Plugins from Components
+
+Components use plugins the same way regardless of whether they have context awareness:
 
 ```js
 // ./my-component/server.js
 module.exports.data = function (context, callback) {
   callback(null, {
-    variable: context.plugins.getFeatureSwitch("AbTestHomePage"),
+    // Basic plugin usage
+    basicFeature: context.plugins.getFeatureSwitch("AbTestHomePage"),
+
+    // Context-aware plugin usage (same interface)
+    secureFeature: context.plugins.getSecureFeature("AdminPanel"),
   });
 };
 ```
 
-This is how to depend on (and use) other plugins:
+### When to Use Context Awareness
+
+Context awareness is useful when you need to:
+
+1. **Security Validation**: Restrict certain components from accessing specific features
+2. **Audit Logging**: Track which components are using which features
+3. **Component-Specific Logic**: Provide different behavior based on component name/version
+4. **Rate Limiting**: Apply different limits per component
+5. **Feature Rollouts**: Enable features only for specific components or versions
+
+### Advanced Context-Aware Plugin Example
+
+Here's a more sophisticated example that demonstrates multiple use cases:
 
 ```js
-// ./registry/oc-plugins/hobknob.js
+// ./registry/oc-plugins/advanced-feature-manager.js
 var connection,
-  client = require("./hobknob-client");
-
-module.exports.dependencies = ["log", "otherplugin"];
+  client = require("./feature-manager-client");
 
 module.exports.register = function (options, dependencies, next) {
-  // this register function is only called after all dependencies are registered
   client.connect(options.connectionString, function (err, conn) {
     connection = conn;
-    dependencies.log("hobknob client initialised");
     next();
   });
 };
 
-module.exports.execute = function (featureName) {
-  return connection.get(featureName);
+module.exports.execute = function (context) {
+  return function (featureName, options = {}) {
+    // Security: Check component permissions
+    const componentPermissions = getComponentPermissions(context.name);
+    if (!componentPermissions.canAccess(featureName)) {
+      throw new Error(
+        `Component ${context.name} is not authorized to access ${featureName}`
+      );
+    }
+
+    // Audit: Log all feature access
+    logFeatureAccess({
+      component: context.name,
+      version: context.version,
+      feature: featureName,
+      timestamp: new Date().toISOString(),
+    });
+
+    // Rate limiting: Apply different limits per component
+    const rateLimit = getRateLimit(context.name, featureName);
+    if (isRateLimited(context.name, featureName, rateLimit)) {
+      throw new Error(
+        `Rate limit exceeded for ${context.name} accessing ${featureName}`
+      );
+    }
+
+    // Version-specific logic
+    if (context.version.startsWith("2.")) {
+      // New API for v2+ components
+      return connection.getV2(featureName, options);
+    } else {
+      // Legacy API for older components
+      return connection.getV1(featureName);
+    }
+  };
 };
+
+module.exports.context = true;
+```
+
+### Plugin Dependencies
+
+Plugins can depend on other plugins, and context awareness works with dependencies:
+
+```js
+// ./registry/oc-plugins/secure-logger.js
+var connection,
+  client = require("./logger-client");
+
+module.exports.dependencies = ["log", "otherplugin"];
+
+module.exports.register = function (options, dependencies, next) {
+  // This register function is only called after all dependencies are registered
+  client.connect(options.connectionString, function (err, conn) {
+    connection = conn;
+    dependencies.log("secure logger client initialized");
+    next();
+  });
+};
+
+module.exports.execute = function (context) {
+  return function (message, level = "info") {
+    // Add component context to all log messages
+    const enrichedMessage = {
+      component: context.name,
+      version: context.version,
+      message: message,
+      level: level,
+      timestamp: new Date().toISOString(),
+    };
+
+    return connection.log(enrichedMessage);
+  };
+};
+
+module.exports.context = true;
+```
+
+### Plugin Configuration Options
+
+| Property   | Type    | Required | Default | Description                                       |
+| ---------- | ------- | -------- | ------- | ------------------------------------------------- |
+| `name`     | string  | yes      | -       | Unique identifier for the plugin                  |
+| `register` | object  | yes      | -       | Plugin module with register and execute functions |
+| `options`  | object  | no       | `{}`    | Configuration options passed to the plugin        |
+| `context`  | boolean | no       | `false` | Enable component context awareness                |
+
+### Context Object Structure
+
+When `context: true` is set, the context object passed to the execute function contains:
+
+```js
+{
+  name: "component-name",      // The name of the component calling the plugin
+  version: "1.2.3"            // The version of the component calling the plugin
+}
 ```

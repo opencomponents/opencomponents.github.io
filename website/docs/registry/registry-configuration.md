@@ -139,14 +139,21 @@ For unsuscribing to all [events](#registry-events).
 
 ### Authentication and Security Options
 
-| Parameter                       | Type     | Mandatory | Default | Description                                                                                                                                                                                                                       |
-| ------------------------------- | -------- | --------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <sub>publishAuth</sub>          | object   | no        | -       | Authentication strategy for component publishing. When `undefined`, no authorization is required                                                                                                                                  |
-| <sub>publishAuth.type</sub>     | string   | no        | -       | Authentication type. Supports `"basic"` or custom authentication objects                                                                                                                                                          |
-| <sub>publishAuth.username</sub> | string   | no        | -       | Username for basic authentication (when type is `"basic"`)                                                                                                                                                                        |
-| <sub>publishAuth.password</sub> | string   | no        | -       | Password for basic authentication (when type is `"basic"`)                                                                                                                                                                        |
-| <sub>publishAuth.logins</sub>   | array    | no        | -       | Array of login objects for multiple users: `[{ username: "user1", password: "pass1" }, ...]` (when type is `"basic"`)                                                                                                             |
-| <sub>publishValidation</sub>    | function | no        | -       | Custom validation logic executed during component publishing. Function signature: `(pkgJson: unknown, context: { user?: string }) => { isValid: boolean; error?: string } \| boolean`. [See example](#publish-validation-example) |
+| Parameter                                | Type                  | Mandatory | Default   | Description                                                                                                                                                                                                                       |
+| ---------------------------------------- | --------------------- | --------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <sub>publishAuth</sub>                   | object                | no        | -         | Authentication strategy for component publishing. When `undefined`, no authorization is required                                                                                                                                  |
+| <sub>publishAuth.type</sub>              | string                | no        | -         | Authentication type. Supports `"basic"` or custom authentication objects                                                                                                                                                          |
+| <sub>publishAuth.username</sub>          | string                | no        | -         | Username for basic authentication (when type is `"basic"`)                                                                                                                                                                        |
+| <sub>publishAuth.password</sub>          | string                | no        | -         | Password for basic authentication (when type is `"basic"`)                                                                                                                                                                        |
+| <sub>publishAuth.logins</sub>            | array                 | no        | -         | Array of login objects for multiple users: `[{ username: "user1", password: "pass1" }, ...]` (when type is `"basic"`)                                                                                                             |
+| <sub>publishValidation</sub>             | function              | no        | -         | Custom validation logic executed during component publishing. Function signature: `(pkgJson: unknown, context: { user?: string }) => { isValid: boolean; error?: string } \| boolean`. [See example](#publish-validation-example) |
+| <sub>publishRateLimit</sub>              | object                | no        | -         | Rate-limiting configuration for component publishing. When `undefined`, no throttling is applied                                                                                                                                  |
+| <sub>publishRateLimit.windowMs</sub>     | number (milliseconds) | no        | `900000`  | Size of the sliding window used for rate limiting. Defaults to 15 minutes                                                                                                                                                         |
+| <sub>publishRateLimit.max</sub>          | number                | no        | `100`     | Maximum number of publish requests allowed within `windowMs`                                                                                                                                                                      |
+| <sub>publishRateLimit.keyGenerator</sub> | function              | no        | -         | Function that returns the identifier used for counting hits (defaults to `${req.ip}:${req.user ?? 'anon'}`). Signature: `(req: Request) => string`                                                                                |
+| <sub>publishRateLimit.skip</sub>         | function              | no        | -         | Predicate to bypass throttling for specific requests/users. Signature: `(req: Request) => boolean`                                                                                                                                |
+| <sub>publishRateLimit.store</sub>        | object                | no        | In-memory | Custom storage backend implementing the `RateLimitStore` interface                                                                                                                                                                |
+| <sub>publishRateLimit.maxCacheSize</sub> | number                | no        | `1000`    | Maximum number of rate-limit entries the default in-memory store keeps                                                                                                                                                            |
 
 ### Component and Template Options
 
@@ -288,6 +295,31 @@ var configuration = {
   },
   refreshInterval: 300,
   pollingInterval: 10,
+};
+
+var registry = new oc.Registry(configuration);
+registry.start();
+```
+
+### Publish Rate Limit Configuration
+
+```js
+var oc = require("oc");
+
+var configuration = {
+  baseUrl: "https://components.mycompany.com/",
+  port: 3000,
+
+  // Throttle component publishing to max 50 requests per 10-minute window
+  publishRateLimit: {
+    windowMs: 10 * 60 * 1000, // 10 minutes
+    max: 50,
+    // Optional fine-tuning examples:
+    // keyGenerator: (req) => `${req.ip}:${req.user ?? 'anon'}`,
+    // skip: (req) => req.user === "ci-bot",            // allow automated CI
+    // store: new RedisRateLimitStore(),                  // pluggable backend
+    // maxCacheSize: 5000,
+  },
 };
 
 var registry = new oc.Registry(configuration);

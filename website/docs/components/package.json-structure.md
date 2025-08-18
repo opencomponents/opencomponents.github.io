@@ -199,14 +199,49 @@ For components that fetch data or perform server-side processing:
 
 #### API Documentation (`oc.parameters`)
 
-| Parameter                        | Type      | Required           | Description                                         |
-| -------------------------------- | --------- | ------------------ | --------------------------------------------------- |
-| `oc.parameters`                  | `object`  | 🔧 **Recommended** | Component API definition for validation and docs    |
-| `oc.parameters[key].type`        | `string`  | ✅ **Required**    | Parameter type: `"string"`, `"boolean"`, `"number"` |
-| `oc.parameters[key].mandatory`   | `boolean` | ⚪ **Optional**    | If `true`, parameter is required (default: `false`) |
-| `oc.parameters[key].description` | `string`  | 🔧 **Recommended** | Parameter description for documentation             |
-| `oc.parameters[key].example`     | `string`  | 🔧 **Recommended** | Example value for documentation                     |
-| `oc.parameters[key].default`     | `any`     | ⚪ **Optional**    | Default value when parameter not provided           |
+| Parameter                        | Type      | Required           | Description                                                              |
+| -------------------------------- | --------- | ------------------ | ------------------------------------------------------------------------ |
+| `oc.parameters`                  | `object`  | 🔧 **Recommended** | Component API definition for validation and docs                         |
+| `oc.parameters[key].type`        | `string`  | ✅ **Required**    | Parameter type: `"string"`, `"boolean"`, `"number"`                      |
+| `oc.parameters[key].mandatory`   | `boolean` | ⚪ **Optional**    | If `true`, parameter is required (default: `false`)                      |
+| `oc.parameters[key].description` | `string`  | 🔧 **Recommended** | Parameter description for documentation                                  |
+| `oc.parameters[key].example`     | `string`  | 🔧 **Recommended** | Example value for documentation                                          |
+| `oc.parameters[key].default`     | `any`     | ⚪ **Optional**    | Default value when parameter not provided                                |
+| `oc.parameters[key].enum`        | `array`   | ⚪ **Optional**    | Restrict parameter to specific values (e.g., `["red", "green", "blue"]`) |
+
+**Enum Parameter Example:**
+
+The `enum` property is particularly useful when you want to restrict parameter values to a predefined set of options. This provides better validation, documentation, and prevents invalid values from being passed to your component.
+
+```json
+{
+  "oc": {
+    "parameters": {
+      "theme": {
+        "type": "string",
+        "mandatory": false,
+        "description": "Visual theme for the component",
+        "example": "dark",
+        "enum": ["light", "dark", "auto"]
+      },
+      "size": {
+        "type": "string",
+        "mandatory": true,
+        "description": "Component size variant",
+        "enum": ["small", "medium", "large"]
+      },
+      "status": {
+        "type": "string",
+        "mandatory": false,
+        "description": "Current status",
+        "enum": ["pending", "success", "error", "warning"]
+      }
+    }
+  }
+}
+```
+
+When a parameter with an `enum` is provided with a value not in the allowed list, the registry will return a validation error with the allowed values listed.
 
 #### Advanced Configuration
 

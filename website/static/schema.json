@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "title": "OpenComponents CLI Configuration",
-  "description": "Configuration file for the OpenComponents CLI tool. Used to configure registries and development mocks.",
+  "description": "Configuration file for the OpenComponents CLI tool. Used to configure registries and development settings.",
   "properties": {
     "$schema": {
       "description": "A field for the [JSON schema](https://json-schema.org/) specification",
@@ -24,18 +24,34 @@
         "https://staging-registry.com"
       ]
     },
-    "client": {
-      "description": "Custom URL for the oc-client-browser.js file to use during development. If specified, this URL will be used instead of the default bundled client library.",
-      "type": "string",
-      "format": "uri",
-      "example": "https://myregistry.com/oc-client/client.dev.js"
-    },
-    "mocks": {
-      "description": "Development configuration for mocking plugins that would normally be provided by production registries. Useful for local development and testing.",
+    "development": {
+      "description": "Development-specific configuration settings for local development and testing.",
       "type": "object",
       "properties": {
+        "fallback": {
+          "description": "Fallback configuration for when components cannot be found in the local registry. Allows specifying a fallback registry URL and optionally using its client library.",
+          "type": "object",
+          "properties": {
+            "url": {
+              "description": "URL of the fallback registry to use when components cannot be found locally.",
+              "type": "string",
+              "format": "uri",
+              "example": "https://fallback-registry.com"
+            },
+            "client": {
+              "description": "Whether to use the fallback registry's oc-client-browser.js for previewing components. Defaults to false.",
+              "type": "boolean",
+              "default": false,
+              "example": true
+            }
+          },
+          "required": [
+            "url"
+          ],
+          "additionalProperties": false
+        },
         "plugins": {
-          "description": "Plugin mocking configuration. Plugins are shared functions that components can use, provided by registries in production.",
+          "description": "Plugin mocking configuration for development. Plugins are shared functions that components can use, provided by registries in production.",
           "type": "object",
           "properties": {
             "dynamic": {
@@ -67,6 +83,48 @@
         }
       },
       "additionalProperties": false
+    },
+    "mocks": {
+      "description": "DEPRECATED: Use development.plugins instead. Development configuration for mocking plugins that would normally be provided by production registries.",
+      "type": "object",
+      "deprecated": true,
+      "properties": {
+        "plugins": {
+          "description": "DEPRECATED: Use development.plugins instead. Plugin mocking configuration. Plugins are shared functions that components can use, provided by registries in production.",
+          "type": "object",
+          "deprecated": true,
+          "properties": {
+            "dynamic": {
+              "description": "DEPRECATED: Use development.plugins.dynamic instead. Dynamic plugin mocks. Values are file paths to JavaScript modules that export 'register' and 'execute' functions.",
+              "type": "object",
+              "deprecated": true,
+              "additionalProperties": {
+                "type": "string",
+                "description": "Path to a JavaScript file that exports register and execute functions"
+              },
+              "example": {
+                "hash": "./mocks/hash-plugin.js",
+                "auth": "./mocks/auth-plugin.js"
+              }
+            },
+            "static": {
+              "description": "DEPRECATED: Use development.plugins.static instead. Static plugin mocks. Values are static strings that will always be returned by the plugin.",
+              "type": "object",
+              "deprecated": true,
+              "additionalProperties": {
+                "type": "string",
+                "description": "Static value that the plugin should always return"
+              },
+              "example": {
+                "hash": "mocked-hash-value",
+                "apiKey": "test-api-key-123"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     }
   },
   "required": [
@@ -78,7 +136,27 @@
       "registries": [
         "https://my-registry.com"
       ],
-      "client": "https://cdn.example.com/oc-client-browser.js",
+      "development": {
+        "fallback": {
+          "url": "https://fallback-registry.com",
+          "client": true
+        },
+        "plugins": {
+          "static": {
+            "hash": "test-hash-value",
+            "apiKey": "dev-api-key"
+          },
+          "dynamic": {
+            "auth": "./mocks/auth-plugin.js"
+          }
+        }
+      }
+    },
+    {
+      "registries": [
+        "https://my-registry.com"
+      ],
+      "client": "https://myregistry.com/oc-client/client.dev.js",
       "mocks": {
         "plugins": {
           "static": {

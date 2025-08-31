@@ -86,6 +86,9 @@ oc preview http://localhost:3030/my-component
 # Add registry (one-time setup)
 oc registry add https://my-registry.com
 
+# Validate component before publishing
+oc validate my-component/
+
 # Package and publish
 oc publish my-component --username=myuser --password=mypass
 
@@ -113,6 +116,7 @@ oc mock plugin hash "test-value"
 - `oc init <name>` - Create new component
 - `oc dev . <port>` - Start development server
 - `oc preview <url>` - Preview component
+- `oc validate <path>` - Validate component against registry requirements
 - `oc publish <path>` - Publish component
 
 ### Setup Commands (One-time)
@@ -133,6 +137,7 @@ oc mock plugin hash "test-value"
 | `init`         | Create component    | `oc init header`                          |
 | `dev`          | Start dev server    | `oc dev . 3030`                           |
 | `preview`      | Test component      | `oc preview http://localhost:3030/header` |
+| `validate`     | Validate component  | `oc validate header/`                     |
 | `publish`      | Deploy component    | `oc publish header/`                      |
 | `registry add` | Add registry        | `oc registry add https://my-registry.com` |
 | `clean`        | Remove node_modules | `oc clean . --yes`                        |
@@ -334,6 +339,44 @@ $ oc preview <componentHref>
 
 ```sh
 $ oc preview "http://localhost:3000/my-new-component/1.0.0/?param1=hello&name=Arthur"
+```
+
+---
+
+### validate
+
+Validate a component against registry requirements without publishing
+
+#### Usage:
+
+```sh
+$ oc validate <componentPath> [options]
+```
+
+#### Parameters:
+
+| Name            | Description                           | Default |
+| --------------- | ------------------------------------- | ------- |
+| `componentPath` | The path of the component to validate |         |
+
+#### Options:
+
+| Name            | Description                                                       | Default |
+| --------------- | ----------------------------------------------------------------- | ------- |
+| `--skipPackage` | Skip packaging step and validate existing `_package/package.json` | false   |
+| `--registries`  | Override registries from `oc.json` with custom list               |         |
+
+#### Examples:
+
+```sh
+# Validate component against configured registries
+$ oc validate my-component/
+
+# Validate without packaging (uses existing _package/package.json)
+$ oc validate my-component/ --skipPackage
+
+# Validate against specific registries
+$ oc validate my-component/ --registries http://registry1.com/ http://registry2.com/
 ```
 
 ---

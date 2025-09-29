@@ -1,0 +1,198 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "OpenComponents CLI Configuration",
+  "description": "Configuration file for the OpenComponents CLI tool. Used to configure registries and development settings.",
+  "properties": {
+    "$schema": {
+      "description": "A field for the [JSON schema](https://json-schema.org/) specification",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "registries": {
+      "description": "List of registry URLs where components will be published. These are the target registries for component deployment.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "URL of an OpenComponents registry (e.g., 'https://my-registry.com')"
+      },
+      "minItems": 1,
+      "example": [
+        "https://my-registry.com",
+        "https://staging-registry.com"
+      ]
+    },
+    "preload": {
+      "description": "List of component dependencies to preload. Preloading components can improve performance by fetching dependencies before they are needed.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "Component name or path to preload"
+      },
+      "example": [
+        "header",
+        "footer",
+        "common-ui"
+      ]
+    },
+    "routes": {
+      "description": "Custom routing configuration for components. Allows defining custom URL patterns and mappings for component rendering.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "description": "Route pattern mapped to component name or path"
+      },
+      "example": {
+        "/custom-header": "header-component",
+        "/api/*": "api-wrapper"
+      }
+    },
+    "development": {
+      "description": "Development-specific configuration settings for local development and testing.",
+      "type": "object",
+      "properties": {
+        "fallback": {
+          "description": "Fallback configuration for when components cannot be found in the local registry. Allows specifying a fallback registry URL and optionally using its client library.",
+          "type": "object",
+          "properties": {
+            "url": {
+              "description": "URL of the fallback registry to use when components cannot be found locally.",
+              "type": "string",
+              "format": "uri",
+              "example": "https://fallback-registry.com"
+            },
+            "client": {
+              "description": "Whether to use the fallback registry's oc-client-browser.js for previewing components. Defaults to false.",
+              "type": "boolean",
+              "default": false,
+              "example": true
+            }
+          },
+          "required": [
+            "url"
+          ],
+          "additionalProperties": false
+        },
+        "plugins": {
+          "description": "Plugin mocking configuration for development. Plugins are shared functions that components can use, provided by registries in production.",
+          "type": "object",
+          "properties": {
+            "dynamic": {
+              "description": "Dynamic plugin mocks. Values are file paths to JavaScript modules that export 'register' and 'execute' functions. Use this when you need custom mock behavior.",
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "description": "Path to a JavaScript file that exports register and execute functions"
+              },
+              "example": {
+                "hash": "./mocks/hash-plugin.js",
+                "auth": "./mocks/auth-plugin.js"
+              }
+            },
+            "static": {
+              "description": "Static plugin mocks. Values are static strings that will always be returned by the plugin. Use this for simple value mocking.",
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "description": "Static value that the plugin should always return"
+              },
+              "example": {
+                "hash": "mocked-hash-value",
+                "apiKey": "test-api-key-123"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "mocks": {
+      "description": "DEPRECATED: Use development.plugins instead. Development configuration for mocking plugins that would normally be provided by production registries.",
+      "type": "object",
+      "deprecated": true,
+      "properties": {
+        "plugins": {
+          "description": "DEPRECATED: Use development.plugins instead. Plugin mocking configuration. Plugins are shared functions that components can use, provided by registries in production.",
+          "type": "object",
+          "deprecated": true,
+          "properties": {
+            "dynamic": {
+              "description": "DEPRECATED: Use development.plugins.dynamic instead. Dynamic plugin mocks. Values are file paths to JavaScript modules that export 'register' and 'execute' functions.",
+              "type": "object",
+              "deprecated": true,
+              "additionalProperties": {
+                "type": "string",
+                "description": "Path to a JavaScript file that exports register and execute functions"
+              },
+              "example": {
+                "hash": "./mocks/hash-plugin.js",
+                "auth": "./mocks/auth-plugin.js"
+              }
+            },
+            "static": {
+              "description": "DEPRECATED: Use development.plugins.static instead. Static plugin mocks. Values are static strings that will always be returned by the plugin.",
+              "type": "object",
+              "deprecated": true,
+              "additionalProperties": {
+                "type": "string",
+                "description": "Static value that the plugin should always return"
+              },
+              "example": {
+                "hash": "mocked-hash-value",
+                "apiKey": "test-api-key-123"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "registries"
+  ],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "registries": [
+        "https://my-registry.com"
+      ],
+      "development": {
+        "fallback": {
+          "url": "https://fallback-registry.com",
+          "client": true
+        },
+        "plugins": {
+          "static": {
+            "hash": "test-hash-value",
+            "apiKey": "dev-api-key"
+          },
+          "dynamic": {
+            "auth": "./mocks/auth-plugin.js"
+          }
+        }
+      }
+    },
+    {
+      "registries": [
+        "https://my-registry.com"
+      ],
+      "client": "https://myregistry.com/oc-client/client.dev.js",
+      "mocks": {
+        "plugins": {
+          "static": {
+            "hash": "test-hash-value",
+            "apiKey": "dev-api-key"
+          },
+          "dynamic": {
+            "auth": "./mocks/auth-plugin.js"
+          }
+        }
+      }
+    }
+  ]
+}

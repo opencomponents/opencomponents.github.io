@@ -44,6 +44,7 @@ const config = {
       }),
     ],
   ],
+  plugins: [require.resolve("./plugins/copy-markdown-files.js")],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({

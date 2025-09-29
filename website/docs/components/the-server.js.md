@@ -2,20 +2,22 @@
 sidebar_position: 4
 ---
 
-# The server.js
+# The server (entry.server.ts)
 
-## When Do You Need server.js?
+Note: The legacy CommonJS style `module.exports.data = (context, callback) => { ... }` still works, but is considered deprecated. New components should use `src/entry.server.ts` with the `Server` API.
+
+## When do you need a server entry?
 
 Understanding when to use `server.js` is crucial for building effective OpenComponents. Here's a simple decision guide:
 
-### Static Components (No server.js needed)
+### Static components (no server entry needed)
 
 Use static components when your content doesn't change based on user input or external data:
 
-```javascript
-// template.js - Static component
-export default function (model) {
-  return `<div class="banner">Welcome to our site!</div>`;
+```tsx
+// src/entry.client.tsx - Static component
+export default function Component() {
+  return <div className="banner">Welcome to our site!</div>;
 }
 ```
 
@@ -26,9 +28,9 @@ export default function (model) {
 - Copyright footers
 - Terms of service links
 
-### Dynamic Components (server.js required)
+### Dynamic components (server entry required)
 
-Use `server.js` when you need to:
+Use a server entry when you need to:
 
 - **Fetch data from APIs or databases**
 - **Process user parameters**
@@ -36,261 +38,205 @@ Use `server.js` when you need to:
 - **Handle authentication or personalization**
 - **Format or transform data**
 
-```javascript
-// template.js - Dynamic component
-export default function (model) {
-  return `<div>Hello ${model.name}, you have ${model.messageCount} messages</div>`;
-}
-```
-
-```javascript
-// server.js - Provides dynamic data
-module.exports.data = function (context, callback) {
-  const userId = context.params.userId;
-  // Fetch user data and message count
-  callback(null, {
-    name: "John",
-    messageCount: 5,
-  });
-};
-```
-
-## Simple Examples First
-
-Let's start with the most basic dynamic component and gradually add complexity.
-
-### Example 1: Basic Parameter Handling
-
-**Goal**: Display a personalized greeting using a name parameter.
-
-```javascript
-// server.js - Simple parameter handling
-module.exports.data = function (context, callback) {
-  callback(null, {
-    name: context.params.name || "Guest",
-  });
-};
-```
-
-```javascript
-// template.js
-export default function (model) {
-  return `<div>Hello ${model.name}!</div>`;
-}
-```
-
-**Usage**: `<oc-component href="http://localhost:3030/greeting?name=Alice"></oc-component>`
-
-### Example 2: Simple Data Processing
-
-**Goal**: Format and display current date information.
-
-```javascript
-// server.js - Basic data processing
-module.exports.data = function (context, callback) {
-  const now = new Date();
-  callback(null, {
-    currentDate: now.toLocaleDateString(),
-    currentTime: now.toLocaleTimeString(),
-    dayOfWeek: now.toLocaleDateString("en-US", { weekday: "long" }),
-  });
-};
-```
-
-```javascript
-// template.js
-export default function (model) {
-  return `
-    <div class="date-widget">
-      <h3>Today is ${model.dayOfWeek}</h3>
-      <p>Date: ${model.currentDate}</p>
-      <p>Time: ${model.currentTime}</p>
+```tsx
+// src/entry.client.tsx - Dynamic component
+export default function Component(props: {
+  name: string;
+  messageCount: number;
+}) {
+  return (
+    <div>
+      Hello {props.name}, you have {props.messageCount} messages
     </div>
-  `;
+  );
 }
 ```
 
-### Example 3: Conditional Logic
+```ts
+// src/entry.server.ts - Provides dynamic data (modern API)
+import { Server } from "oc-server";
 
-**Goal**: Show different content based on user preferences.
-
-```javascript
-// server.js - Conditional logic
-module.exports.data = function (context, callback) {
-  const theme = context.params.theme || "light";
-  const showWelcome = context.params.showWelcome === "true";
-
-  callback(null, {
-    theme: theme,
-    showWelcome: showWelcome,
-    cssClass: theme === "dark" ? "dark-theme" : "light-theme",
-    welcomeMessage: showWelcome ? "Welcome back!" : "",
+export const server = new Server({ development: { console: true } })
+  .withParameters({
+    userId: {
+      type: "number",
+      description: "User id",
+      example: 1,
+      default: 1,
+      mandatory: true,
+    },
+  })
+  .handler(async (params, ctx) => {
+    const { userId } = params;
+    // Fetch user data and message count
+    ctx.setHeader("Cache-Control", "max-age=300");
+    return { name: "John", messageCount: 5 };
+  })
+  .action("markAsRead", async (params: { messageId: string }) => {
+    return { ok: true };
   });
-};
 ```
 
-## Practical Use Case Examples
+## Basic Example
 
-### Use Case 1: User Authentication Status
+Here's a simple dynamic component that demonstrates the core pattern:
 
-```javascript
-// server.js - Authentication check
-module.exports.data = function (context, callback) {
-  const authToken = context.requestHeaders.authorization;
+```ts
+// src/entry.server.ts - Parameter handling with conditional logic
+import { Server } from "oc-server";
 
-  if (authToken && authToken.startsWith("Bearer ")) {
-    // In real implementation, validate token
-    callback(null, {
-      isAuthenticated: true,
-      userRole: "user",
-      showLoginButton: false,
-      showLogoutButton: true,
-    });
-  } else {
-    callback(null, {
-      isAuthenticated: false,
-      userRole: "guest",
-      showLoginButton: true,
-      showLogoutButton: false,
-    });
-  }
-};
-```
-
-### Use Case 2: API Data Fetching
-
-```javascript
-// server.js - API integration (requires dependencies in package.json)
-module.exports.data = function (context, callback) {
-  const userId = context.params.userId;
-
-  if (!userId) {
-    return callback(null, { error: "User ID required" });
-  }
-
-  // Example API call (requires axios in dependencies)
-  // const axios = require('axios');
-  // axios.get(`https://api.example.com/users/${userId}`)
-  //   .then(response => {
-  //     callback(null, {
-  //       user: response.data,
-  //       lastLogin: response.data.lastLogin,
-  //       profileComplete: response.data.profileComplete
-  //     });
-  //   })
-  //   .catch(error => {
-  //     callback(null, { error: 'Failed to load user data' });
-  //   });
-
-  // Mock data for example
-  callback(null, {
-    user: { name: "John Doe", email: "john@example.com" },
-    lastLogin: "2025-01-15",
-    profileComplete: true,
+export const server = new Server()
+  .withParameters({
+    name: { type: "string", default: "Guest" },
+    theme: { type: "string", default: "light" },
+  })
+  .handler(async (params) => {
+    const now = new Date();
+    return {
+      name: params.name ?? "Guest",
+      theme: params.theme ?? "light",
+      currentTime: now.toLocaleTimeString(),
+      cssClass: params.theme === "dark" ? "dark-theme" : "light-theme",
+    };
   });
-};
 ```
 
-### Use Case 3: Localization
+```tsx
+// src/entry.client.tsx
+export default function Component(props: {
+  name: string;
+  theme: string;
+  currentTime: string;
+  cssClass: string;
+}) {
+  return (
+    <div className={props.cssClass}>
+      <h3>Hello {props.name}!</h3>
+      <p>Current time: {props.currentTime}</p>
+    </div>
+  );
+}
+```
 
-```javascript
-// server.js - Internationalization
-module.exports.data = function (context, callback) {
-  const language =
-    context.params.lang || context.acceptLanguage[0]?.code || "en";
+**Usage**: `<oc-component href="http://localhost:3030/greeting?name=Alice&theme=dark"></oc-component>`
 
-  const translations = {
-    en: {
-      welcome: "Welcome",
-      goodbye: "Goodbye",
-      loading: "Loading...",
-    },
-    es: {
-      welcome: "Bienvenido",
-      goodbye: "Adiós",
-      loading: "Cargando...",
-    },
-    fr: {
-      welcome: "Bienvenue",
-      goodbye: "Au revoir",
-      loading: "Chargement...",
-    },
+## Real-World Example: User Dashboard
+
+Here's a more complex example that combines authentication, API data fetching, and error handling:
+
+```ts
+// src/entry.server.ts - User dashboard with auth and API integration
+import { Server } from "oc-server";
+
+type User = {
+  id: string;
+  name: string;
+  email: string;
+  role: "user" | "admin";
+} | null;
+
+async function getUserFromToken(token?: string): Promise<User> {
+  if (!token) return null;
+  // In real implementation: validate JWT token
+  return {
+    id: "123",
+    name: "John Doe",
+    email: "john@example.com",
+    role: "user",
   };
+}
 
-  callback(null, {
-    language: language,
-    text: translations[language] || translations.en,
+export const server = new Server()
+  .withParameters({ userId: { type: "number", mandatory: true } })
+  .middleware(async (_params, ctx) => {
+    const token = ctx.requestHeaders.authorization?.replace("Bearer ", "");
+    const user = await getUserFromToken(token);
+    return { user };
+  })
+  .handler(async ({ userId }, ctx) => {
+    const isAuthenticated = !!ctx.state.user;
+
+    if (!isAuthenticated) {
+      return {
+        error: "Authentication required",
+        showLoginButton: true,
+      } as const;
+    }
+
+    try {
+      // In real implementation: fetch from API
+      // const res = await fetch(`https://api.example.com/users/${userId}`);
+      // const userData = await res.json();
+
+      const userData = {
+        name: "John Doe",
+        email: "john@example.com",
+        lastLogin: "2025-01-15",
+        profileComplete: true,
+      };
+
+      return {
+        user: userData,
+        isAuthenticated: true,
+        userRole: ctx.state.user?.role ?? "guest",
+        showLogoutButton: true,
+      };
+    } catch {
+      return {
+        error: "Failed to load user data",
+        isAuthenticated: true,
+      } as const;
+    }
   });
-};
 ```
 
 ## Advanced Features
 
-### Error Handling
+### Error handling
 
-```javascript
-// server.js - Proper error handling
-module.exports.data = function (context, callback) {
-  try {
-    const requiredParam = context.params.required;
+```ts
+import { Server, ServerError } from "oc-server";
 
-    if (!requiredParam) {
-      return callback(new Error("Required parameter missing"));
-    }
-
-    // Process data
-    const result = processData(requiredParam);
-    callback(null, result);
-  } catch (error) {
-    callback(error);
-  }
-};
-
-function processData(param) {
-  // Your processing logic here
+function processData(param: string) {
   return { processed: param };
 }
-```
 
-### Using Context Properties
-
-The context object provides access to request data and registry functionality:
-
-In the given example, we want to pass name parameter to our view. To achieve this goal, we can modify server file in this way:
-
-```js
-"use strict";
-
-module.exports.data = function (context, callback) {
-  callback(null, {
-    name: "John",
+export const server = new Server()
+  .withParameters({ required: { type: "string", mandatory: true } })
+  .handler(async ({ required }) => {
+    if (!required) throw new ServerError(400, "Required parameter missing");
+    return processData(required);
   });
-};
 ```
 
-The `first parameter` is used in case we want to fire an error and avoid the rendering.
+To prevent rendering entirely (e.g., invalid state), return nothing:
 
-The `second parameter` of the `callback` function is a view-model (JSON object) which is used by the view.
-
-However, for more complicated operations we may need query parameters from component request. In this case we can use `params` property from [context](#context-properties) object (first parameter of our server function).
-
-In our example we want to extract `name` parameter from the `context` object:
-
-```js
-module.exports.data = function (context, callback) {
-  callback(null, {
-    name: context.params.name || "John",
-  });
-};
+```ts
+export const server = new Server().handler(async (params) => {
+  if ((params as any).name === "Invalid") {
+    return; // prevents rendering
+  }
+  return { name: (params as any).name };
+});
 ```
 
-To consume the component passing the `name` parameter we need to modify the reference link, e.g:
+### Using context
 
-```html
-<oc-component
-  href="http://localhost:3030/hello-world?name=James"
-></oc-component>
-```
+The context object (`ctx`) provides access to request data and helpers:
+
+- acceptLanguage: parsed `Accept-Language` header
+- baseUrl: registry base URL
+- env: registry environment
+- params: validated parameters
+- plugins: registry plugins
+- requestHeaders: original request headers
+- requestIp: client IP
+- setEmptyResponse(): set the response to empty
+- setHeader(name, value): set a response header
+- setCookie(name, value, options?): set a cookie
+- staticPath: public path for static assets
+- templates: template metadata
+- state: middleware-provided state
 
 ## Context properties
 
@@ -383,26 +329,21 @@ In this example an image (`public/static_resource.png`) will be our static resou
 
 ### Prepare package file
 
-First step is to prepare `package.json` file. It is necessary to add `static` property in `oc.files` object:
+Add `static` to `oc.files` and point to the modern entries:
 
-```js
+```json
 {
   "name": "hello-world",
-  "description": "description of my hello-world component",
   "version": "1.0.0",
-  "repository": "",
   "oc": {
     "files": {
-      "data": "server.js",
+      "data": "src/entry.server.ts",
       "template": {
-        "src": "template.js",
-        "type": "oc-template-es6"
+        "src": "src/entry.client.tsx",
+        "type": "oc-template-esm"
       },
       "static": ["public"]
     }
-  },
-  "devDependencies": {
-    "oc-template-es6-compiler": "6.0.8"
   }
 }
 ```
@@ -413,9 +354,9 @@ It is an array of names of directories. In the above example the `public` direct
 
 We can add image to the component view template using `img` tag in which `src` attribute is bound to `img` viewModel property.
 
-```javascript
-export default function (model) {
-  return `<img src="${model.path}public/static_resource.png" />`;
+```tsx
+export default function Component(props: { path: string }) {
+  return <img src={`${props.path}public/static_resource.png`} />;
 }
 ```
 
@@ -423,90 +364,50 @@ export default function (model) {
 
 To provide `img` parameter in our viewModel we need to update `server.js`. The important thing is we need to use `context.staticPath` to provide url to the static resources:
 
-```js
-module.exports.data = function (context, callback) {
-  callback(null, {
-    path: context.staticPath,
+```ts
+import { Server } from "oc-server";
+
+export const server = new Server().handler(async (_params, ctx) => {
+  return { path: ctx.staticPath };
+});
+```
+
+## Performance Tips
+
+Keep your server entry lightweight and efficient:
+
+```ts
+// ✅ Good: Cache results, use timeouts, return only needed data
+export const server = new Server()
+  .withParameters({ userId: { type: "number", mandatory: true } })
+  .handler(async ({ userId }) => {
+    // Use caching for expensive operations
+    const cached = getFromCache(`user-${userId}`);
+    if (cached) return cached;
+
+    // Set timeout for external requests
+    const ac = new AbortController();
+    const timer = setTimeout(() => ac.abort(), 5000);
+
+    try {
+      // const res = await fetch(`/api/users/${userId}`, { signal: ac.signal });
+      // const userData = await res.json();
+
+      // Return only what the view needs
+      const result = { name: "John", email: "john@example.com" };
+      setCache(`user-${userId}`, result, 300); // Cache for 5 minutes
+      return result;
+    } catch {
+      return { error: "Request timeout" } as const;
+    } finally {
+      clearTimeout(timer);
+    }
   });
-};
 ```
 
-## Performance Considerations
+## Node.js dependencies
 
-### Keep server.js Lightweight
-
-```javascript
-// ❌ Avoid heavy processing in server.js
-module.exports.data = function (context, callback) {
-  // Don't do this - heavy computation blocks rendering
-  let result = 0;
-  for (let i = 0; i < 1000000; i++) {
-    result += Math.random();
-  }
-  callback(null, { result });
-};
-
-// ✅ Better - delegate heavy work or use caching
-module.exports.data = function (context, callback) {
-  // Use caching for expensive operations
-  const cached = getFromCache(context.params.key);
-  if (cached) {
-    return callback(null, cached);
-  }
-
-  // Or delegate to background service
-  callback(null, { message: "Processing started", status: "pending" });
-};
-```
-
-### Optimize Data Fetching
-
-```javascript
-// ✅ Good - efficient data fetching
-module.exports.data = function (context, callback) {
-  const userId = context.params.userId;
-
-  // Only fetch what you need
-  const fields = "name,email,avatar";
-
-  // Use timeouts to prevent hanging
-  const timeout = setTimeout(() => {
-    callback(null, { error: "Request timeout" });
-  }, 5000);
-
-  fetchUserData(userId, fields)
-    .then((data) => {
-      clearTimeout(timeout);
-      callback(null, data);
-    })
-    .catch((error) => {
-      clearTimeout(timeout);
-      callback(null, { error: "Failed to load data" });
-    });
-};
-```
-
-### Memory Management
-
-```javascript
-// ✅ Clean up resources
-module.exports.data = function (context, callback) {
-  const largeData = processLargeDataset();
-
-  // Extract only what's needed for the view
-  const viewData = {
-    summary: largeData.summary,
-    count: largeData.items.length,
-  };
-
-  // Don't pass large objects to the view
-  callback(null, viewData);
-};
-```
-
-## Node.js Dependencies
-
-### Local Development
+### Local development
 
 List dependencies in your component's `package.json`:
 
@@ -521,25 +422,24 @@ List dependencies in your component's `package.json`:
 }
 ```
 
-Then use them in `server.js`:
+Then use them in `src/entry.server.ts` (ESM imports):
 
-```javascript
-const _ = require("lodash");
-const moment = require("moment");
-const axios = require("axios");
+```ts
+import _ from "lodash";
+import dayjs from "dayjs";
+import axios from "axios";
+import { Server } from "oc-server";
 
-module.exports.data = function (context, callback) {
-  const users = _.uniqBy(context.params.users, "id");
-  const formattedDate = moment().format("YYYY-MM-DD");
-
-  callback(null, {
-    users: users,
-    currentDate: formattedDate,
+export const server = new Server()
+  .withParameters({ users: { type: "string" } })
+  .handler(async (params) => {
+    const users = _.uniqBy(JSON.parse(params.users || "[]"), "id");
+    const currentDate = dayjs().format("YYYY-MM-DD");
+    return { users, currentDate };
   });
-};
 ```
 
-### Publishing Considerations
+### Publishing considerations
 
 When publishing, the registry may restrict dependencies for security and performance:
 
@@ -549,87 +449,71 @@ When publishing, the registry may restrict dependencies for security and perform
 
 Check with your registry administrator about approved dependencies.
 
-## Troubleshooting Common Issues
+## Common Issues
 
-### Issue: "Cannot read property of undefined"
+### Missing return statement
 
-```javascript
-// ❌ Problem - not checking if params exist
-module.exports.data = function (context, callback) {
-  const name = context.params.user.name; // Error if user is undefined
-  callback(null, { name });
-};
+```ts
+// ❌ Problem - not returning data
+export const server = new Server().handler(async () => {
+  const data = { message: "Hello" };
+  // Forgot to return data
+});
+
+// ✅ Solution - always return data
+export const server2 = new Server().handler(async () => {
+  return { message: "Hello" };
+});
+```
+
+### Undefined property access
+
+```ts
+// ❌ Problem - not checking optional fields
+export const server = new Server().handler(async (params: any) => {
+  const name = params.user.name; // Error if user is undefined
+  return { name };
+});
 
 // ✅ Solution - defensive programming
-module.exports.data = function (context, callback) {
-  const user = context.params.user || {};
+export const server2 = new Server().handler(async (params: any) => {
+  const user = params.user || {};
   const name = user.name || "Anonymous";
-  callback(null, { name });
-};
+  return { name };
+});
 ```
 
-### Issue: "Callback already called"
+### Debugging tips
 
-```javascript
-// ❌ Problem - calling callback multiple times
-module.exports.data = function (context, callback) {
-  if (context.params.error) {
-    callback(new Error("Something went wrong"));
-  }
-  callback(null, { data: "success" }); // Error - callback called twice
-};
-
-// ✅ Solution - use return statements
-module.exports.data = function (context, callback) {
-  if (context.params.error) {
-    return callback(new Error("Something went wrong"));
-  }
-  callback(null, { data: "success" });
-};
-```
-
-### Issue: "Component renders but shows no data"
-
-```javascript
-// ❌ Problem - forgetting to call callback
-module.exports.data = function (context, callback) {
-  const data = { message: "Hello" };
-  // Forgot to call callback(null, data);
-};
-
-// ✅ Solution - always call callback
-module.exports.data = function (context, callback) {
-  const data = { message: "Hello" };
-  callback(null, data);
-};
-```
-
-### Issue: "Server.js syntax errors"
-
-```javascript
-// ❌ Common syntax issues
-module.exports.data = function (context, callback) {
-  // Missing semicolon
-  const name = context.params.name;
-
-  // Incorrect callback usage
-  callback({ name: name }); // Missing null as first parameter
-};
-
-// ✅ Correct syntax
-module.exports.data = function (context, callback) {
-  const name = context.params.name;
-  callback(null, { name: name });
-};
-```
-
-### Debugging Tips
-
-1. **Enable debug mode**: Set `debug: true` in your registry configuration
+1. **Enable browser console relay**: `new Server({ development: { console: true } })`
 2. **Use console.log**: Add logging to understand data flow
 3. **Check browser network tab**: Verify component requests and responses
 4. **Validate JSON**: Ensure your callback data is valid JSON
 5. **Test parameters**: Use `oc preview` to test different parameter combinations
+
+### Type inference (optional)
+
+For automatic type inference between server and client, add this to `src/entry.server.ts`:
+
+```ts
+declare module "oc-server" {
+  interface Register {
+    server: typeof server;
+  }
+}
+```
+
+## Legacy (deprecated): server.js with callbacks
+
+This older style is still supported for existing components, but new code should use `Server` as shown above.
+
+```js
+// server.js (legacy)
+module.exports.data = function (context, callback) {
+  const name = context.params.name || "Guest";
+  callback(null, { name });
+};
+```
 
 ## Next Steps
 

@@ -1,0 +1,56 @@
+# OpenComponents
+
+> OpenComponents is a powerful, language-agnostic micro frontend framework that enables teams to develop, test, and deploy UI components independently while composing them into cohesive applications. It breaks free from monolithic frontends by providing server-side rendering without Node.js requirements, immutable versioned artifacts, and true team autonomy.
+
+OpenComponents is designed for organizations that need to scale their frontend development across multiple teams while maintaining technology flexibility. It's particularly valuable for mixed technology organizations (.NET, Java, PHP backends with JavaScript frontends), large-scale applications, SEO-critical applications, and gradual modernization projects.
+
+The framework consists of four core components: CLI & Development Tools for component scaffolding, a Registry (REST API) for component catalog and version management, a Component Library for immutable storage, and CDN & Asset Distribution for global static asset delivery. Components are published as immutable, semantically versioned artifacts that can be consumed via simple HTTP + HTML contracts from any backend technology.
+
+## Getting Started
+
+- [Introduction](https://opencomponents.github.io/docs/intro.md): Complete overview of OpenComponents with quick start guide and core concepts
+- [Quick Start Tutorial](https://opencomponents.github.io/docs/quick-start-tutorial.md): Hands-on tutorial to build your first component in 15 minutes
+- [Why OpenComponents](https://opencomponents.github.io/docs/concepts/why-opencomponents.md): Detailed comparison with other solutions and use case analysis
+
+## Components
+
+- [Getting Started with Components](https://opencomponents.github.io/docs/components/getting-started.md): Create, develop, and test your first component
+- [CLI Reference](https://opencomponents.github.io/docs/components/cli.md): Complete command-line interface documentation
+- [Server-side Logic](https://opencomponents.github.io/docs/components/the-server.js.md): Advanced server-side operations and data processing
+- [Package.json Structure](https://opencomponents.github.io/docs/components/package.json-structure.md): Component configuration and metadata
+- [Publishing to Registry](https://opencomponents.github.io/docs/components/publishing-to-a-registry.md): Deploy components to production
+
+## Architecture & Concepts
+
+- [Architecture Overview](https://opencomponents.github.io/docs/concepts/architecture-overview.md): How OpenComponents works with real-world examples
+- [Template System](https://opencomponents.github.io/docs/building/template-system.md): ES6, React, Vue, Svelte template support
+- [Debugging Guide](https://opencomponents.github.io/docs/building/debugging.md): Troubleshooting and development tips
+
+## Consumption
+
+- [Client-side Rendering](https://opencomponents.github.io/docs/consumers/client-side-rendering.md): Browser integration and client operations
+- [Server-side Rendering](https://opencomponents.github.io/docs/consumers/server-side-rendering.md): Backend integration without Node.js
+- [Batch Endpoint](https://opencomponents.github.io/docs/consumers/batch-endpoint.md): Efficient multi-component loading
+- [Rendering Lifecycle](https://opencomponents.github.io/docs/consumers/rendering-lifecycle.md): Advanced client-side operations
+- [Client API](https://opencomponents.github.io/docs/consumers/client-api.md): Programmatic component consumption
+- [Events & Hooks](https://opencomponents.github.io/docs/consumers/events-hooks.md): Component lifecycle events
+
+## Registry & Infrastructure
+
+- [Registry Configuration](https://opencomponents.github.io/docs/registry/registry-configuration.md): Production registry setup with S3, authentication, and advanced options
+- [Google Cloud Storage](https://opencomponents.github.io/docs/registry/registry-using-google-storage.md): Alternative storage configuration
+- [Client Setup](https://opencomponents.github.io/docs/consumers/client-setup.md): Consumer application configuration
+
+## Reference
+
+- [FAQ](https://opencomponents.github.io/docs/reference/faq.md): Common questions and troubleshooting
+- [Component Examples](https://github.com/opencomponents/vite-templates): Modern component templates and examples
+
+## Optional
+
+- [GitHub Repository](https://github.com/opencomponents/get-started): Main OpenComponents repository
+- [Browser Client](https://github.com/opencomponents/oc-client-browser): Client-side integration library
+- [Node.js Client](https://github.com/opencomponents/oc-client-node): Server-side Node.js integration
+- [PHP Client](https://github.com/opencomponents/oc-client-php): PHP backend integration
+- [Ruby Client](https://github.com/opencomponents/ruby-oc): Ruby backend integration
+- [Storage Adapters](https://github.com/opencomponents/storage-adapters): Alternative storage solutions

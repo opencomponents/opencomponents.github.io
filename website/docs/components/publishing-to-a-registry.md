@@ -73,7 +73,142 @@ oc publish my-component/ --username=your-username --password=your-password
 
 ### Custom Authentication
 
-Registries can implement custom authentication strategies. Check with your registry administrator for specific requirements.
+Registries can implement custom authentication strategies beyond basic username/password authentication. Custom authentication allows for integration with enterprise systems like LDAP, OAuth, or other identity providers.
+
+#### How Custom Authentication Works
+
+Custom authentication plugins must implement two functions:
+
+1. **`validate`**: Validates the authentication configuration
+2. **`middleware`**: Returns an Express middleware function for handling authentication
+
+#### Basic Plugin Structure
+
+```javascript
+module.exports.validate = function (publishAuth) {
+  // Validate the configuration
+  if (!publishAuth.requiredField) {
+    return {
+      isValid: false,
+      message: "Missing required field: requiredField",
+    };
+  }
+
+  return {
+    isValid: true,
+  };
+};
+
+module.exports.middleware = function (authConfig) {
+  // Return Express middleware function
+  return function (req, res, next) {
+    // Your authentication logic here
+    // Call next() on success, or send error response on failure
+    next();
+  };
+};
+```
+
+#### LDAP Authentication Example
+
+The [oc-auth-ldap](https://github.com/andyroyle/oc-auth-ldap) plugin demonstrates LDAP integration:
+
+```javascript
+"use strict";
+
+var ActiveDirectory = require("activedirectory");
+var basicAuth = require("basic-auth-connect");
+var ad;
+
+module.exports.validate = function (publishAuth) {
+  if (!publishAuth.url || !publishAuth.baseDN) {
+    return {
+      isValid: false,
+      message: "oc-auth-ldap misconfiguration: url and baseDN are required",
+    };
+  }
+
+  ad = new ActiveDirectory(publishAuth);
+  return {
+    isValid: true,
+  };
+};
+
+module.exports.middleware = function (authConfig) {
+  return basicAuth(function (username, password, callback) {
+    return ad.authenticate(username, password, callback);
+  });
+};
+```
+
+#### Registry Configuration
+
+To use custom authentication, configure your registry with the `publishAuth` setting:
+
+```javascript
+// registry configuration
+{
+  publishAuth: {
+    type: require('oc-auth-ldap'),
+    url: 'ldap://your-ldap-server.com',
+    baseDN: 'dc=company,dc=com'
+  }
+}
+```
+
+#### Available Authentication Types
+
+- **`basic`**: Built-in basic authentication (default)
+- **Custom plugins**: Any npm package that exports `validate` and `middleware` functions
+- **Local modules**: Path to local authentication modules
+
+#### Creating Your Own Authentication Plugin
+
+1. **Create the plugin structure**:
+
+   ```javascript
+   // my-auth-plugin.js
+   module.exports.validate = function (config) {
+     // Validate configuration
+     return { isValid: true };
+   };
+
+   module.exports.middleware = function (config) {
+     return function (req, res, next) {
+       // Authentication logic
+       next();
+     };
+   };
+   ```
+
+2. **Package as npm module** (optional):
+
+   ```json
+   {
+     "name": "oc-auth-custom",
+     "version": "1.0.0",
+     "main": "index.js"
+   }
+   ```
+
+3. **Configure in registry**:
+   ```javascript
+   {
+     publishAuth: {
+       type: require('./my-auth-plugin'),
+       // your custom config
+     }
+   }
+   ```
+
+#### Troubleshooting Custom Authentication
+
+- **Check plugin exports**: Ensure your plugin exports both `validate` and `middleware` functions
+- **Validate configuration**: The `validate` function should return `{ isValid: true }` for valid configs
+- **Test middleware**: Use `--dryRun` to test authentication without publishing
+- **Check registry logs**: Contact your registry administrator for server-side authentication errors
+
+For more examples and advanced authentication scenarios, check with your registry administrator or refer to the [OpenComponents authentication documentation](https://github.com/opencomponents/oc).
 
 ## CLI Options
 

@@ -24,35 +24,35 @@
         "https://staging-registry.com"
       ]
     },
-    "preload": {
-      "description": "List of component dependencies to preload. Preloading components can improve performance by fetching dependencies before they are needed.",
-      "type": "array",
-      "items": {
-        "type": "string",
-        "description": "Component name or path to preload"
-      },
-      "example": [
-        "header",
-        "footer",
-        "common-ui"
-      ]
-    },
-    "routes": {
-      "description": "Custom routing configuration for components. Allows defining custom URL patterns and mappings for component rendering.",
-      "type": "object",
-      "additionalProperties": {
-        "type": "string",
-        "description": "Route pattern mapped to component name or path"
-      },
-      "example": {
-        "/custom-header": "header-component",
-        "/api/*": "api-wrapper"
-      }
-    },
     "development": {
       "description": "Development-specific configuration settings for local development and testing.",
       "type": "object",
       "properties": {
+        "preload": {
+          "description": "List of component dependencies to preload. Preloading components can improve performance by fetching dependencies before they are needed.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Component name or path to preload"
+          },
+          "example": [
+            "header",
+            "footer",
+            "common-ui"
+          ]
+        },
+        "routes": {
+          "description": "Custom routing configuration for components. Allows defining custom URL patterns and mappings for component rendering.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "description": "Route pattern mapped to component name or path"
+          },
+          "example": {
+            "/custom-header": "header-component",
+            "/api/*": "api-wrapper"
+          }
+        },
         "fallback": {
           "description": "Fallback configuration for when components cannot be found in the local registry. Allows specifying a fallback registry URL and optionally using its client library.",
           "type": "object",

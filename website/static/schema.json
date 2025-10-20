@@ -129,6 +129,24 @@
             }
           },
           "additionalProperties": false
+        },
+        "importmap": {
+          "description": "Importmap to add to the preview HTML's <head> section. Allows specifying ES module import mappings for development.",
+          "type": "object",
+          "properties": {
+            "imports": {
+              "description": "Map of module specifiers to URLs. Keys are module names and values are the URLs they should resolve to.",
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              },
+              "example": {
+                "react": "https://esm.sh/react@18",
+                "lodash": "https://cdn.skypack.dev/lodash"
+              }
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
@@ -205,6 +223,12 @@
           },
           "dynamic": {
             "auth": "./mocks/auth-plugin.js"
+          }
+        },
+        "importmap": {
+          "imports": {
+            "react": "https://esm.sh/react@18",
+            "react-dom": "https://esm.sh/react-dom@18"
           }
         }
       }

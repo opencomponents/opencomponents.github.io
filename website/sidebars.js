@@ -38,6 +38,7 @@ const sidebars = {
       type: "category",
       label: "Building Components",
       items: [
+        "building/index",
         "components/getting-started",
         "components/package.json-structure",
         "components/the-server.js",
@@ -71,7 +72,7 @@ const sidebars = {
     {
       type: "category",
       label: "Reference",
-      items: ["reference/faq"],
+      items: ["reference/index", "reference/faq"],
     },
   ],
 

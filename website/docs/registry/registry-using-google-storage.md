@@ -478,7 +478,7 @@ gsutil cors set cors.json gs://your-bucket-name
 // Add health check endpoint
 const configuration = {
   // ... other options
-  customRoutes: [
+  routes: [
     {
       route: "/health",
       method: "get",

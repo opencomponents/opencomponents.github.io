@@ -2,7 +2,7 @@
 sidebar_position: 4
 ---
 
-# F.A.Q.
+# Frequently Asked Questions (FAQ)
 
 ## Beginner Questions
 
@@ -38,15 +38,33 @@ For **creating** components: Basic Node.js knowledge is helpful, but our [Quick 
 ### What's the difference between rendered and un-rendered components?
 
 Un-rendered components delegate the rendering to the clients. This is useful for performance and cacheability.
-[More details about rendered components](../concepts/architecture-overview#consuming-rendered-components) and about [un-rendered components](../concepts/architecture-overview#consuming-un-rendered-components)
+
+**Rendered components**: The registry executes the server logic and renders the HTML, returning ready-to-use markup. This is simpler for consumers but requires the registry to do the work.
+
+**Un-rendered components**: The registry returns the compiled template and data separately. The client then performs the rendering. This approach offers better caching (templates can be cached independently of data) and reduced registry load.
 
 ## What happens when a publish is made?
 
-[Look at this page](../concepts/architecture-overview#what-happens-when-a-publish-is-made)
+When you publish a component, the following occurs:
 
-## How the distribution works?
+1. **CLI packages the component** - Bundles server.js, compiles templates, and processes static assets
+2. **Package is uploaded** - The compressed package is sent to the registry
+3. **Registry validates** - Checks version conflicts, authentication, and custom validation rules
+4. **Assets are distributed** - Files are uploaded to storage (S3, Google Cloud, etc.)
+5. **Registry index updates** - The component becomes available for consumption
 
-[Look at this page](../concepts/architecture-overview#how-distribution-works)
+See the [Architecture Overview](../concepts/architecture-overview#publishing-workflow) for more details.
+
+## How does distribution work?
+
+OpenComponents supports multi-registry deployment where:
+
+1. **Shared storage** - All registries connect to the same storage backend (S3, GCS, etc.)
+2. **Polling mechanism** - Registries poll the storage for changes every few seconds
+3. **Automatic sync** - New components propagate to all registries automatically
+4. **CDN caching** - Static assets are cached at the edge for global performance
+
+See the [Architecture Overview](../concepts/architecture-overview#distribution--replication) for the complete distribution flow.
 
 ## Can I link a CDN on top of the S3 bucket?
 

@@ -1,12 +1,12 @@
 ---
-sidebar_position: 2
+sidebar_position: 6
 ---
 
-# Server-side rendering
+# Server-side Rendering
 
 You can get rendered components via the registry rest api.
 
-```sh
+```bash
 curl http://my-components-registry.mydomain.com/hello-world
 
 {
@@ -21,7 +21,7 @@ curl http://my-components-registry.mydomain.com/hello-world
 
 Nevertheless, for improving caching and response size, when using the `node.js` client or any language capable of executing server-side javascript the request will look more like:
 
-```sh
+```bash
  curl http://my-components-registry.mydomain.com/hello-world/~1.0.0 -H Accept:application/vnd.oc.unrendered+json
 
 {
@@ -49,7 +49,7 @@ When retrieving multiple components, a [batch POST endpoint](/docs/consumers/bat
 
 ### Express.js Integration
 
-```javascript
+```js
 const express = require('express');
 const oc = require('oc-client-node');
 
@@ -82,7 +82,7 @@ app.get('/', async (req, res) => {
 
 ### Koa.js Integration
 
-```javascript
+```js
 const Koa = require('koa');
 const oc = require('oc-client-node');
 
@@ -113,7 +113,7 @@ app.use(async (ctx) => {
 
 ### Next.js Integration
 
-```javascript
+```js
 // pages/api/components/[...component].js
 import oc from 'oc-client-node';
 
@@ -138,7 +138,7 @@ export default async function handler(req, res) {
 
 ### Redis Caching
 
-```javascript
+```js
 const redis = require('redis');
 const client = redis.createClient();
 
@@ -159,7 +159,7 @@ const ocClient = oc.Client({
 
 ### Memory Caching with LRU
 
-```javascript
+```js
 const LRU = require('lru-cache');
 
 const cache = new LRU({
@@ -182,7 +182,7 @@ const ocClient = oc.Client({
 
 ### Graceful Fallbacks
 
-```javascript
+```js
 async function renderComponentWithFallback(name, params, fallback = '') {
   try {
     const result = await client.renderComponent(name, params);
@@ -199,7 +199,7 @@ const header = await renderComponentWithFallback('header', { user }, '<header>De
 
 ### Timeout Handling
 
-```javascript
+```js
 const client = oc.Client({
   registries: ['https://my-registry.com'],
   timeout: 5000, // 5 seconds

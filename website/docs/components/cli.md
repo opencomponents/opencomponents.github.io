@@ -16,7 +16,7 @@ If these are satisfied you can install the CLI as shown below.
 
 To install cli, you should type:
 
-```sh
+```bash
 $ npm install oc -g
 ```
 
@@ -26,19 +26,19 @@ Autocomplete is supported for Mac and Linux.
 
 To enable it in **zsh**, you should type:
 
-```sh
+```bash
 echo '. <(oc completion)' >> .zshrc
 ```
 
 To enable it in **bash**, you should type:
 
-```sh
+```bash
 oc completion >> ~/.bashrc
 ```
 
 or
 
-```sh
+```bash
 oc completion >> ~/.bash_profile
 ```
 
@@ -48,7 +48,7 @@ After enabling autocomplete you should reload the shell.
 
 Basic usage:
 
-```sh
+```bash
 $ oc <command> [options]
 ```
 
@@ -56,7 +56,7 @@ Hint: Run -h with any command to show the help
 
 For a list of all the available commands, type **oc** in your terminal
 
-```sh
+```bash
 $ oc
 ```
 
@@ -161,7 +161,7 @@ Remove the node_modules directory from each component's subfolder
 
 #### Usage:
 
-```sh
+```bash
 $ oc clean <dirPath> [options]
 ```
 
@@ -179,7 +179,7 @@ $ oc clean <dirPath> [options]
 
 #### Example:
 
-```sh
+```bash
 $ oc clean ../all-components --yes
 ```
 
@@ -191,7 +191,7 @@ Runs a local oc test registry **to develop and test components**
 
 #### Usage:
 
-```sh
+```bash
 $ oc dev <dirPath> [port] [baseUrl] [options]
 ```
 
@@ -215,7 +215,7 @@ $ oc dev <dirPath> [port] [baseUrl] [options]
 
 #### Example:
 
-```sh
+```bash
 $ oc dev ../all-components 3001 127.0.0.1:3001 --fallbackRegistryUrl=http://anotherhost:anotherport/
 ```
 
@@ -227,7 +227,7 @@ Creates a new empty component in the current folder
 
 #### Usage:
 
-```sh
+```bash
 $ oc init <componentPath> [templateType]
 ```
 
@@ -240,13 +240,13 @@ $ oc init <componentPath> [templateType]
 
 #### Example:
 
-```sh
+```bash
 $ oc init test-component oc-template-es6
 ```
 
 or with using relative path:
 
-```sh
+```bash
 $ oc init components/test-component oc-template-es6
 ```
 
@@ -260,7 +260,7 @@ Allows **mocking configuration to simplify local development**
 
 #### Usage
 
-```sh
+```bash
 $ oc mock <targetType> <targetName> <targetValue>
 ```
 
@@ -274,7 +274,7 @@ $ oc mock <targetType> <targetName> <targetValue>
 
 #### Example:
 
-```sh
+```bash
 $ oc mock plugin hash "always-returned-value"
 ```
 
@@ -282,7 +282,7 @@ Creates static mock for a "hash" plugin which always returns "always-returned-va
 
 To run a dynamic plugin, you can run a plugin locally. This could be the same one running in your registry, or a mock js that behaves differently locally.
 
-```sh
+```bash
 $ oc mock plugin <targetName> <path to mock .js>
 ```
 
@@ -294,7 +294,7 @@ Creates the packaged component ready to be published
 
 #### Usage:
 
-```sh
+```bash
 $ oc package <componentPath> [options]
 ```
 
@@ -325,7 +325,7 @@ Runs a test page consuming a component
 
 #### Usage:
 
-```sh
+```bash
 $ oc preview <componentHref>
 ```
 
@@ -337,7 +337,7 @@ $ oc preview <componentHref>
 
 #### Examples:
 
-```sh
+```bash
 $ oc preview "http://localhost:3000/my-new-component/1.0.0/?param1=hello&name=Arthur"
 ```
 
@@ -349,7 +349,7 @@ Validate a component against registry requirements without publishing
 
 #### Usage:
 
-```sh
+```bash
 $ oc validate <componentPath> [options]
 ```
 
@@ -368,7 +368,7 @@ $ oc validate <componentPath> [options]
 
 #### Examples:
 
-```sh
+```bash
 # Validate component against configured registries
 $ oc validate my-component/
 
@@ -387,7 +387,7 @@ Publish a component
 
 #### Usage:
 
-```sh
+```bash
 $ oc publish <componentPath> [options]
 ```
 
@@ -409,7 +409,7 @@ $ oc publish <componentPath> [options]
 
 #### Examples:
 
-```sh
+```bash
 $ oc publish my-new-component/
 ```
 
@@ -421,7 +421,7 @@ Shows, adds, removes oc registries to the current project
 
 #### Usage:
 
-```sh
+```bash
 $ oc registry <command>
 ```
 

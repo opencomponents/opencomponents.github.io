@@ -6,12 +6,12 @@ sidebar_position: 1
 
 ## Prerequisites
 
-Before creating your first component, make sure your workstation meets the [CLI installation requirements](cli.md#installation). If you followed the **Quick-Start Tutorial** you can skip this.
+Before creating your first component, make sure your workstation meets the [CLI installation requirements](cli#install-the-cli). If you followed the **Quick-Start Tutorial** you can skip this.
 
 First create the component directory:
 
 ```bash
-$ oc init hello-world
+oc init hello-world
 ```
 
 The above command will create the `hello-world` [directory](#component-structure).
@@ -19,7 +19,7 @@ The above command will create the `hello-world` [directory](#component-structure
 It is also possible to set [template](#template) type during the initialisation as an additional init parameter:
 
 ```bash
-$ oc init hello-world oc-template-es6
+oc init hello-world oc-template-es6
 ```
 
 By default this parameter is set to `oc-template-es6` (modern ES6 templates). Legacy templates like `oc-template-handlebars` are still supported for backwards compatibility.
@@ -72,7 +72,7 @@ The basic package file `package.json` looks as follows:
     }
   },
   "devDependencies": {
-    "oc-template-handlebars-compiler": "6.0.8"
+    "oc-template-es6-compiler": "6.0.8"
   }
 }
 ```
@@ -107,8 +107,8 @@ export const data = (context, callback) => {
 
 You may want to start a local test registry using a components' folder as a library with a watcher. This will allow to consume and debug it:
 
-```sh
-$ oc dev . 3030
+```bash
+oc dev . 3030
 ```
 
 Then you may want to create a blank html page to start playing with it and see how it looks:
@@ -126,8 +126,8 @@ Then you may want to create a blank html page to start playing with it and see h
 
 Or, just use the preview function:
 
-```sh
-$ oc preview http://localhost:3030/hello-world
+```bash
+oc preview http://localhost:3030/hello-world
 ```
 
 That's it. As soon as you make changes on the component, you will be able to refresh this page and see how it looks.

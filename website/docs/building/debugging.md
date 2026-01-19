@@ -137,7 +137,7 @@ In this tutorial, we'll see how.
 ### Chrome DevTools (Client-side)
 
 1. **Component Inspection**:
-   ```javascript
+   ```js
    // In browser console, inspect loaded components
    console.log(window.oc.components);
    
@@ -213,7 +213,7 @@ curl -H "Accept: application/vnd.oc.unrendered+json" https://your-registry.com/y
 - Incorrect helper usage
 
 **Debugging**:
-```javascript
+```js
 // In server.js, log the data being passed to template
 export const data = (context, callback) => {
   const result = {
@@ -232,7 +232,7 @@ export const data = (context, callback) => {
 - Incorrect prop types
 
 **Debugging**:
-```javascript
+```js
 // Add console logs in your React component
 const MyComponent = (props) => {
   console.log('Component props:', props);
@@ -260,7 +260,7 @@ tar -tzf _package/package.tar.gz
 
 ### Memory Debugging
 
-```javascript
+```js
 // Monitor memory usage in browser
 console.log('Memory usage:', performance.memory);
 
@@ -284,7 +284,7 @@ time curl -s http://localhost:3030/your-component > /dev/null
 
 ### Client-side Error Handling
 
-```javascript
+```js
 // Global error handler for components
 window.addEventListener('error', (event) => {
   if (event.target.tagName === 'OC-COMPONENT') {
@@ -301,7 +301,7 @@ document.addEventListener('oc:error', (event) => {
 
 ### Server-side Error Handling
 
-```javascript
+```js
 // In server.js, always handle errors gracefully
 export const data = (context, callback) => {
   try {

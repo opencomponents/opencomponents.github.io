@@ -267,43 +267,55 @@ oc preview http://localhost:3030/hello-world
 2. Click the "Fun year fact" button
 3. You should see a fact about the birth year appear
 
-## Step 4: Customize Your Component
+## Step 5: Customize Your Component
 
-Let's modify the component to make it more interesting. Edit the `server.ts` file:
+Let's modify the component to make it more interesting. Edit the `src/server.ts` file:
 
-```javascript
-export const data = (context, callback) => {
-  const { name = "World" } = context.params;
-  const { staticPath } = context;
+```typescript
+import { Server } from "oc-server";
 
-  // You can add logic here, like API calls
-  const greeting = getTimeBasedGreeting();
-
-  callback(null, {
-    name,
-    greeting,
-    staticPath,
-    timestamp: new Date().toISOString(),
-  });
-};
-
-function getTimeBasedGreeting() {
+function getTimeBasedGreeting(): string {
   const hour = new Date().getHours();
   if (hour < 12) return "Good morning";
   if (hour < 18) return "Good afternoon";
   return "Good evening";
 }
+
+export const server = new Server()
+  .withParameters({
+    name: {
+      type: "string",
+      mandatory: false,
+      default: "World",
+      description: "Name to greet",
+    },
+  })
+  .handler(async (params, ctx) => {
+    const greeting = getTimeBasedGreeting();
+
+    return {
+      name: params.name ?? "World",
+      greeting,
+      staticPath: ctx.staticPath,
+      timestamp: new Date().toISOString(),
+    };
+  });
 ```
 
-Update the template (`view.ts`):
+Update the template (`src/view.ts`):
 
-```javascript
-export default function (model) {
+```typescript
+export default function (model: {
+  name: string;
+  greeting: string;
+  staticPath: string;
+  timestamp: string;
+}) {
   return `
     <div style="padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
       <h1>${model.greeting}, ${model.name}!</h1>
       <p>This component was rendered at: ${model.timestamp}</p>
-      <img src="${model.staticPath}/img/logo.png" alt="OpenComponents Logo" style="max-width: 100px;" />
+      <img src="${model.staticPath}logo.png" alt="OpenComponents Logo" style="max-width: 100px;" />
     </div>
   `;
 }
@@ -311,7 +323,7 @@ export default function (model) {
 
 Save the files and refresh your browser - you should see the changes immediately!
 
-## Step 5: Test with Parameters
+## Step 6: Test with Parameters
 
 Try your component with different parameters:
 
@@ -319,7 +331,7 @@ Try your component with different parameters:
 http://localhost:3030/hello-world?userId=0
 ```
 
-## Step 6: Create a Test HTML Page
+## Step 7: Create a Test HTML Page
 
 Create a simple HTML file to test client-side rendering:
 
@@ -345,7 +357,7 @@ Create a simple HTML file to test client-side rendering:
 
 Open this HTML file in your browser to see client-side rendering in action.
 
-## Step 7: Set Up a Registry (Production)
+## Step 8: Set Up a Registry (Production)
 
 For production use, you'll need a registry connected to cloud storage. Here's a basic setup:
 
@@ -362,7 +374,7 @@ npm install oc --save
 
 Create an `index.js` file:
 
-```javascript
+```js
 const oc = require("oc");
 
 const configuration = {
@@ -397,7 +409,7 @@ registry.start((err, app) => {
 });
 ```
 
-## Step 8: Publish Your Component
+## Step 9: Publish Your Component
 
 ### Configure Registry
 
@@ -424,7 +436,7 @@ Your component should now be available at:
 https://your-registry-domain.com/hello-world
 ```
 
-## Step 9: Consume in Production
+## Step 10: Consume in Production
 
 Update your HTML to use the production registry:
 

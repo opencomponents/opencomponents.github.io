@@ -1,8 +1,8 @@
 ---
-sidebar_position: 1
+sidebar_position: 5
 ---
 
-# Client-side rendering
+# Client-side Rendering
 
 ## Integration
 
@@ -27,7 +27,7 @@ This is how to integrate the component:
 
 ## What exactly happens during a component's client-side rendering?
 
-1. The first thing is for the client to be initialised. This includes verifying the dependencies are satisfied (for instance, jQuery)
+1. The first thing is for the client to be initialised. This includes verifying the required template runtimes are available
 2. At the end of the initialisation, the client is going to fire an event `oc:ready`
 3. Then the client is going to scan for `<oc-component>` tags in the page and for each one of them:
 4. It is going to make an HTTP GET to the `href` parameter of the component, sending a `Accept: application/vnd.oc.unrendered+json` header (which is the standard header for getting an unrendered component).

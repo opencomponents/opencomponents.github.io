@@ -1,19 +1,23 @@
 ---
-sidebar_position: 3
+sidebar_position: 7
 ---
 
-# Batch endpoint
+# Batch Endpoint
 
 It allows to retrieve a set of components with a single request to the API. While this should be convenient during the server-side rendering, it is not a good practice for client-side rendering.
 
-## Server-side rendering via rest API using the post route
+## Server-side rendering via REST API using the POST route
 
-```sh
-curl http://my-components-registry.mydomain.com/
-  -X POST
-  -H "Content-Type: application/json"
-  -d '{components:[{"name": hello-world", "version": "1.X.X"}, {"name": "my-component", "parameters": { "something": 2345 }}]}'
+```bash
+curl http://my-components-registry.mydomain.com/ \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"components":[{"name": "hello-world", "version": "1.X.X"}, {"name": "my-component", "parameters": { "something": 2345 }}]}'
+```
 
+Response:
+
+```json
 [{
   "status": 200,
   "response": {
@@ -37,6 +41,7 @@ curl http://my-components-registry.mydomain.com/
     "renderMode": "rendered"
   }
 }]
+```
 ```
 
 ## Payload API
@@ -68,7 +73,7 @@ curl http://my-components-registry.mydomain.com/
 
 ### Optimal Batch Size
 
-```javascript
+```js
 // Recommended: 5-10 components per batch
 const componentBatches = chunkArray(allComponents, 8);
 
@@ -80,7 +85,7 @@ for (const batch of componentBatches) {
 
 ### Caching Strategies
 
-```javascript
+```js
 // Cache batch responses by component combination
 const cacheKey = components.map(c => `${c.name}:${c.version}`).join(',');
 
@@ -97,7 +102,7 @@ return result;
 
 ### Partial Failure Handling
 
-```javascript
+```js
 async function renderBatchWithFallbacks(components) {
   try {
     const results = await fetchBatch(components);
@@ -127,7 +132,7 @@ async function renderBatchWithFallbacks(components) {
 
 ### Retry Logic
 
-```javascript
+```js
 async function fetchBatchWithRetry(components, maxRetries = 3) {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
@@ -146,7 +151,7 @@ async function fetchBatchWithRetry(components, maxRetries = 3) {
 
 ### E-commerce Page
 
-```javascript
+```js
 // Fetch all components for a product page
 const productPageComponents = await fetchBatch([
   { name: 'header', parameters: { user: currentUser } },
@@ -159,7 +164,7 @@ const productPageComponents = await fetchBatch([
 
 ### Dashboard Layout
 
-```javascript
+```js
 // Load dashboard widgets in batches
 const dashboardWidgets = await fetchBatch([
   { name: 'analytics-widget', parameters: { timeframe: 'week' } },
@@ -171,7 +176,7 @@ const dashboardWidgets = await fetchBatch([
 
 ### Performance Monitoring
 
-```javascript
+```js
 const startTime = Date.now();
 
 const components = await fetchBatch(componentList);

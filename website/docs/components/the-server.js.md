@@ -2,9 +2,13 @@
 sidebar_position: 4
 ---
 
-# The server (entry.server.ts)
+# Server-side Logic (server.js / entry.server.ts)
 
-Note: The legacy CommonJS style `module.exports.data = (context, callback) => { ... }` still works, but is considered deprecated. New components should use `src/entry.server.ts` with the `Server` API.
+This guide covers how to add server-side logic to your components. Modern components use `src/entry.server.ts` with the `Server` API, while the legacy `server.js` with callbacks is still supported for backwards compatibility.
+
+:::tip Modern API Recommended
+New components should use the modern `Server` API shown in this guide. The legacy callback style (`module.exports.data = (context, callback) => { ... }`) still works but is considered deprecated.
+:::
 
 ## When do you need a server entry?
 
@@ -242,7 +246,7 @@ The context object (`ctx`) provides access to request data and helpers:
 
 Context aggregates request data, and the registry's context. It consists of the following fields:
 
-```js
+```json
 {
   "acceptLanguage": [
     {

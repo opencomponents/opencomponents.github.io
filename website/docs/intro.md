@@ -195,10 +195,10 @@ A component is a directory composed by
 
 | File                     | Description                                                                                                                                                                                                                                                                                                        |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `package`                | The component definition, dependencies, and more.                                                                                                                                                                                                                                                                  |
+| `package.json`           | The component definition, dependencies, and more.                                                                                                                                                                                                                                                                  |
 | `view`                   | The view in charge to output the final markup. OC uses `ES6` templates by default and comes with a powerful template system to support components built with any javascript UI framework like `React`, `SolidJS`, `Vue`. Legacy `Handlebars` and `Jade` templates are still supported for backwards compatibility. |
-| `server` (optional)      | If the component need logic, including consuming services, this is the entity that will produce the view-model to compile the view.                                                                                                                                                                                |
-| static assets (optional) | Images, Javascript, and files to be uploaded to the CDN and referenced in the HTML markup.                                                                                                                                                                                                                         |
+| `server` (optional)      | If the component needs logic, including consuming services, this is the entity that will produce the view-model to compile the view.                                                                                                                                                                               |
+| static assets (optional) | Images, JavaScript, and files to be uploaded to the CDN and referenced in the HTML markup.                                                                                                                                                                                                                         |
 | \*                       | Any other files that will be useful for the development such as tests, docs, etc.                                                                                                                                                                                                                                  |
 
 After publishing, components are immutable and semantic versioned.
@@ -211,7 +211,7 @@ After publishing, components are immutable and semantic versioned.
 
 To create a folder containing the component:
 
-```sh
+```bash
 npm install oc -g
 oc init hello-world
 ```
@@ -220,13 +220,13 @@ oc init hello-world
 
 To start a local test registry using a components' folder as a library with a watcher:
 
-```sh
+```bash
 oc dev . 3030
 ```
 
 To see how the component looks like when consuming it:
 
-```sh
+```bash
 oc preview http://localhost:3030/hello-world
 ```
 
@@ -236,7 +236,7 @@ As soon as you make changes on the component, you will be able to refresh this p
 
 You will need an online registry connected to a library. A component with the same name and version cannot already exist on that registry.
 
-```sh
+```bash
 # you have to do the registry config first, just once
 oc registry add http://my-components-registry.mydomain.com
 
@@ -246,7 +246,7 @@ oc publish hello-world/
 
 Now, it should be available at `http://my-components-registry.mydomain.com/hello-world`.
 
-# Consuming Components
+## Consuming Components
 
 From a consumer's perspective, a component is an HTML fragment. You can render components **client-side, server-side, or fall back to client-side rendering** when server-side rendering fails (for example, if the registry is slow or unavailable).
 
@@ -282,26 +282,30 @@ For more information about client-side operations, look at [this page](/docs/con
 
 ## Server-side rendering
 
-You can get rendered components via the registry rest api.
+You can get rendered components via the registry REST API.
 
-```sh
+```bash
 curl http://my-components-registry.mydomain.com/hello-world
+```
 
+```json
 {
   "href": "https://my-components-registry.mydomain.com/hello-world",
   "version": "1.0.0",
   "requestVersion": "",
-  "html": "<oc-component href=\"https://my-components-registry.mydomain.com/hello-world\" data-hash=\"cad2a9671257d5033d2abfd739b1660993021d02\" id=\"2890594349\" data-rendered=\"true\" data-version=\"1.0.13\">Hello John doe!</oc-component>",
+  "html": "<oc-component href=\"https://my-components-registry.mydomain.com/hello-world\" data-hash=\"cad2a9671257d5033d2abfd739b1660993021d02\" id=\"2890594349\" data-rendered=\"true\" data-version=\"1.0.0\">Hello John doe!</oc-component>",
   "type": "oc-component",
   "renderMode": "rendered"
 }
 ```
 
-Nevertheless, for improving caching and response size, when using the `node.js` client or any language capable of executing server-side javascript the request will look more like:
+Nevertheless, for improving caching and response size, when using the `node.js` client or any language capable of executing server-side JavaScript the request will look more like:
 
-```sh
- curl http://my-components-registry.mydomain.com/hello-world/~1.0.0 -H Accept:application/vnd.oc.unrendered+json
+```bash
+curl http://my-components-registry.mydomain.com/hello-world/~1.0.0 -H Accept:application/vnd.oc.unrendered+json
+```
 
+```json
 {
   "href": "https://my-components-registry.mydomain.com/hello-world/~1.0.0",
   "version": "1.0.0",
@@ -334,14 +338,14 @@ When retrieving multiple components, a [batch POST endpoint](/docs/consumers/bat
 
 See the dedicated [CLI guide](components/cli#install-the-cli) for installation, shell-autocomplete, and update instructions.
 
-# Setup a library
+## Setup a library
 
 See detailed guides for:
 
 - [S3 library adapter](registry/registry-configuration#s3)
 - [Google Cloud Storage adapter](registry/registry-using-google-storage)
 
-# Setup a registry
+## Setup a registry
 
 A full configuration reference and production-ready examples live in [Registry Configuration](registry/registry-configuration). Start there when you need to spin up your first registry.
 

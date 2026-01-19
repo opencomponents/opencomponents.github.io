@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Template system
+# Template System
 
 ## Introduction
 
@@ -82,7 +82,7 @@ via configuration API:
 via `registerTemplates()` API:
 
 ```js
-cons templates = oc.registerTemplates([{
+const templates = oc.registerTemplates([{
   "type": "custom-react-template",
   "externals": [{
     "global": "React",
@@ -121,7 +121,7 @@ At the moment OC comes with `oc-template-es6` as the default modern template, wi
 
 ### ES6 Template Example
 
-```javascript
+```js
 // template.js - Modern ES6 template
 export default function (model) {
   return `
@@ -244,7 +244,7 @@ const configuration = {
 
 **Issue**: "Component renders but shows blank"
 
-```javascript
+```js
 // ❌ Problem - undefined variables
 export default function(model) {
   return `<div>${model.user.name}</div>`; // Error if user is undefined
@@ -259,7 +259,7 @@ export default function(model) {
 
 **Issue**: "Template externals not loading"
 
-```javascript
+```js
 // Check external dependencies are accessible
 const templates = [
   {
@@ -278,7 +278,7 @@ const templates = [
 
 **Issue**: "Slow template rendering"
 
-```javascript
+```js
 // ❌ Avoid complex logic in templates
 export default function(model) {
   // Don't do heavy processing here
@@ -299,7 +299,7 @@ export default function(model) {
 
 **Issue**: "Migrating from Handlebars to ES6"
 
-```javascript
+```js
 // Before (Handlebars)
 // {{#if user.isActive}}
 //   <span class="active">{{user.name}}</span>
@@ -338,7 +338,7 @@ my-custom-template/
 
 ### Template API Requirements
 
-```javascript
+```js
 // compiler.js - Required methods
 module.exports = {
   compile: (options, callback) => {
@@ -360,7 +360,7 @@ module.exports = {
 
 ### Template Registration
 
-```javascript
+```js
 // Registry configuration
 const configuration = {
   templates: [

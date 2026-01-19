@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Registry configuration
+# Registry Configuration
 
 ## Introduction
 
@@ -12,7 +12,7 @@ The registry is a REST api that serves the components. You can have multiple reg
 
 First, create a dir and install oc:
 
-```sh
+```bash
 mkdir oc-registry && cd oc-registry
 npm init
 npm install oc --save

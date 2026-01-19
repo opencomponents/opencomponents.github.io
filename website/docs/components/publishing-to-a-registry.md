@@ -31,7 +31,7 @@ That's all you need—no extra global setup.
 
 First, configure your registry (only needed once):
 
-```sh
+```bash
 oc registry add https://your-registry-domain.com
 ```
 
@@ -39,7 +39,7 @@ oc registry add https://your-registry-domain.com
 
 Navigate to your component directory and publish:
 
-```sh
+```bash
 oc publish my-component/
 ```
 
@@ -56,7 +56,7 @@ This command will:
 
 If the registry requires authentication, you'll be prompted for credentials:
 
-```sh
+```bash
 oc publish my-component/
 # Registry requires authentication
 # Username: your-username
@@ -67,7 +67,7 @@ oc publish my-component/
 
 Provide credentials directly via command-line options:
 
-```sh
+```bash
 oc publish my-component/ --username=your-username --password=your-password
 ```
 
@@ -84,7 +84,7 @@ Custom authentication plugins must implement two functions:
 
 #### Basic Plugin Structure
 
-```javascript
+```js
 module.exports.validate = function (publishAuth) {
   // Validate the configuration
   if (!publishAuth.requiredField) {
@@ -113,7 +113,7 @@ module.exports.middleware = function (authConfig) {
 
 The [oc-auth-ldap](https://github.com/andyroyle/oc-auth-ldap) plugin demonstrates LDAP integration:
 
-```javascript
+```js
 "use strict";
 
 var ActiveDirectory = require("activedirectory");
@@ -145,7 +145,7 @@ module.exports.middleware = function (authConfig) {
 
 To use custom authentication, configure your registry with the `publishAuth` setting:
 
-```javascript
+```js
 // registry configuration
 {
   publishAuth: {
@@ -166,7 +166,7 @@ To use custom authentication, configure your registry with the `publishAuth` set
 
 1. **Create the plugin structure**:
 
-   ```javascript
+   ```js
    // my-auth-plugin.js
    module.exports.validate = function (config) {
      // Validate configuration
@@ -192,7 +192,7 @@ To use custom authentication, configure your registry with the `publishAuth` set
    ```
 
 3. **Configure in registry**:
-   ```javascript
+   ```js
    {
      publishAuth: {
        type: require('./my-auth-plugin'),
@@ -226,31 +226,31 @@ The `oc publish` command supports several options:
 
 **Basic publish:**
 
-```sh
+```bash
 oc publish my-component/
 ```
 
 **Publish with credentials:**
 
-```sh
+```bash
 oc publish my-component/ --username=developer --password=mypassword
 ```
 
 **Dry run (test without publishing):**
 
-```sh
+```bash
 oc publish my-component/ --dryRun
 ```
 
 **Publish to specific registries:**
 
-```sh
+```bash
 oc publish my-component/ --registries=https://staging-registry.com,https://prod-registry.com
 ```
 
 **Skip packaging (use pre-built component):**
 
-```sh
+```bash
 oc publish my-component/ --skipPackage
 ```
 
@@ -260,7 +260,7 @@ oc publish my-component/ --skipPackage
 
 You can publish to multiple registries simultaneously:
 
-```sh
+```bash
 # Configure multiple registries
 oc registry add https://staging-registry.com
 oc registry add https://production-registry.com
@@ -276,7 +276,7 @@ oc publish my-component/ --registries=https://staging-registry.com
 
 If you have a pre-packaged component in the `_package` folder:
 
-```sh
+```bash
 oc publish my-component/ --skipPackage
 ```
 
@@ -286,7 +286,7 @@ This skips the packaging step and directly publishes the existing package.
 
 Always test your publish with `--dryRun` first:
 
-```sh
+```bash
 oc publish my-component/ --dryRun
 ```
 

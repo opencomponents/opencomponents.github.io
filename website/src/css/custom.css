@@ -815,3 +815,19 @@ html[data-theme="dark"]
     font-size: 0.9rem;
   }
 }
+
+/* "NEW" badge for sidebar items */
+.sidebar-item-new > a.menu__link::after {
+  content: "NEW";
+  display: inline-block;
+  margin-left: 0.5em;
+  padding: 0 0.4em;
+  font-size: 0.6rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.03em;
+  color: #fff;
+  background-color: var(--ifm-color-primary);
+  border-radius: 0.6em;
+  vertical-align: middle;
+}

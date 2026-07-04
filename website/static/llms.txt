@@ -38,6 +38,7 @@ The framework consists of four core components: CLI & Development Tools for comp
 ## Registry & Infrastructure
 
 - [Registry Configuration](https://opencomponents.github.io/docs/registry/registry-configuration.md): Production registry setup with S3, authentication, and advanced options
+- [Metadata Stores](https://opencomponents.github.io/docs/registry/registry-metadata-stores.md): Opt-in pluggable database as source of truth for the component index, plus migration steps for existing registries
 - [Google Cloud Storage](https://opencomponents.github.io/docs/registry/registry-using-google-storage.md): Alternative storage configuration
 - [Client Setup](https://opencomponents.github.io/docs/consumers/client-setup.md): Consumer application configuration
 

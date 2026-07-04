@@ -66,7 +66,11 @@ const sidebars = {
       items: [
         "components/publishing-to-a-registry",
         "registry/registry-configuration",
-        "registry/registry-metadata-stores",
+        {
+          type: "doc",
+          id: "registry/registry-metadata-stores",
+          className: "sidebar-item-new",
+        },
         "registry/registry-using-google-storage",
       ],
     },

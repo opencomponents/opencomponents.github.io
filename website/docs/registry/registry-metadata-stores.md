@@ -4,6 +4,10 @@ sidebar_position: 3
 
 # Registry Metadata Stores
 
+:::info New feature
+Registry metadata stores are available since **v0.50.56**.
+:::
+
 ## Overview
 
 By default, an OpenComponents registry keeps its **metadata index** — the list of

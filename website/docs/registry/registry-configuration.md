@@ -104,6 +104,7 @@ For unsuscribing to all [events](#registry-events).
 | <sub>verbosity</sub>        | number                | no        | `0`      | Verbosity level of the console logger (0 = silent)                                                                                                                                                                                        |
 | <sub>timeout</sub>          | number (milliseconds) | no        | `120000` | HTTP request timeout in milliseconds                                                                                                                                                                                                      |
 | <sub>keepAliveTimeout</sub> | number (milliseconds) | no        | `5000`   | Milliseconds the HTTP server keeps idle connections alive                                                                                                                                                                                 |
+| <sub>server</sub>           | object                | no        | Express adapter | Opt-in [HTTP server adapter](/docs/registry/registry-server-adapters) configuration. Lets you swap the registry's underlying HTTP server (e.g. Fastify) instead of the default Express. Absent → Express (default)               |
 
 ### Storage and Caching Options
 

@@ -71,6 +71,11 @@ const sidebars = {
           id: "registry/registry-metadata-stores",
           className: "sidebar-item-new",
         },
+        {
+          type: "doc",
+          id: "registry/registry-server-adapters",
+          className: "sidebar-item-new",
+        },
         "registry/registry-using-google-storage",
       ],
     },

@@ -1,7 +1,3 @@
----
-sidebar_position: 3
----
-
 # Structure of package.json
 
 ## Overview
@@ -316,5 +312,5 @@ ls -la public/
 
 - **[Learn server.js structure](the-server.js)** - Add dynamic data to your components
 - **[Understand CLI commands](cli)** - Master component development workflow
-- **[Publishing guide](publishing-to-a-registry)** - Deploy your components
+- **[Publishing guide](../registry/publishing-to-a-registry)** - Deploy your components
 - **[Template system](../building/template-system)** - Choose the right template type

@@ -1,7 +1,3 @@
----
-sidebar_position: 1
----
-
 # Getting Started
 
 ## Prerequisites
@@ -152,7 +148,7 @@ Explore these example repositories to see OpenComponents in action:
 
 ## Troubleshooting Common Issues
 
-- For installation problems, component creation errors, or dev-server hiccups, refer to the in-depth [CLI guide](cli.md#troubleshooting) which contains up-to-date solutions.
+- For installation problems, component creation errors, or dev-server hiccups, refer to the in-depth [CLI guide](cli#installation-troubleshooting) which contains up-to-date solutions.
 
 ## Next Steps
 
@@ -161,7 +157,7 @@ Once you've created your first component:
 1. **[Learn the CLI](cli)** - Master all available commands
 2. **[Understand package.json structure](package.json-structure)** - Configure your component properly
 3. **[Add server-side logic](the-server.js)** - Make your component dynamic
-4. **[Publish to a registry](publishing-to-a-registry)** - Share your component
+4. **[Publish to a registry](../registry/publishing-to-a-registry)** - Share your component
 5. **[Explore client-side operations](../consumers/rendering-lifecycle)** - Advanced browser integration
 
 For a complete hands-on tutorial, see our [Quick Start Tutorial](../quick-start-tutorial).

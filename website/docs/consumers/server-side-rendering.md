@@ -1,7 +1,3 @@
----
-sidebar_position: 6
----
-
 # Server-side Rendering
 
 You can get rendered components via the registry rest api.

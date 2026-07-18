@@ -1,7 +1,3 @@
----
-sidebar_position: 2
----
-
 # OC Client API & Advanced Usage
 
 This page documents the JavaScript API exposed by the OC browser client and shows how to leverage advanced features such as global parameters, headers, custom templates and actions.

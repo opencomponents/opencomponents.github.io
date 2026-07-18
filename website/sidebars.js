@@ -39,11 +39,11 @@ const sidebars = {
       label: "Building Components",
       items: [
         "building/index",
-        "components/getting-started",
-        "components/package.json-structure",
-        "components/the-server.js",
+        "building/getting-started",
+        "building/package.json-structure",
+        "building/the-server.js",
         "building/template-system",
-        "components/cli",
+        "building/cli",
         "building/debugging",
       ],
     },
@@ -64,7 +64,7 @@ const sidebars = {
       type: "category",
       label: "Registry & Infrastructure",
       items: [
-        "components/publishing-to-a-registry",
+        "registry/publishing-to-a-registry",
         "registry/registry-configuration",
         {
           type: "doc",
@@ -82,7 +82,7 @@ const sidebars = {
     {
       type: "category",
       label: "Reference",
-      items: ["reference/index", "reference/faq"],
+      items: ["reference/faq"],
     },
   ],
 

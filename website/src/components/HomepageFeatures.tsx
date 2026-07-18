@@ -25,7 +25,7 @@ const FeatureList: FeatureItem[] = [
           their own HTML, CSS, and JavaScript, making them easy to maintain and
           update without affecting other parts of your application.
         </p>
-        <Link to="/docs/intro#components-management">Learn more</Link>
+        <Link to="/docs/building/getting-started">Learn more</Link>
       </>
     ),
   },
@@ -69,7 +69,7 @@ const FeatureList: FeatureItem[] = [
           locally.
         </p>
         <p> It also allows publishing of components to your registry.</p>
-        <Link to="/docs/components/cli">Learn more</Link>
+        <Link to="/docs/building/cli">Learn more</Link>
       </>
     ),
   },

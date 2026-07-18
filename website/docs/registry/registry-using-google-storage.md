@@ -1,7 +1,3 @@
----
-sidebar_position: 2
----
-
 # Registry using Google Storage
 
 To use Google Storage make sure you have an account and credentials. When running on a server don't forget to set your `GOOGLE_APPLICATION_CREDENTIALS` environment variable to the path of your authentication json.
@@ -533,6 +529,6 @@ const configuration = {
 ## Next Steps
 
 - **[Registry Configuration](registry-configuration)** - Complete registry setup options
-- **[Publishing Components](../components/publishing-to-a-registry)** - Deploy components to your registry
+- **[Publishing Components](publishing-to-a-registry)** - Deploy components to your registry
 - **[Client-side Integration](../consumers/client-side-rendering)** - Consume components in applications
 - **[Architecture Overview](../concepts/architecture-overview)** - Understand the complete system

@@ -1,7 +1,3 @@
----
-sidebar_position: 2
----
-
 # Command Line Tool
 
 ## Prerequisites

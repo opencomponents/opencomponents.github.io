@@ -1,7 +1,3 @@
----
-sidebar_position: 7
----
-
 # Batch Endpoint
 
 It allows to retrieve a set of components with a single request to the API. While this should be convenient during the server-side rendering, it is not a good practice for client-side rendering.

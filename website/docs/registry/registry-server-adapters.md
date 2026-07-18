@@ -1,7 +1,3 @@
----
-sidebar_position: 4
----
-
 # Registry Server Adapters
 
 :::info New feature

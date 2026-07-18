@@ -1,7 +1,3 @@
----
-sidebar_position: 3
----
-
 # Registry Metadata Stores
 
 :::info New feature

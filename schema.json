@@ -1,0 +1,254 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "OpenComponents CLI Configuration",
+  "description": "Configuration file for the OpenComponents CLI tool. Used to configure registries and development settings.",
+  "properties": {
+    "$schema": {
+      "description": "A field for the [JSON schema](https://json-schema.org/) specification",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "registries": {
+      "description": "List of registry URLs where components will be published. These are the target registries for component deployment.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "URL of an OpenComponents registry (e.g., 'https://my-registry.com')"
+      },
+      "minItems": 1,
+      "example": [
+        "https://my-registry.com",
+        "https://staging-registry.com"
+      ]
+    },
+    "development": {
+      "description": "Development-specific configuration settings for local development and testing.",
+      "type": "object",
+      "properties": {
+        "preload": {
+          "description": "Path to a JavaScript file to preload on the HTML server when running oc dev. This file will be executed to set up any necessary initialization code.",
+          "type": "string",
+          "example": "./preload.js"
+        },
+        "routes": {
+          "description": "Custom routing configuration for the development server. Allows defining custom routes with HTTP methods and handlers.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "route": {
+                "type": "string",
+                "description": "The URL route pattern (e.g., '/', '/api/users')"
+              },
+              "method": {
+                "type": "string",
+                "description": "HTTP method for the route",
+                "enum": [
+                  "GET",
+                  "POST",
+                  "PUT",
+                  "DELETE",
+                  "PATCH",
+                  "HEAD",
+                  "OPTIONS"
+                ],
+                "example": "GET"
+              },
+              "handler": {
+                "type": "string",
+                "description": "Path to the JavaScript file that handles this route"
+              }
+            },
+            "required": [
+              "route",
+              "method",
+              "handler"
+            ],
+            "additionalProperties": false
+          },
+          "example": [
+            {
+              "route": "/",
+              "method": "GET",
+              "handler": "./authRoute.js"
+            }
+          ]
+        },
+        "fallback": {
+          "description": "Fallback configuration for when components cannot be found in the local registry. Allows specifying a fallback registry URL and optionally using its client library.",
+          "type": "object",
+          "properties": {
+            "url": {
+              "description": "URL of the fallback registry to use when components cannot be found locally.",
+              "type": "string",
+              "format": "uri",
+              "example": "https://fallback-registry.com"
+            },
+            "client": {
+              "description": "Whether to use the fallback registry's oc-client-browser.js for previewing components. Defaults to false.",
+              "type": "boolean",
+              "default": false,
+              "example": true
+            }
+          },
+          "required": [
+            "url"
+          ],
+          "additionalProperties": false
+        },
+        "plugins": {
+          "description": "Plugin mocking configuration for development. Plugins are shared functions that components can use, provided by registries in production.",
+          "type": "object",
+          "properties": {
+            "dynamic": {
+              "description": "Dynamic plugin mocks. Values are file paths to JavaScript modules that export 'register' and 'execute' functions. Use this when you need custom mock behavior.",
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "description": "Path to a JavaScript file that exports register and execute functions"
+              },
+              "example": {
+                "hash": "./mocks/hash-plugin.js",
+                "auth": "./mocks/auth-plugin.js"
+              }
+            },
+            "static": {
+              "description": "Static plugin mocks. Values are static strings that will always be returned by the plugin. Use this for simple value mocking.",
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "description": "Static value that the plugin should always return"
+              },
+              "example": {
+                "hash": "mocked-hash-value",
+                "apiKey": "test-api-key-123"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "importmap": {
+          "description": "Importmap to add to the preview HTML's <head> section. Allows specifying ES module import mappings for development.",
+          "type": "object",
+          "properties": {
+            "imports": {
+              "description": "Map of module specifiers to URLs. Keys are module names and values are the URLs they should resolve to.",
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              },
+              "example": {
+                "react": "https://esm.sh/react@18",
+                "lodash": "https://cdn.skypack.dev/lodash"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "mocks": {
+      "description": "DEPRECATED: Use development.plugins instead. Development configuration for mocking plugins that would normally be provided by production registries.",
+      "type": "object",
+      "deprecated": true,
+      "properties": {
+        "plugins": {
+          "description": "DEPRECATED: Use development.plugins instead. Plugin mocking configuration. Plugins are shared functions that components can use, provided by registries in production.",
+          "type": "object",
+          "deprecated": true,
+          "properties": {
+            "dynamic": {
+              "description": "DEPRECATED: Use development.plugins.dynamic instead. Dynamic plugin mocks. Values are file paths to JavaScript modules that export 'register' and 'execute' functions.",
+              "type": "object",
+              "deprecated": true,
+              "additionalProperties": {
+                "type": "string",
+                "description": "Path to a JavaScript file that exports register and execute functions"
+              },
+              "example": {
+                "hash": "./mocks/hash-plugin.js",
+                "auth": "./mocks/auth-plugin.js"
+              }
+            },
+            "static": {
+              "description": "DEPRECATED: Use development.plugins.static instead. Static plugin mocks. Values are static strings that will always be returned by the plugin.",
+              "type": "object",
+              "deprecated": true,
+              "additionalProperties": {
+                "type": "string",
+                "description": "Static value that the plugin should always return"
+              },
+              "example": {
+                "hash": "mocked-hash-value",
+                "apiKey": "test-api-key-123"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "registries"
+  ],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "registries": [
+        "https://my-registry.com"
+      ],
+      "development": {
+        "preload": "./preload.js",
+        "routes": [
+          {
+            "route": "/",
+            "method": "GET",
+            "handler": "./authRoute.js"
+          }
+        ],
+        "fallback": {
+          "url": "https://fallback-registry.com",
+          "client": true
+        },
+        "plugins": {
+          "static": {
+            "hash": "test-hash-value",
+            "apiKey": "dev-api-key"
+          },
+          "dynamic": {
+            "auth": "./mocks/auth-plugin.js"
+          }
+        },
+        "importmap": {
+          "imports": {
+            "react": "https://esm.sh/react@18",
+            "react-dom": "https://esm.sh/react-dom@18"
+          }
+        }
+      }
+    },
+    {
+      "registries": [
+        "https://my-registry.com"
+      ],
+      "client": "https://myregistry.com/oc-client/client.dev.js",
+      "mocks": {
+        "plugins": {
+          "static": {
+            "hash": "test-hash-value",
+            "apiKey": "dev-api-key"
+          },
+          "dynamic": {
+            "auth": "./mocks/auth-plugin.js"
+          }
+        }
+      }
+    }
+  ]
+}

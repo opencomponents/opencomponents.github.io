@@ -1,7 +1,3 @@
----
-sidebar_position: 1
----
-
 # Registry Configuration
 
 ## Introduction
@@ -58,7 +54,7 @@ registry.start(function (err, app) {
 
 ### var registry = new oc.Registry(configuration);
 
-Creates an instance of the registry. [Configuration](#registry-configuration) is an object that contains the registry configuration parameters.
+Creates an instance of the registry. [Configuration](#configuration-reference) is an object that contains the registry configuration parameters.
 
 ### registry.start(callback)
 
@@ -91,7 +87,7 @@ registry.register({
 
 For unsuscribing to all [events](#registry-events).
 
-## Registry configuration
+## Configuration reference
 
 ### Core Configuration Options
 

@@ -1,7 +1,3 @@
----
-sidebar_position: 4
----
-
 # Frequently Asked Questions (FAQ)
 
 ## Beginner Questions
@@ -68,7 +64,7 @@ See the [Architecture Overview](../concepts/architecture-overview#distribution--
 
 ## Can I link a CDN on top of the S3 bucket?
 
-Yes! Either you use Cloudfront or any other vendor's on top of the S3, you will get a url, for instance `https://123456789.cloudfront.org/...` or `https://my-cdn.my-company.com`. Then set the `s3.path` property in the [registry configuration](/docs/registry/registry-configuration#registry-configuration).
+Yes! Either you use Cloudfront or any other vendor's on top of the S3, you will get a url, for instance `https://123456789.cloudfront.org/...` or `https://my-cdn.my-company.com`. Then set the `s3.path` property in the [registry configuration](/docs/registry/registry-configuration#configuration-reference).
 
 ## Can I avoid using S3?
 

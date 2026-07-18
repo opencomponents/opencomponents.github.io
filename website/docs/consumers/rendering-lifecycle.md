@@ -1,7 +1,3 @@
----
-sidebar_position: 3
----
-
 # Rendering Lifecycle
 
 Learn how the OC client discovers and renders components on the page – including synchronous, asynchronous and nested rendering, plus support for ES modules. If you’re looking for an architectural birds-eye view of what happens in the browser, you’re in the right place.

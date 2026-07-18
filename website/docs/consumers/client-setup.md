@@ -1,7 +1,3 @@
----
-sidebar_position: 1
----
-
 # OC Client - Installation & Setup
 
 `oc-client` is the browser runtime that discovers `<oc-component>` tags and renders them. This page explains how to include the script, initialise it safely, and configure global settings.

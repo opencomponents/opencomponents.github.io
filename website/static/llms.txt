@@ -14,11 +14,11 @@ The framework consists of four core components: CLI & Development Tools for comp
 
 ## Components
 
-- [Getting Started with Components](https://opencomponents.github.io/docs/components/getting-started.md): Create, develop, and test your first component
-- [CLI Reference](https://opencomponents.github.io/docs/components/cli.md): Complete command-line interface documentation
-- [Server-side Logic](https://opencomponents.github.io/docs/components/the-server.js.md): Advanced server-side operations and data processing
-- [Package.json Structure](https://opencomponents.github.io/docs/components/package.json-structure.md): Component configuration and metadata
-- [Publishing to Registry](https://opencomponents.github.io/docs/components/publishing-to-a-registry.md): Deploy components to production
+- [Getting Started with Components](https://opencomponents.github.io/docs/building/getting-started.md): Create, develop, and test your first component
+- [CLI Reference](https://opencomponents.github.io/docs/building/cli.md): Complete command-line interface documentation
+- [Server-side Logic](https://opencomponents.github.io/docs/building/the-server.js.md): Advanced server-side operations and data processing
+- [Package.json Structure](https://opencomponents.github.io/docs/building/package.json-structure.md): Component configuration and metadata
+- [Publishing to Registry](https://opencomponents.github.io/docs/registry/publishing-to-a-registry.md): Deploy components to production
 
 ## Architecture & Concepts
 
@@ -39,6 +39,7 @@ The framework consists of four core components: CLI & Development Tools for comp
 
 - [Registry Configuration](https://opencomponents.github.io/docs/registry/registry-configuration.md): Production registry setup with S3, authentication, and advanced options
 - [Metadata Stores](https://opencomponents.github.io/docs/registry/registry-metadata-stores.md): Opt-in pluggable database as source of truth for the component index, plus migration steps for existing registries
+- [Server Adapters](https://opencomponents.github.io/docs/registry/registry-server-adapters.md): Swap the registry's HTTP layer (e.g. Fastify instead of Express)
 - [Google Cloud Storage](https://opencomponents.github.io/docs/registry/registry-using-google-storage.md): Alternative storage configuration
 - [Client Setup](https://opencomponents.github.io/docs/consumers/client-setup.md): Consumer application configuration
 

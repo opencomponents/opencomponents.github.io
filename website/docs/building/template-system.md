@@ -1,7 +1,3 @@
----
-sidebar_position: 2
----
-
 # Template System
 
 ## Introduction
@@ -42,7 +38,7 @@ Usage:
 $ oc init myComponent oc-template-jade  # Legacy template - ES6 recommended for new components
 ```
 
-Check the [CLI documentation](/docs/components/cli) for more details.
+Check the [CLI documentation](/docs/building/cli) for more details.
 
 ### On the Registry
 
@@ -56,7 +52,7 @@ templates: [require('oc-template-extra'), require('oc-template-plus')]
 }
 ```
 
-Check the [registry configuration guide](/docs/registry/registry-configuration#registry-configuration) for more details.
+Check the [registry configuration guide](/docs/registry/registry-configuration#configuration-reference) for more details.
 
 ### Client-side rendering
 

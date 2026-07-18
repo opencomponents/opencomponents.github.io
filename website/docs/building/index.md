@@ -1,7 +1,3 @@
----
-sidebar_position: 0
----
-
 # Building Components
 
 Everything you need to create production-ready micro-frontends.

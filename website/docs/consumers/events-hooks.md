@@ -1,7 +1,3 @@
----
-sidebar_position: 4
----
-
 # Events & Hooks
 
 The OC client fires a series of lifecycle events you can hook into to orchestrate complex user-flows, perform logging, or show custom loading states. This page lists the available events and shows how to subscribe, unsubscribe, and fire custom ones.

@@ -1,7 +1,3 @@
----
-sidebar_position: 5
----
-
 # Publishing to a registry
 
 Publishing components to an OpenComponents registry makes them available for consumption across your applications. This guide covers the complete publishing workflow, from basic commands to advanced scenarios and troubleshooting.
@@ -21,7 +17,7 @@ Publishing assumes:
 
 1. A reachable registry (see [Registry Configuration](../registry/registry-configuration))
 2. A component folder that passes `oc dev` validation
-3. OC CLI installed (see [CLI install](cli.md#install-the-cli))
+3. OC CLI installed (see [CLI install](../building/cli#install-the-cli))
 
 That's all you need—no extra global setup.
 
@@ -310,7 +306,7 @@ This validates your component and simulates the publish process without actually
 
 ## Troubleshooting
 
-For error messages and advanced diagnostics, refer to the [CLI Troubleshooting Guide](cli.md#installation-troubleshooting). It covers authentication, versioning, validation failures, and more.
+For error messages and advanced diagnostics, refer to the [CLI Troubleshooting Guide](../building/cli#installation-troubleshooting). It covers authentication, versioning, validation failures, and more.
 
 ### Debugging Tips
 

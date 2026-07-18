@@ -1,7 +1,3 @@
----
-sidebar_position: 4
----
-
 # Server-side Logic (server.js / entry.server.ts)
 
 This guide covers how to add server-side logic to your components. Modern components use `src/entry.server.ts` with the `Server` API, while the legacy `server.js` with callbacks is still supported for backwards compatibility.
@@ -288,9 +284,9 @@ Context aggregates request data, and the registry's context. It consists of the 
 | ------------------ | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `acceptLanguage`   | `array of objects`   | represents parsed `accept-language` part of the request header sorted by quality. More details [here](https://github.com/opentable/accept-language-parser)                                                                                                                    |
 | `baseUrl`          | `string`             | represents public registry base url. This is required when we want to nest components that are hosted in the same registry for client-side rendering                                                                                                                          |
-| `env`              | `object`             | represents the registry environment variables. The registry's admin [can share here arbitrary data](/docs/registry/registry-configuration#registry-configuration)                                                                                                             |
+| `env`              | `object`             | represents the registry environment variables. The registry's admin [can share here arbitrary data](/docs/registry/registry-configuration#configuration-reference)                                                                                                             |
 | `params`           | `object`             | represents parameters extracted from the query string                                                                                                                                                                                                                         |
-| `plugins`          | `array of functions` | [custom functionalities that extend the registry](/docs/registry/registry-configuration#plugins). Note: if a component needs a plugin, [it needs to be declared in the component's package.json](/docs/components/getting-started#structure-of-the-package)                   |
+| `plugins`          | `array of functions` | [custom functionalities that extend the registry](/docs/registry/registry-configuration#plugins). Note: if a component needs a plugin, [it needs to be declared in the component's package.json](/docs/building/getting-started#structure-of-the-package)                   |
 | `renderComponent`  | `function`           | Needed to do server-side nested renderings. [renderComponent API](#rendercomponent-api)                                                                                                                                                                                       |
 | `renderComponents` | `function`           | Needed to do server-side nested renderings. [renderComponents API](#rendercomponents-api)                                                                                                                                                                                     |
 | `requestHeaders`   | `object`             | represents the original request headers. When component is rendered client side this will be what is sent from the browser, when rendered server side, using oc-client, this will contain whatever the client has been configured to forward                                  |
@@ -523,5 +519,5 @@ module.exports.data = function (context, callback) {
 
 - **[Learn package.json structure](package.json-structure)** - Configure your component properly
 - **[Master the CLI](cli)** - Efficient development workflow
-- **[Publishing guide](publishing-to-a-registry)** - Deploy your components
+- **[Publishing guide](../registry/publishing-to-a-registry)** - Deploy your components
 - **[Client-side operations](../consumers/rendering-lifecycle)** - Browser integration patterns

@@ -1,103 +1,19 @@
----
-sidebar_position: 3
----
-
 # Architecture Overview
 
-<div className="hero-section">
+OpenComponents breaks down monolithic frontends into independently deployable, reusable components that teams can own and maintain autonomously. For the motivation behind this, see [Why OpenComponents?](why-opencomponents).
 
-## How OpenComponents Works
+## Example decomposition
 
-OpenComponents is a **micro frontend architecture** that breaks down monolithic applications into independently deployable, reusable components that teams can own and maintain autonomously.
+A typical e-commerce page could be decomposed into independent components, each owned by a different team:
 
-</div>
+- **Header** (Platform team) – navigation, search, user menu; deployed independently, shared across pages.
+- **Product listing** (Catalog team) – product cards, filters, pagination.
+- **Shopping cart** (Commerce team) – cart state, checkout flow, payment integrations.
+- **User profile** (Identity team) – authentication, preferences, account management.
 
-## Conceptual Overview
-
-<div className="concept-example">
-
-### 🛒 **Real-World Example: E-commerce Platform**
-
-Instead of building one massive application, imagine decomposing it into independent components:
-
-<div className="component-breakdown">
-
-**🏠 Header Component** → Platform Team
-- Navigation, search, user menu
-- Deployed independently
-- Shared across all pages
-
-**📦 Product Listing** → Catalog Team  
-- Product cards, filters, pagination
-- A/B test new layouts
-- Optimized for performance
-
-**🛒 Shopping Cart** → Commerce Team
-- Cart state, checkout flow
-- Payment integrations
-- Independent scaling
-
-**👤 User Profile** → Identity Team
-- Authentication, preferences
-- Privacy controls
-- Account management
-
-</div>
-
-**The Result:** Each team develops, tests, and deploys independently while users see a seamless, integrated experience.
-
-</div>
-
-## Benefits of This Approach
-
-<div className="benefits-overview">
-
-### 🚀 **Team Independence**
-- **Autonomous development** - No coordination bottlenecks
-- **Technology flexibility** - React, Vue, ES6, or any framework per component  
-- **Independent deployments** - Release on your own schedule
-- **Clear ownership** - Teams own components end-to-end
-
-### 📈 **Scalability & Performance**
-- **Component-level scaling** - Scale based on actual usage patterns
-- **CDN optimization** - Automatic asset distribution globally
-- **Server-side rendering** - SEO and performance without Node.js requirements
-- **Caching strategies** - Intelligent caching at multiple levels
-
-### 🔄 **Gradual Migration**
-- **Start small** - Begin with one component, expand gradually
-- **No big bang** - Migrate from monolith incrementally
-- **Risk mitigation** - Test architecture with non-critical components
-- **Backward compatibility** - Existing applications continue working
-
-</div>
-
-## Why Choose OpenComponents?
-
-### Team Independence
-
-- **Autonomous development**: Teams work on their components without blocking each other
-- **Technology flexibility**: Use React, Vue, ES6, or any framework per component
-- **Independent deployments**: Release updates without coordinating with other teams
-- **Clear ownership**: Each team owns their components end-to-end
-
-### Gradual Migration
-
-- **Start small**: Begin with one component and gradually expand
-- **No big bang**: Migrate from monolith to micro frontends incrementally
-- **Risk mitigation**: Test the architecture with non-critical components first
-- **Backward compatibility**: Existing applications continue working during migration
-
-### A/B Testing and Experimentation
-
-- **Component-level testing**: Test different versions of individual components
-- **Isolated experiments**: Changes to one component don't affect others
-- **Faster iteration**: Deploy and test new features quickly
-- **Data-driven decisions**: Measure impact of component changes independently
+Each team develops, tests, and deploys independently, while users see one seamless, integrated page.
 
 ## System Architecture
-
-<div className="architecture-diagram">
 
 ```mermaid
 graph TB
@@ -140,53 +56,12 @@ graph TB
     style CLI fill:#9C27B0
 ```
 
-</div>
+### Core components
 
-### 🏗️ **Core Components**
-
-<div className="architecture-components">
-
-<div className="arch-component">
-
-#### **🛠️ CLI & Development Tools**
-- Component scaffolding and development
-- Local testing with hot reload
-- Publishing and version management
-- Built-in preview and debugging tools
-
-</div>
-
-<div className="arch-component">
-
-#### **🌐 Registry (REST API)**
-- Central component catalog and metadata
-- Version management and resolution
-- Authentication and access control
-- Component rendering and serving
-
-</div>
-
-<div className="arch-component">
-
-#### **📦 Component Library**
-- Immutable component storage
-- Version history and artifacts
-- Dependency management
-- Backup and disaster recovery
-
-</div>
-
-<div className="arch-component">
-
-#### **🚀 CDN & Asset Distribution**
-- Global static asset delivery
-- Automatic optimization and compression
-- Edge caching for performance
-- Bandwidth cost optimization
-
-</div>
-
-</div>
+- **CLI & development tools** – component scaffolding, local dev server with hot reload, publishing, preview and debugging.
+- **Registry (REST API)** – component catalog and metadata, version resolution, authentication, rendering.
+- **Component library** – immutable storage of published component versions and artifacts.
+- **CDN & asset distribution** – static assets (JS, CSS, images) served from CDN with edge caching.
 
 ## Publishing Workflow
 
@@ -293,27 +168,7 @@ Results:
 
 **Best Practices**:
 
-- ✅ **Use semantic versioning**: `~1.2.0` instead of `1.2.4`
-- ✅ **Short polling intervals**: 5-second sync reduces inconsistency window
-- ✅ **Monitoring & alerting**: Track registry sync health
-- ✅ **Graceful degradation**: Serve cached versions during outages
-
-### Advanced Distribution Features
-
-**🔄 Automatic Failover**
-
-- Registry instances automatically retry failed CDN connections
-- Components remain available from memory cache during outages
-- Health checks detect and route around unhealthy instances
-
-**📊 Monitoring Integration**
-
-- Registry publishes events for sync failures and recoveries
-- Metrics tracking for component usage and performance
-- Alerting for version inconsistencies across regions
-
-**🚀 Performance Optimization**
-
-- Template deduplication across component versions
-- Intelligent caching based on usage patterns
-- CDN edge caching for global distribution
+- **Use semantic versioning**: prefer `~1.2.0` over pinning `1.2.4`, so consumers tolerate a registry serving a slightly older patch during the sync window
+- **Short polling intervals**: the default 5-second `pollingInterval` keeps the inconsistency window small
+- **Monitoring**: subscribe to the [registry's events](../registry/registry-configuration#registryoneventname-callback) to track sync health
+- **Fallback registries**: configure [`fallbackRegistryUrl`](../registry/registry-configuration#configuration-reference) so requests can be served by a secondary registry if a component isn't found locally

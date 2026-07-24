@@ -156,6 +156,14 @@ oc preview http://localhost:3030/your-component
 3. **CORS issues** - Verify cross-origin settings
 4. **SSL/HTTPS** - Ensure proper SSL configuration
 
+### Why don't I see `console.log` from my component outside `oc dev`?
+
+In local development (`oc dev`), the registry runs with `local: true` and forwards component `console.*` calls to the process console. On a normal (non-local) registry — including staging and production with remote storage — those calls are discarded.
+
+This is by design. `local` is **not** a "use filesystem storage" flag you can flip in lower environments to get logs back. Setting `local: true` on a deployed registry also disables publishing and changes other production behaviour.
+
+For intentional logging in any environment, register a logging plugin and call it from `server.js`. See [Logging from components](../registry/registry-configuration#logging-from-components).
+
 ### Template compilation errors
 
 **For ES6 templates (default):**

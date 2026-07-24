@@ -129,9 +129,9 @@ For unsuscribing to all [events](#registry-events).
 | ------------------------- | ----------------- | --------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | <sub>discovery</sub>      | boolean           | no        | `true`    | Enables the HTML discovery page and `/components` endpoint                                                                                                  |
 | <sub>discoveryFunc</sub>  | function          | no        | -         | Function to decide whether discovery should be enabled for the current request. Function signature: `(opts: { host?: string; secure: boolean }) => boolean` |
-| <sub>local</sub>          | boolean           | no        | -         | Indicates whether the registry serves components from the local file system (`true`) or from remote storage (`false`)                                       |
-| <sub>path</sub>           | string            | no        | -         | Absolute path where local components are stored (used when `local` is `true`)                                                                               |
-| <sub>hotReloading</sub>   | boolean           | no        | `!!local` | Enables hot-reloading of component code. Always `true` when `local` is `true`                                                                               |
+| <sub>local</sub>          | boolean           | no        | -         | Enables **local development mode** (what `oc dev` sets). Not a storage selector — see [Local development mode](#local-development-mode)                     |
+| <sub>path</sub>           | string            | no        | -         | Absolute path where local components are stored (required when `local` is `true`)                                                                            |
+| <sub>hotReloading</sub>   | boolean           | no        | `!!local` | Enables hot-reloading of component code. Defaults to `true` when `local` is `true`                                                                            |
 | <sub>liveReloadPort</sub> | number            | no        | -         | TCP port of the LiveReload server used by the preview page                                                                                                  |
 | <sub>compileClient</sub>  | boolean or object | no        | `true`    | Set options for the oc-client-browser compilation. Set to `false` to disable client compilation, or provide options object for custom compilation settings  |
 
@@ -255,6 +255,8 @@ registry.start();
 
 ### Local Development Configuration
 
+Prefer `oc dev` over hand-rolling this. The CLI starts a registry with `local: true` and the right defaults for day-to-day component work.
+
 ```js
 var oc = require("oc");
 
@@ -273,6 +275,22 @@ var configuration = {
 var registry = new oc.Registry(configuration);
 registry.start();
 ```
+
+#### Local development mode
+
+`local: true` turns on **local development mode**. It is **not** a toggle between "filesystem storage" and "remote storage" that you would flip in staging or production.
+
+When `local` is `true`, the registry:
+
+- Serves components from a local directory (`path`) instead of a storage adapter
+- **Disables publishing** — components cannot be published to a local registry
+- Enables hot-reloading of component code (unless you override `hotReloading`)
+- Forwards component `console.*` calls to the process console (so `console.log` in `server.js` is visible while developing)
+- Sets `NODE_ENV` to `development` inside the component sandbox
+- Surfaces richer server-side error details (including processed stack frames) in responses and logs
+- Skips storage/metadata validation that production registries require
+
+Do **not** set `local: true` on a deployed registry to get component logs or filesystem-like behaviour. You will lose publishing and change other production semantics. For intentional logging outside `oc dev`, use a [logging plugin](#logging-from-components).
 
 ### Custom Storage Adapter Configuration
 
@@ -462,14 +480,11 @@ module.exports.execute = function (context) {
     return connection.get(featureName);
   };
 };
-
-// Enable context awareness
-module.exports.context = true;
 ```
 
 ### Plugin Registration
 
-This is how to register plugins in a registry:
+This is how to register plugins in a registry. Context awareness is enabled with `context: true` on the **registration** object (not on the plugin module):
 
 ```js
 // ./registry/init.js
@@ -488,6 +503,7 @@ registry.register({
 // Register a context-aware plugin
 registry.register({
   name: "getSecureFeature",
+  context: true,
   register: require("./oc-plugins/feature-flags"),
   options: {
     connectionString: connectionString,
@@ -511,6 +527,78 @@ module.exports.data = function (context, callback) {
   });
 };
 ```
+
+### Logging from components
+
+Outside `oc dev`, component `console.log` / `console.error` / etc. are discarded. That is intentional: the registry sandbox does not ship every component's unstructured console output into production process logs.
+
+`local: true` is not a production logging switch (see [Local development mode](#local-development-mode)). For logging in staging or production, register a plugin and call it from `server.js`.
+
+A minimal context-aware logger:
+
+```js
+// ./registry/oc-plugins/log.js
+var logger;
+
+module.exports.register = function (options, dependencies, next) {
+  // options.logger is your real logger (pino, winston, Datadog client, ...)
+  logger = options.logger;
+  next();
+};
+
+// With context: true on registry.register(...), execute receives component
+// context and returns the function exposed as context.plugins.log(...)
+module.exports.execute = function (context) {
+  return function (level, message, meta) {
+    logger[level]({
+      component: context.name,
+      version: context.version,
+      message: message,
+      ...(meta || {}),
+    });
+  };
+};
+```
+
+Register it on the registry (note `context: true` on the registration object):
+
+```js
+registry.register({
+  name: "log",
+  context: true,
+  register: require("./oc-plugins/log"),
+  options: {
+    logger: myLogger, // your structured logger
+  },
+});
+```
+
+Declare and use it from the component:
+
+```js
+// package.json (component)
+// "oc": { "plugins": ["log"] }
+
+// server.js
+module.exports.data = function (context, callback) {
+  context.plugins.log("info", "fetching user", { id: context.params.userId });
+
+  // ...
+
+  callback(null, {
+    /* view model */
+  });
+};
+```
+
+Why a plugin instead of turning on `console` in production:
+
+- **Opt-in** — only components that call the plugin pay the cost
+- **Structured** — level, message, and metadata can go to your monitoring stack
+- **Scoped** — with `context: true`, every line can include component name and version
+- **Controlled** — the registry owns sampling, redaction, and destinations
+
+`verbosity` only controls the registry's own access/process logging. It does not enable component sandbox `console` output.
 
 ### When to Use Context Awareness
 
@@ -574,8 +662,16 @@ module.exports.execute = function (context) {
     }
   };
 };
+```
 
-module.exports.context = true;
+Register with `context: true`:
+
+```js
+registry.register({
+  name: "advancedFeatureManager",
+  context: true,
+  register: require("./oc-plugins/advanced-feature-manager"),
+});
 ```
 
 ### Plugin Dependencies
@@ -593,7 +689,7 @@ module.exports.register = function (options, dependencies, next) {
   // This register function is only called after all dependencies are registered
   client.connect(options.connectionString, function (err, conn) {
     connection = conn;
-    dependencies.log("secure logger client initialized");
+    dependencies.log.handler("secure logger client initialized");
     next();
   });
 };
@@ -612,8 +708,17 @@ module.exports.execute = function (context) {
     return connection.log(enrichedMessage);
   };
 };
+```
 
-module.exports.context = true;
+```js
+registry.register({
+  name: "secureLogger",
+  context: true,
+  register: require("./oc-plugins/secure-logger"),
+  options: {
+    connectionString: connectionString,
+  },
+});
 ```
 
 ### Plugin Configuration Options
@@ -623,11 +728,11 @@ module.exports.context = true;
 | `name`     | string  | yes      | -       | Unique identifier for the plugin                  |
 | `register` | object  | yes      | -       | Plugin module with register and execute functions |
 | `options`  | object  | no       | `{}`    | Configuration options passed to the plugin        |
-| `context`  | boolean | no       | `false` | Enable component context awareness                |
+| `context`  | boolean | no       | `false` | Enable component context awareness on `registry.register(...)` |
 
 ### Context Object Structure
 
-When `context: true` is set, the context object passed to the execute function contains:
+When `context: true` is set on `registry.register(...)`, the context object passed to the execute function contains:
 
 ```js
 {

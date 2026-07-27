@@ -125,10 +125,15 @@ For unsuscribing to all [events](#registry-events).
 
 ### Development and Discovery Options
 
-| Parameter                 | Type              | Mandatory | Default   | Description                                                                                                                                                 |
-| ------------------------- | ----------------- | --------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <sub>discovery</sub>      | boolean           | no        | `true`    | Enables the HTML discovery page and `/components` endpoint                                                                                                  |
-| <sub>discoveryFunc</sub>  | function          | no        | -         | Function to decide whether discovery should be enabled for the current request. Function signature: `(opts: { host?: string; secure: boolean }) => boolean` |
+| Parameter                      | Type              | Mandatory | Default   | Description                                                                                                                                                 |
+| ------------------------------ | ----------------- | --------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <sub>discovery</sub>           | boolean or object | no        | `true`    | Enables the HTML discovery page and `/components` endpoint. Pass a boolean to toggle everything at once, or an object to fine-tune individual aspects (see below) |
+| <sub>discovery.robots</sub>    | boolean           | no        | `true`    | Appends a `<meta name="robots" content="index, follow" />` tag to the discovery page's HTML head. Set to `false` to append `noindex, nofollow` instead      |
+| <sub>discovery.api</sub>       | boolean           | no        | `true`    | Enables the discovery API endpoints (e.g. `/components`)                                                                                                    |
+| <sub>discovery.ui</sub>        | boolean           | no        | `true`    | Enables the HTML discovery page                                                                                                                             |
+| <sub>discovery.validate</sub>  | boolean           | no        | `false`   | Enables validation for the discovery API                                                                                                                    |
+| <sub>discovery.experimental</sub> | boolean        | no        | `true`    | Shows experimental components in the discovery API. Has no effect when `discovery.api` is `false`                                                          |
+| <sub>discoveryFunc</sub>       | function          | no        | -         | Function to decide whether discovery should be enabled for the current request. Function signature: `(opts: { host?: string; secure: boolean }) => boolean` |
 | <sub>local</sub>          | boolean           | no        | -         | Enables **local development mode** (what `oc dev` sets). Not a storage selector — see [Local development mode](#local-development-mode)                     |
 | <sub>path</sub>           | string            | no        | -         | Absolute path where local components are stored (required when `local` is `true`)                                                                            |
 | <sub>hotReloading</sub>   | boolean           | no        | `!!local` | Enables hot-reloading of component code. Defaults to `true` when `local` is `true`                                                                            |
@@ -246,6 +251,35 @@ var configuration = {
   env: {
     NODE_ENV: "production",
     API_BASE_URL: "https://api.mycompany.com",
+  },
+};
+
+var registry = new oc.Registry(configuration);
+registry.start();
+```
+
+### Discovery Configuration
+
+`discovery` accepts either a boolean (to enable/disable everything at once) or an object to configure the HTML discovery page and API independently:
+
+```js
+var oc = require("oc");
+
+var configuration = {
+  baseUrl: "https://components.mycompany.com/",
+  port: 3000,
+  discovery: {
+    ui: true, // Enable the HTML discovery page
+    api: true, // Enable the discovery API endpoints
+    validate: true, // Validate requests against the discovery API
+    experimental: false, // Hide experimental components from the discovery API
+    robots: false, // Add a noindex, nofollow meta tag to the discovery page
+  },
+  s3: {
+    bucket: "my-components-bucket",
+    region: "us-east-1",
+    componentsDir: "components",
+    path: "//s3.amazonaws.com/my-components-bucket/",
   },
 };
 

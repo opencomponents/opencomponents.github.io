@@ -248,6 +248,15 @@ $ oc init components/test-component oc-template-es6
 
 which will create `test-component` in `components` directory.
 
+:::caution Deprecated bare template names
+Passing the bare legacy names `jade` or `handlebars` as `templateType` (e.g.
+`oc init my-component jade`) still works — they resolve to
+`oc-template-jade` / `oc-template-handlebars` as before — but now emits a
+one-time deprecation warning pointing you to the modern ESM component
+runtime, `oc-template-es6`. Explicitly passing `oc-template-jade` or
+`oc-template-handlebars` is unaffected and stays silent.
+:::
+
 ---
 
 ### mock

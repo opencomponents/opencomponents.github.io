@@ -128,3 +128,23 @@ built-in adapters (route registration, body parsing, cookies, file uploads,
 request timing, logging, error handling, listen/close, etc.), and pass it as
 `server.adapter`. Look at `oc-fastify-server-adapter`'s source for a complete
 reference implementation.
+
+### Adapter lifecycle: `listen()` / `close()`
+
+Both the built-in Express adapter and `oc-fastify-server-adapter` support a
+promise-based lifecycle in addition to the original callback style:
+
+```ts
+listen(opts: HttpServerListenOptions): Promise<void>;
+listen(opts: HttpServerListenOptions, cb: (err?: Error) => void): void;
+close(): Promise<void>;
+close(cb: (err?: Error) => void): void;
+```
+
+An adapter opts into the promise form by setting `supportsPromiseLifecycle: true`;
+the registry calls `listen()`/`close()` without a callback in that case and
+awaits the returned promise. Adapters that only implement the callback form
+keep working unchanged — `registry.start()`/`registry.close()` wrap them in a
+promise automatically — but calling `listen`/`close` directly with a callback
+now emits a one-time deprecation warning, since the callback form will be
+removed in OpenComponents v1.

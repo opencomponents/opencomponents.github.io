@@ -181,6 +181,11 @@ For unsuscribing to all [events](#registry-events).
 | <sub>routes[].method</sub>                  | string           | yes\*     | -       | HTTP method for the route (e.g. "get", "post") (\*required for each route)                                                                                                                            |
 | <sub>routes[].handler</sub>                 | function         | yes\*     | -       | Express-compatible handler function for the route (\*required for each route)                                                                                                                         |
 | <sub>plugins</sub>                          | object           | no        | `{}`    | Collection of plugins initialized for this registry instance. Populated via `registry.register(...)`                                                                                                  |
+| <sub>cors</sub>                             | object           | no        | -       | Configures the CORS headers sent by the registry. Omit to keep the existing default headers unchanged (see [CORS configuration](#cors-configuration))                                                 |
+| <sub>cors.origin</sub>                      | string           | no        | `"*"`   | Value sent as `Access-Control-Allow-Origin`                                                                                                                                                             |
+| <sub>cors.credentials</sub>                 | boolean          | no        | `true`  | When `true`, sends `Access-Control-Allow-Credentials: true`. When `false`, the header is omitted                                                                                                       |
+| <sub>cors.allowedHeaders</sub>              | string or array  | no        | `"Origin, X-Requested-With, Content-Type, Accept, traceparent"` | Value sent as `Access-Control-Allow-Headers`. An array is joined with `, `                                                                                                            |
+| <sub>cors.methods</sub>                     | string or array  | no        | `"GET, OPTIONS, PUT, POST"` | Value sent as `Access-Control-Allow-Methods`. An array is joined with `, `                                                                                                                        |
 
 ## Configuration Examples
 
@@ -286,6 +291,36 @@ var configuration = {
 var registry = new oc.Registry(configuration);
 registry.start();
 ```
+
+### CORS Configuration
+
+`cors` is fully optional; omitting it keeps the registry's existing default headers (`Access-Control-Allow-Origin: *`, credentials enabled, and the current allowed headers/methods) exactly as before:
+
+```js
+var oc = require("oc");
+
+var configuration = {
+  baseUrl: "https://components.mycompany.com/",
+  port: 3000,
+  cors: {
+    origin: "https://www.mycompany.com",
+    credentials: false,
+    allowedHeaders: ["Origin", "Content-Type", "Accept"],
+    methods: ["GET", "OPTIONS"],
+  },
+  s3: {
+    bucket: "my-components-bucket",
+    region: "us-east-1",
+    componentsDir: "components",
+    path: "//s3.amazonaws.com/my-components-bucket/",
+  },
+};
+
+var registry = new oc.Registry(configuration);
+registry.start();
+```
+
+`allowedHeaders` and `methods` accept either a comma-separated string or an array of strings (joined with `, ` for you). Invalid values (e.g. a non-string `origin`, or a non-boolean `credentials`) fail registry startup with a configuration error rather than being silently ignored.
 
 ### Local Development Configuration
 
@@ -441,9 +476,13 @@ options.routes = [
 | ------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | cache-poll          | object             | Fired when the components list is refreshed. The callback data contains the last edit unix utc timestamp.                                                                                                                                                    |
 | component-retrieved | object             | Fired when the component is retrieved. This includes the component's validation, data gathering and execution, view retrieving, and (when requested) rendering. The callback data contains the duration, component details, and, in case, the error details. |
-| error               | object             | Fired when an internal operation errors.                                                                                                                                                                                                                     |
+| error               | `{ code, message }` | Fired when an internal operation errors, e.g. an HTTP server adapter failure. `code` is a stable, adapter-neutral category — server adapter errors use `SERVER_ERROR` regardless of whether the registry runs on Express, Fastify, or another adapter. `message` is the original error message.                                                                                                                                                                                                                     |
 | request             | object             | Fired every time the registry receives a request. The callback data contains some request and response details.                                                                                                                                              |
 | start               | undefined          | Fired when the registry starts                                                                                                                                                                                                                               |
+
+:::note
+The `error` event's `code` used to be the transport-specific `EXPRESS_ERROR`. It is now the adapter-neutral `SERVER_ERROR`; the `{ code, message }` shape and the original error message are unchanged.
+:::
 
 ## Plugins
 
@@ -453,13 +492,13 @@ Plugins are a way to extend registry's context allowing components to inherit cu
 
 A plugin consists of two main parts:
 
-- **register**: Function called during plugin initialization
+- **register**: Function called during plugin initialization. It can either call the `next(err)` callback (legacy style) or return a `Promise` that resolves on success and rejects on failure — both are fully supported
 - **execute**: Function that provides the actual plugin functionality
 - **context** (optional): Boolean flag to enable component context awareness
 
 ### Basic Plugin Example
 
-This is a basic plugin example without context awareness:
+This is a basic plugin example without context awareness, using the callback style:
 
 ```js
 // ./registry/oc-plugins/hobknob.js
@@ -477,6 +516,26 @@ module.exports.execute = function (featureName) {
   return connection.get(featureName);
 };
 ```
+
+`register` can also return a `Promise` instead of calling `next`, which is convenient when the setup logic is `async`:
+
+```js
+// ./registry/oc-plugins/hobknob.js
+var connection;
+var client = require("./hobknob-client");
+
+module.exports.register = async function (options, dependencies) {
+  connection = await client.connect(options.connectionString);
+};
+
+module.exports.execute = function (featureName) {
+  return connection.get(featureName);
+};
+```
+
+:::note
+Callback-style `register(options, dependencies, next)` still works and remains fully supported; it emits a one-time deprecation warning and will be removed in OpenComponents v1.
+:::
 
 ### Context-Aware Plugin Example
 
